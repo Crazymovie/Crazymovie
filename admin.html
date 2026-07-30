@@ -1,0 +1,3478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Crazymovie Admin Dashboard</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet"
+>
+
+<style>
+
+/* ========================================
+   GENERAL
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: #0f0f0f;
+    color: white;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.admin-header {
+    background: #171717;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.admin-header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.admin-header p {
+    margin: 5px 0 0;
+    color: #aaa;
+}
+
+
+/* ========================================
+   MAIN CONTAINER
+======================================== */
+
+.admin-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+
+/* ========================================
+   SECTION TITLE
+======================================== */
+
+.section-title {
+    margin-top: 35px;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+
+/* ========================================
+   MOVIE FORM
+======================================== */
+
+.movie-form {
+    background: #181818;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.movie-form input,
+.movie-form textarea {
+
+    width: 100%;
+
+    padding: 14px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+
+    background: #222;
+
+    color: white;
+
+    border: 1px solid rgba(255,255,255,0.15);
+
+    border-radius: 8px;
+
+    outline: none;
+}
+
+.movie-form textarea {
+
+    min-height: 120px;
+
+    resize: vertical;
+}
+
+.movie-form input:focus,
+.movie-form textarea:focus {
+
+    border-color: red;
+}
+
+.movie-form button {
+
+    padding: 14px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    background: red;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.movie-form button:hover {
+
+    background: #cc0000;
+}
+
+
+/* ========================================
+   CANCEL EDIT BUTTON
+======================================== */
+
+#cancelEditButton {
+
+    display: none;
+
+    background: #555;
+}
+
+#cancelEditButton:hover {
+
+    background: #444;
+}
+
+
+/* ========================================
+   PUBLISHED MOVIES
+======================================== */
+
+.published-movies {
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.published-movie-card {
+
+    background: #181818;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    display: flex;
+
+    gap: 20px;
+
+    align-items: center;
+}
+
+.published-movie-card img {
+
+    width: 100px;
+
+    height: 140px;
+
+    object-fit: cover;
+
+    border-radius: 8px;
+
+    background: #222;
+}
+
+.published-movie-info {
+
+    flex: 1;
+}
+
+.published-movie-info h3 {
+
+    margin:
+    0 0 8px;
+
+    font-size: 20px;
+}
+
+.published-movie-info p {
+
+    margin:
+    5px 0;
+
+    color: #aaa;
+
+    font-size: 14px;
+}
+
+.movie-buttons {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 15px;
+
+    flex-wrap: wrap;
+}
+
+.edit-button {
+
+    padding:
+    9px 15px;
+
+    border:
+    none;
+
+    border-radius:
+    7px;
+
+    background:
+    #007bff;
+
+    color:
+    white;
+
+    cursor:
+    pointer;
+
+    font-family:
+    "Poppins", sans-serif;
+
+    font-weight:
+    600;
+}
+
+.edit-button:hover {
+
+    background:
+    #0056b3;
+}
+
+.delete-button {
+
+    padding:
+    9px 15px;
+
+    border:
+    none;
+
+    border-radius:
+    7px;
+
+    background:
+    #dc3545;
+
+    color:
+    white;
+
+    cursor:
+    pointer;
+
+    font-family:
+    "Poppins", sans-serif;
+
+    font-weight:
+    600;
+}
+
+.delete-button:hover {
+
+    background:
+    #b02a37;
+}
+
+
+/* ========================================
+   EMPTY MESSAGE
+======================================== */
+
+.empty-message {
+
+    text-align:
+    center;
+
+    color:
+    #888;
+
+    padding:
+    25px;
+
+    background:
+    #181818;
+
+    border-radius:
+    12px;
+}
+
+
+/* ========================================
+   STAT CARDS
+======================================== */
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.stat-card {
+
+    background: #181818;
+
+    padding: 25px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+
+    transform:
+    translateY(-4px);
+
+    border-color:
+    red;
+}
+
+.stat-card h3 {
+
+    margin:
+    0 0 10px;
+
+    font-size:
+    18px;
+
+    color:
+    #aaa;
+}
+
+.stat-card .number {
+
+    font-size:
+    32px;
+
+    font-weight:
+    600;
+
+    color:
+    white;
+}
+
+
+/* ========================================
+   TODAY / YESTERDAY
+======================================== */
+
+.daily-grid {
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.daily-card {
+
+    background:
+    #181818;
+
+    padding:
+    25px;
+
+    border-radius:
+    12px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.daily-card h3 {
+
+    margin-top:
+    0;
+
+    font-size:
+    21px;
+}
+
+.daily-row {
+
+    display:
+    flex;
+
+    justify-content:
+    space-between;
+
+    padding:
+    12px 0;
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.daily-row:last-child {
+
+    border-bottom:
+    none;
+}
+
+
+/* ========================================
+   ANALYTICS CHARTS
+======================================== */
+
+.analytics-chart {
+
+    background:
+    #181818;
+
+    padding:
+    20px;
+
+    border-radius:
+    12px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    margin-bottom:
+    20px;
+
+    overflow-x:
+    auto;
+}
+
+.chart-title {
+
+    margin:
+    0 0 20px;
+
+    font-size:
+    18px;
+
+    color:
+    #ddd;
+}
+
+.chart-area {
+
+    min-width:
+    600px;
+
+    height:
+    280px;
+
+    position:
+    relative;
+}
+
+.chart-bars {
+
+    height:
+    220px;
+
+    display:
+    flex;
+
+    align-items:
+    flex-end;
+
+    gap:
+    12px;
+
+    padding:
+    10px 10px 0;
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.2);
+}
+
+.chart-bar-wrapper {
+
+    flex:
+    1;
+
+    min-width:
+    35px;
+
+    height:
+    100%;
+
+    display:
+    flex;
+
+    flex-direction:
+    column;
+
+    justify-content:
+    flex-end;
+
+    align-items:
+    center;
+}
+
+.chart-value {
+
+    font-size:
+    11px;
+
+    color:
+    #ddd;
+
+    margin-bottom:
+    5px;
+
+    min-height:
+    16px;
+}
+
+.chart-bar {
+
+    width:
+    100%;
+
+    max-width:
+    45px;
+
+    min-height:
+    2px;
+
+    background:
+    #777;
+
+    border-radius:
+    5px 5px 0 0;
+
+    transition:
+    height 0.4s ease;
+}
+
+.chart-bar:hover {
+
+    background:
+    #aaa;
+}
+
+.chart-label {
+
+    font-size:
+    10px;
+
+    color:
+    #888;
+
+    margin-top:
+    8px;
+
+    white-space:
+    nowrap;
+
+    transform:
+    rotate(-35deg);
+}
+
+.chart-empty {
+
+    height:
+    220px;
+
+    display:
+    flex;
+
+    align-items:
+    center;
+
+    justify-content:
+    center;
+
+    color:
+    #777;
+}
+
+
+/* ========================================
+   DAILY HISTORY
+======================================== */
+
+.daily-history {
+
+    background:
+    #181818;
+
+    border-radius:
+    12px;
+
+    padding:
+    20px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.daily-history-row {
+
+    display:
+    grid;
+
+    grid-template-columns:
+    1.5fr 1fr 1fr 1fr;
+
+    gap:
+    15px;
+
+    padding:
+    15px 10px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.daily-history-row:last-child {
+
+    border-bottom:
+    none;
+}
+
+
+/* ========================================
+   MOVIE HIGHLIGHTS
+======================================== */
+
+.movie-highlight-grid {
+
+    display:
+    grid;
+
+    grid-template-columns:
+    repeat(2, 1fr);
+
+    gap:
+    20px;
+}
+
+.movie-highlight-card {
+
+    background:
+    #181818;
+
+    padding:
+    25px;
+
+    border-radius:
+    12px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    transition:
+    0.3s;
+}
+
+.movie-highlight-card:hover {
+
+    transform:
+    translateY(-4px);
+
+    border-color:
+    red;
+}
+
+.movie-highlight-card h3 {
+
+    margin-top:
+    0;
+
+    color:
+    #aaa;
+
+    font-size:
+    17px;
+}
+
+.movie-highlight-card .highlight-name {
+
+    font-size:
+    22px;
+
+    font-weight:
+    600;
+
+    margin-top:
+    10px;
+}
+
+.movie-highlight-card .highlight-number {
+
+    margin-top:
+    8px;
+
+    font-size:
+    16px;
+
+    color:
+    #aaa;
+}
+
+
+/* ========================================
+   MOVIE ANALYTICS
+======================================== */
+
+.movie-analytics {
+
+    background:
+    #181818;
+
+    padding:
+    20px;
+
+    border-radius:
+    12px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.movie-table-header {
+
+    display:
+    grid;
+
+    grid-template-columns:
+    2fr 1fr 1fr 1fr;
+
+    gap:
+    15px;
+
+    padding:
+    15px 10px;
+
+    color:
+    #aaa;
+
+    font-weight:
+    600;
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.15);
+}
+
+.movie-row {
+
+    display:
+    grid;
+
+    grid-template-columns:
+    2fr 1fr 1fr 1fr;
+
+    gap:
+    15px;
+
+    padding:
+    15px 10px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.08);
+
+    align-items:
+    center;
+}
+
+.movie-row:last-child {
+
+    border-bottom:
+    none;
+}
+
+.movie-row strong {
+
+    color:
+    white;
+}
+
+.movie-row .movie-views {
+
+    color:
+    #ddd;
+}
+
+.movie-row .movie-downloads {
+
+    color:
+    #ddd;
+}
+
+.movie-row .movie-total {
+
+    font-weight:
+    600;
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .admin-container {
+
+        width:
+        92%;
+    }
+
+    .stats-grid {
+
+        grid-template-columns:
+        1fr;
+    }
+
+    .daily-grid {
+
+        grid-template-columns:
+        1fr;
+    }
+
+    .movie-highlight-grid {
+
+        grid-template-columns:
+        1fr;
+    }
+
+    .daily-history-row {
+
+        grid-template-columns:
+        1fr;
+
+        gap:
+        8px;
+    }
+
+    .movie-table-header {
+
+        display:
+        none;
+    }
+
+    .movie-row {
+
+        grid-template-columns:
+        1fr;
+
+        gap:
+        8px;
+
+        padding:
+        18px 10px;
+    }
+
+    .movie-row strong {
+
+        font-size:
+        17px;
+    }
+
+    .analytics-chart {
+
+        padding:
+        15px;
+    }
+
+    .published-movies {
+
+        grid-template-columns:
+        1fr;
+    }
+
+    .published-movie-card {
+
+        flex-direction:
+        column;
+
+        align-items:
+        flex-start;
+    }
+
+    .published-movie-card img {
+
+        width:
+        120px;
+
+        height:
+        170px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================
+     ADMIN LOGIN PROTECTION
+======================================== -->
+
+<script>
+
+if (
+    sessionStorage.getItem(
+        "crazymovieAdminLoggedIn"
+    ) !== "true"
+) {
+
+    window.location.href =
+    "admin-login.html";
+
+}
+
+</script>
+
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header class="admin-header">
+
+    <h1>
+        🎬 Crazymovie Admin Dashboard
+    </h1>
+
+    <p>
+        Website Analytics & Movie Statistics
+    </p>
+
+    <button
+        onclick="adminLogout()"
+        style="
+            margin-top:15px;
+            padding:10px 20px;
+            border:none;
+            border-radius:8px;
+            background:white;
+            color:black;
+            font-weight:600;
+            cursor:pointer;
+        "
+    >
+
+        🚪 Logout
+
+    </button>
+
+</header>
+
+
+<main class="admin-container">
+
+
+<!-- ========================================
+     ADD / EDIT MOVIE
+======================================== -->
+
+<h2 class="section-title" id="formTitle">
+
+    🎬 Add New Movie
+
+</h2>
+
+
+<div class="movie-form">
+
+
+    <input
+        type="text"
+        id="movieTitle"
+        placeholder="Movie Title"
+    >
+
+
+    <label
+    for="moviePosterFile"
+    style="
+        font-weight:600;
+        color:#ddd;
+    "
+>
+    🖼️ Select Movie Poster
+</label>
+
+<input
+    type="file"
+    id="moviePosterFile"
+    accept="image/jpeg,image/jpg,image/png"
+onchange="previewPosterImage(event)"
+>
+
+
+<img
+    id="posterPreview"
+    src=""
+    alt="Poster Preview"
+    style="
+        display:none;
+        width:150px;
+        height:210px;
+        object-fit:cover;
+        border-radius:10px;
+        border:1px solid rgba(255,255,255,0.15);
+    "
+>
+
+
+    <textarea
+        id="movieDescription"
+        placeholder="Movie Description"
+    ></textarea>
+
+
+    <input
+        type="number"
+        id="movieYear"
+        placeholder="Release Year"
+    >
+
+
+    <input
+        type="text"
+        id="movieGenre"
+        placeholder="Genre"
+    >
+
+
+    <input
+        type="text"
+        id="movieRating"
+        placeholder="IMDb Rating"
+    >
+
+
+    <input
+        type="text"
+        id="movieVideo"
+        placeholder="Video URL"
+    >
+
+
+    <input
+        type="text"
+        id="movieDownload"
+        placeholder="Download URL"
+    >
+
+
+    <button
+        id="publishButton"
+        onclick="publishMovie()"
+    >
+
+        ➕ Publish Movie
+
+    </button>
+
+
+    <button
+        id="cancelEditButton"
+        onclick="cancelEdit()"
+    >
+
+        ❌ Cancel Edit
+
+    </button>
+
+
+</div>
+
+
+<!-- ========================================
+     PUBLISHED MOVIES
+======================================== -->
+
+<h2 class="section-title">
+
+    🎬 Published Movies
+
+</h2>
+
+
+<div
+    class="published-movies"
+    id="publishedMovies"
+></div>
+
+<div style="
+    display:flex;
+    gap:12px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+">
+
+    <input
+        type="text"
+        id="movieSearchInput"
+        placeholder="🔎 Search Movie..."
+        oninput="showPublishedMovies()"
+        style="
+            flex:1;
+            min-width:250px;
+            padding:14px;
+            background:#222;
+            color:white;
+            border:1px solid rgba(255,255,255,0.15);
+            border-radius:8px;
+            outline:none;
+            font-family:'Poppins',sans-serif;
+            font-size:15px;
+        "
+    >
+
+<select
+    id="movieYearFilter"
+    onchange="showPublishedMovies()"
+    style="
+        min-width:180px;
+        padding:14px;
+        background:#222;
+        color:white;
+        border:1px solid rgba(255,255,255,0.15);
+        border-radius:8px;
+        outline:none;
+        font-family:'Poppins',sans-serif;
+        font-size:15px;
+        cursor:pointer;
+    "
+>
+    <option value="">📅 All Years</option>
+</select>
+
+</div>
+
+<!-- ========================================
+     TOTAL ANALYTICS
+======================================== -->
+
+<h2 class="section-title">
+
+    📊 Total Analytics
+
+</h2>
+
+
+<div class="stats-grid">
+
+
+<div class="stat-card">
+
+    <h3>
+        👥 Total Visitors
+    </h3>
+
+    <div
+        class="number"
+        id="totalVisitors"
+    >
+        0
+    </div>
+
+</div>
+
+
+<div class="stat-card">
+
+    <h3>
+        👁️ Total Movie Views
+    </h3>
+
+    <div
+        class="number"
+        id="totalViews"
+    >
+        0
+    </div>
+
+</div>
+
+
+<div class="stat-card">
+
+    <h3>
+        ⬇️ Total Downloads
+    </h3>
+
+    <div
+        class="number"
+        id="totalDownloads"
+    >
+        0
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- ========================================
+     TODAY / YESTERDAY
+======================================== -->
+
+<h2 class="section-title">
+
+    📅 Daily Analytics
+
+</h2>
+
+
+<div class="daily-grid">
+
+
+<div class="daily-card">
+
+    <h3>
+        🟢 Today
+    </h3>
+
+    <div class="daily-row">
+
+        <span>
+            👥 Visitors
+        </span>
+
+        <strong id="todayVisitors">
+            0
+        </strong>
+
+    </div>
+
+    <div class="daily-row">
+
+        <span>
+            👁️ Views
+        </span>
+
+        <strong id="todayViews">
+            0
+        </strong>
+
+    </div>
+
+    <div class="daily-row">
+
+        <span>
+            ⬇️ Downloads
+        </span>
+
+        <strong id="todayDownloads">
+            0
+        </strong>
+
+    </div>
+
+</div>
+
+
+<div class="daily-card">
+
+    <h3>
+        🔵 Yesterday
+    </h3>
+
+    <div class="daily-row">
+
+        <span>
+            👥 Visitors
+        </span>
+
+        <strong id="yesterdayVisitors">
+            0
+        </strong>
+
+    </div>
+
+    <div class="daily-row">
+
+        <span>
+            👁️ Views
+        </span>
+
+        <strong id="yesterdayViews">
+            0
+        </strong>
+
+    </div>
+
+    <div class="daily-row">
+
+        <span>
+            ⬇️ Downloads
+        </span>
+
+        <strong id="yesterdayDownloads">
+            0
+        </strong>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- ========================================
+     ANALYTICS CHARTS
+======================================== -->
+
+<h2 class="section-title">
+
+    📈 Analytics Overview
+
+</h2>
+
+
+<div class="analytics-chart">
+
+    <h3 class="chart-title">
+        👥 Daily Visitors
+    </h3>
+
+    <div
+        class="chart-area"
+        id="visitorsChart"
+    ></div>
+
+</div>
+
+
+<div class="analytics-chart">
+
+    <h3 class="chart-title">
+        👁️ Daily Movie Views
+    </h3>
+
+    <div
+        class="chart-area"
+        id="viewsChart"
+    ></div>
+
+</div>
+
+
+<div class="analytics-chart">
+
+    <h3 class="chart-title">
+        ⬇️ Daily Downloads
+    </h3>
+
+    <div
+        class="chart-area"
+        id="downloadsChart"
+    ></div>
+
+</div>
+
+
+<!-- ========================================
+     DAILY HISTORY
+======================================== -->
+
+<h2 class="section-title">
+
+    📜 Daily History
+
+</h2>
+
+
+<div
+    class="daily-history"
+    id="dailyHistory"
+></div>
+
+
+<!-- ========================================
+     MOVIE HIGHLIGHTS
+======================================== -->
+
+<h2 class="section-title">
+
+    🏆 Movie Highlights
+
+</h2>
+
+
+<div class="movie-highlight-grid">
+
+
+<div class="movie-highlight-card">
+
+    <h3>
+        👁️ Most Viewed Movie
+    </h3>
+
+    <div
+        class="highlight-name"
+        id="mostViewedMovie"
+    >
+        No data yet
+    </div>
+
+    <div
+        class="highlight-number"
+        id="mostViewedCount"
+    >
+        0 Views
+    </div>
+
+</div>
+
+
+<div class="movie-highlight-card">
+
+    <h3>
+        ⬇️ Most Downloaded Movie
+    </h3>
+
+    <div
+        class="highlight-name"
+        id="mostDownloadedMovie"
+    >
+        No data yet
+    </div>
+
+    <div
+        class="highlight-number"
+        id="mostDownloadedCount"
+    >
+        0 Downloads
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- ========================================
+     MOVIE ANALYTICS
+======================================== -->
+
+<h2 class="section-title">
+
+    🎬 Movie Analytics
+
+</h2>
+
+
+<div
+    class="movie-analytics"
+    id="movieAnalytics"
+></div>
+
+
+</main>
+
+
+<script>
+
+
+/* ========================================
+   EDIT MOVIE VARIABLE
+======================================== */
+
+let editingMovieId = null;
+
+
+let selectedPosterImage = "";
+
+function previewPosterImage(event) {
+
+    const file =
+        event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    if (
+        file.type !== "image/jpeg" &&
+        file.type !== "image/jpg" &&
+        file.type !== "image/png"
+    ) {
+
+        alert(
+            "Please select a JPG, JPEG or PNG image."
+        );
+
+        event.target.value = "";
+
+        return;
+    }
+
+    const reader =
+        new FileReader();
+
+    reader.onload =
+        function(e) {
+
+            selectedPosterImage =
+                e.target.result;
+
+            const preview =
+                document.getElementById(
+                    "posterPreview"
+                );
+
+            preview.src =
+                selectedPosterImage;
+
+            preview.style.display =
+                "block";
+
+        };
+
+    reader.readAsDataURL(file);
+
+}
+
+/* ========================================
+   GET MOVIES
+======================================== */
+
+function getMovies() {
+
+    return JSON.parse(
+
+        localStorage.getItem(
+            "crazymovieMovies"
+        )
+
+    ) || [];
+
+}
+
+
+/* ========================================
+   SHOW PUBLISHED MOVIES
+======================================== */
+
+function showPublishedMovies() {
+
+    const container =
+        document.getElementById(
+            "publishedMovies"
+        );
+
+    const movies =
+        getMovies();
+
+
+    /* ========================================
+       SEARCH
+    ======================================== */
+
+    const searchInput =
+        document.getElementById(
+            "movieSearchInput"
+        );
+
+    const searchText =
+        searchInput
+            ? searchInput.value.toLowerCase().trim()
+            : "";
+
+
+    /* ========================================
+       YEAR FILTER
+    ======================================== */
+
+    const yearFilter =
+        document.getElementById(
+            "movieYearFilter"
+        );
+
+    const selectedYear =
+        yearFilter
+            ? yearFilter.value
+            : "";
+
+
+    /* ========================================
+       CREATE YEAR OPTIONS
+    ======================================== */
+
+    if (yearFilter) {
+
+        const years =
+    [...new Set(
+        movies
+            .map(function(movie) {
+                return String(movie.year || "").trim();
+            })
+            .filter(function(year) {
+                return year !== "";
+            })
+    )]
+    .sort(function(a, b) {
+        return Number(b) - Number(a);
+    });
+
+
+        yearFilter.innerHTML = `
+
+            <option value="">
+                📅 All Years
+            </option>
+
+        `;
+
+
+        years.forEach(function(year) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                year;
+
+            option.textContent =
+                "📅 " + year;
+
+            yearFilter.appendChild(
+                option
+            );
+
+        });
+
+
+        /* Restore selected year */
+
+        yearFilter.value =
+            selectedYear;
+
+    }
+
+
+    /* ========================================
+       CLEAR CONTAINER
+    ======================================== */
+
+    container.innerHTML = "";
+
+
+    /* ========================================
+       FILTER MOVIES
+    ======================================== */
+
+    const filteredMovies =
+        movies.filter(function(movie) {
+
+
+            const matchesSearch =
+                (movie.title || "")
+                    .toLowerCase()
+                    .includes(searchText);
+
+
+            const matchesYear =
+                selectedYear === ""
+                ||
+                String(movie.year)
+                === String(selectedYear);
+
+
+            return (
+                matchesSearch
+                &&
+                matchesYear
+            );
+
+        });
+
+
+    /* ========================================
+       NO MOVIES
+    ======================================== */
+
+    if (
+        filteredMovies.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-message">
+
+                ${
+                    movies.length === 0
+                    ? "No movies published yet."
+                    : "🔎 No matching movies found."
+                }
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* ========================================
+       SHOW MOVIES
+    ======================================== */
+
+    filteredMovies.forEach(function(movie) {
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "published-movie-card";
+
+
+        card.innerHTML = `
+
+            <img
+                src="${movie.poster}"
+                alt="${movie.title}"
+                onerror="
+                    this.src=
+                    'https://placehold.co/250x350?text=No+Poster'
+                "
+            >
+
+
+            <div
+                class="published-movie-info"
+            >
+
+                <h3>
+                    🎬 ${movie.title}
+                </h3>
+
+
+                <p>
+                    📅 Year:
+                    ${movie.year}
+                </p>
+
+
+                <p>
+                    🎭 Genre:
+                    ${movie.genre}
+                </p>
+
+
+                <p>
+                    ⭐ Rating:
+                    ${movie.rating}
+                </p>
+
+
+                <div
+                    class="movie-buttons"
+                >
+
+                    <button
+                        class="edit-button"
+                        onclick="
+                            editMovie(${movie.id})
+                        "
+                    >
+
+                        ✏️ Edit
+
+                    </button>
+
+
+                    <button
+                        class="delete-button"
+                        onclick="
+                            deleteMovie(${movie.id})
+                        "
+                    >
+
+                        🗑️ Delete
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+/* ========================================
+   EDIT MOVIE
+======================================== */
+
+function editMovie(movieId) {
+
+    const movies =
+        getMovies();
+
+
+    const movie =
+        movies.find(
+
+            function(item) {
+
+                return Number(item.id)
+                === Number(movieId);
+
+            }
+
+        );
+
+
+    if (!movie) {
+
+        alert(
+            "Movie not found."
+        );
+
+        return;
+
+    }
+
+
+    editingMovieId =
+        movie.id;
+
+
+    document.getElementById(
+        "movieTitle"
+    ).value =
+        movie.title || "";
+
+
+    selectedPosterImage =
+    movie.poster || "";
+
+const preview =
+    document.getElementById(
+        "posterPreview"
+    );
+
+if (selectedPosterImage) {
+
+    preview.src =
+        selectedPosterImage;
+
+    preview.style.display =
+        "block";
+
+}
+
+
+    document.getElementById(
+        "movieDescription"
+    ).value =
+        movie.description || "";
+
+
+    document.getElementById(
+        "movieYear"
+    ).value =
+        movie.year || "";
+
+
+    document.getElementById(
+        "movieGenre"
+    ).value =
+        movie.genre || "";
+
+
+    document.getElementById(
+        "movieRating"
+    ).value =
+        movie.rating || "";
+
+
+    document.getElementById(
+        "movieVideo"
+    ).value =
+        movie.video || "";
+
+
+    document.getElementById(
+        "movieDownload"
+    ).value =
+        movie.download || "";
+
+
+    document.getElementById(
+        "formTitle"
+    ).innerText =
+        "✏️ Edit Movie";
+
+
+    document.getElementById(
+        "publishButton"
+    ).innerText =
+        "💾 Update Movie";
+
+
+    document.getElementById(
+        "publishButton"
+    ).onclick =
+        updateMovie;
+
+
+    document.getElementById(
+        "cancelEditButton"
+    ).style.display =
+        "block";
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+/* ========================================
+   UPDATE MOVIE — DUPLICATE SAFE
+======================================== */
+
+function updateMovie() {
+
+    /* ========================================
+       CHECK EDIT MODE
+    ======================================== */
+
+    if (editingMovieId === null) {
+
+        alert("No movie selected for editing!");
+
+        return;
+
+    }
+
+
+    /* ========================================
+       GET FORM DATA
+    ======================================== */
+
+    const title =
+        document.getElementById(
+            "movieTitle"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "movieDescription"
+        ).value.trim();
+
+
+    const year =
+        document.getElementById(
+            "movieYear"
+        ).value.trim();
+
+
+    const genre =
+        document.getElementById(
+            "movieGenre"
+        ).value.trim();
+
+
+    const rating =
+        document.getElementById(
+            "movieRating"
+        ).value.trim();
+
+
+    const video =
+        document.getElementById(
+            "movieVideo"
+        ).value.trim();
+
+
+    const download =
+        document.getElementById(
+            "movieDownload"
+        ).value.trim();
+
+
+    /* ========================================
+       GET EXISTING MOVIES
+    ======================================== */
+
+    let movies =
+        getMovies();
+
+
+    /* ========================================
+       FIND ORIGINAL MOVIE BY ID
+       IMPORTANT:
+       DO NOT CREATE A NEW MOVIE
+    ======================================== */
+
+    const index =
+        movies.findIndex(function(movie) {
+
+            return String(movie.id) ===
+                   String(editingMovieId);
+
+        });
+
+
+    /* ========================================
+       MOVIE NOT FOUND
+    ======================================== */
+
+    if (index === -1) {
+
+        alert(
+            "Movie not found."
+        );
+
+        return;
+
+    }
+
+
+    /* ========================================
+       KEEP OLD POSTER
+       IF NEW POSTER IS NOT SELECTED
+    ======================================== */
+
+    const oldPoster =
+        movies[index].poster || "";
+
+
+    const finalPoster =
+        selectedPosterImage || oldPoster;
+
+
+    /* ========================================
+       VALIDATION
+    ======================================== */
+
+    if (
+        !title ||
+        !finalPoster ||
+        !description ||
+        !year ||
+        !genre ||
+        !rating ||
+        !video ||
+        !download
+    ) {
+
+        alert(
+            "Please fill in all movie details."
+        );
+
+        return;
+
+    }
+
+
+    /* ========================================
+       UPDATE EXISTING MOVIE
+       SAME ID WILL BE KEPT
+    ======================================== */
+
+    movies[index] = {
+
+        ...movies[index],
+
+        id:
+            movies[index].id,
+
+        title:
+            title,
+
+        poster:
+            finalPoster,
+
+        description:
+            description,
+
+        year:
+            String(year),
+
+        genre:
+            genre,
+
+        rating:
+            rating,
+
+        video:
+            video,
+
+        download:
+            download
+
+    };
+
+
+    /* ========================================
+       REMOVE DUPLICATE IDs
+       KEEP FIRST MOVIE ONLY
+    ======================================== */
+
+    const seenIds =
+        new Set();
+
+
+    movies =
+        movies.filter(function(movie) {
+
+            const movieId =
+                String(movie.id);
+
+
+            if (
+                seenIds.has(movieId)
+            ) {
+
+                return false;
+
+            }
+
+
+            seenIds.add(
+                movieId
+            );
+
+
+            return true;
+
+        });
+
+
+    /* ========================================
+       SAVE MOVIES
+    ======================================== */
+
+    localStorage.setItem(
+
+        "crazymovieMovies",
+
+        JSON.stringify(
+            movies
+        )
+
+    );
+
+
+    /* ========================================
+       SUCCESS
+    ======================================== */
+
+    alert(
+        "🎬 Movie Updated Successfully!"
+    );
+
+
+    /* ========================================
+       RESET EDIT MODE
+    ======================================== */
+
+    editingMovieId =
+        null;
+
+
+    selectedPosterImage =
+        "";
+
+
+    document.getElementById(
+        "formTitle"
+    ).innerText =
+        "🎬 Add New Movie";
+
+
+    document.getElementById(
+        "publishButton"
+    ).innerText =
+        "➕ Publish Movie";
+
+
+    document.getElementById(
+        "publishButton"
+    ).onclick =
+        publishMovie;
+
+
+    document.getElementById(
+        "cancelEditButton"
+    ).style.display =
+        "none";
+
+
+    /* ========================================
+       CLEAR FORM
+    ======================================== */
+
+    clearMovieForm();
+
+
+    /* ========================================
+       REFRESH MOVIE LIST
+    ======================================== */
+
+    showPublishedMovies();
+
+}
+
+/* ========================================
+   PUBLISH NEW MOVIE
+======================================== */
+
+function publishMovie() {
+
+
+    const title =
+        document.getElementById(
+            "movieTitle"
+        ).value.trim();
+
+
+    const poster =
+    selectedPosterImage;
+
+
+    const description =
+        document.getElementById(
+            "movieDescription"
+        ).value.trim();
+
+
+    const year =
+        document.getElementById(
+            "movieYear"
+        ).value.trim();
+
+
+    const genre =
+        document.getElementById(
+            "movieGenre"
+        ).value.trim();
+
+
+    const rating =
+        document.getElementById(
+            "movieRating"
+        ).value.trim();
+
+
+    const video =
+        document.getElementById(
+            "movieVideo"
+        ).value.trim();
+
+
+    const download =
+        document.getElementById(
+            "movieDownload"
+        ).value.trim();
+
+
+    if (
+
+        !title ||
+
+        !poster ||
+
+        !description ||
+
+        !year ||
+
+        !genre ||
+
+        !rating ||
+
+        !video ||
+
+        !download
+
+    ) {
+
+        alert(
+            "Please fill in all movie details."
+        );
+
+        return;
+
+    }
+
+
+    let movies =
+        getMovies();
+
+
+    const newMovie = {
+
+        id:
+            Date.now(),
+
+        title:
+            title,
+
+        poster:
+            poster,
+
+        description:
+            description,
+
+        year:
+            year,
+
+        genre:
+            genre,
+
+        rating:
+            rating,
+
+        video:
+            video,
+
+        download:
+            download
+
+    };
+
+
+    movies.push(
+        newMovie
+    );
+
+
+    localStorage.setItem(
+
+        "crazymovieMovies",
+
+        JSON.stringify(
+            movies
+        )
+
+    );
+
+
+    alert(
+        "🎬 Movie Published Successfully!"
+    );
+
+
+    clearMovieForm();
+
+
+    showPublishedMovies();
+
+}
+
+
+/* ========================================
+   ANALYTICS DATA
+======================================== */
+
+const analytics =
+
+JSON.parse(
+
+    localStorage.getItem(
+        "analytics"
+    )
+
+) || {
+
+    visitors: 0,
+
+    views: 0,
+
+    downloads: 0
+
+};
+
+
+/* ========================================
+   SHOW TOTAL ANALYTICS
+======================================== */
+
+document.getElementById(
+    "totalVisitors"
+).innerText =
+
+analytics.visitors || 0;
+
+
+document.getElementById(
+    "totalViews"
+).innerText =
+
+analytics.views || 0;
+
+
+document.getElementById(
+    "totalDownloads"
+).innerText =
+
+analytics.downloads || 0;
+
+
+/* ========================================
+   DAILY ANALYTICS
+======================================== */
+
+const dailyAnalytics =
+
+JSON.parse(
+
+    localStorage.getItem(
+        "dailyAnalytics"
+    )
+
+) || {};
+
+
+/* ========================================
+   BANGLADESH DATE
+======================================== */
+
+function getBangladeshDate() {
+
+    const now =
+        new Date();
+
+    const formatter =
+
+        new Intl.DateTimeFormat(
+
+            "en-CA",
+
+            {
+
+                timeZone:
+                "Asia/Dhaka",
+
+                year:
+                "numeric",
+
+                month:
+                "2-digit",
+
+                day:
+                "2-digit"
+
+            }
+
+        );
+
+
+    return formatter.format(
+        now
+    );
+
+}
+
+
+const today =
+
+getBangladeshDate();
+
+
+const yesterdayDate =
+
+new Date();
+
+
+yesterdayDate.setDate(
+
+    yesterdayDate.getDate()
+    - 1
+
+);
+
+
+const yesterday =
+
+new Intl.DateTimeFormat(
+
+    "en-CA",
+
+    {
+
+        timeZone:
+        "Asia/Dhaka",
+
+        year:
+        "numeric",
+
+        month:
+        "2-digit",
+
+        day:
+        "2-digit"
+
+    }
+
+).format(
+
+    yesterdayDate
+
+);
+
+
+const todayData =
+
+dailyAnalytics[today] || {
+
+    visitors: 0,
+
+    views: 0,
+
+    downloads: 0
+
+};
+
+
+const yesterdayData =
+
+dailyAnalytics[yesterday] || {
+
+    visitors: 0,
+
+    views: 0,
+
+    downloads: 0
+
+};
+
+
+/* ========================================
+   SHOW TODAY
+======================================== */
+
+document.getElementById(
+    "todayVisitors"
+).innerText =
+
+todayData.visitors || 0;
+
+
+document.getElementById(
+    "todayViews"
+).innerText =
+
+todayData.views || 0;
+
+
+document.getElementById(
+    "todayDownloads"
+).innerText =
+
+todayData.downloads || 0;
+
+
+/* ========================================
+   SHOW YESTERDAY
+======================================== */
+
+document.getElementById(
+    "yesterdayVisitors"
+).innerText =
+
+yesterdayData.visitors || 0;
+
+
+document.getElementById(
+    "yesterdayViews"
+).innerText =
+
+yesterdayData.views || 0;
+
+
+document.getElementById(
+    "yesterdayDownloads"
+).innerText =
+
+yesterdayData.downloads || 0;
+
+
+/* ========================================
+   GET SORTED DAILY DATES
+======================================== */
+
+const dates =
+
+Object.keys(
+
+    dailyAnalytics
+
+)
+
+.sort()
+
+.reverse();
+
+
+/* ========================================
+   CREATE ANALYTICS CHART
+======================================== */
+
+function createAnalyticsChart(
+
+    elementId,
+
+    dataKey,
+
+    dates
+
+) {
+
+
+    const chart =
+
+    document.getElementById(
+
+        elementId
+
+    );
+
+
+    if (
+
+        dates.length === 0
+
+    ) {
+
+        chart.innerHTML =
+
+        `<div class="chart-empty">
+
+            No analytics data available yet.
+
+        </div>`;
+
+        return;
+
+    }
+
+
+    const chartDates =
+
+    dates.slice(
+
+        0,
+
+        14
+
+    ).reverse();
+
+
+    let maxValue = 0;
+
+
+    chartDates.forEach(
+
+        function(date) {
+
+
+            const value =
+
+            Number(
+
+                dailyAnalytics[date]?.[dataKey]
+                || 0
+
+            );
+
+
+            if (
+
+                value > maxValue
+
+            ) {
+
+                maxValue =
+                value;
+
+            }
+
+        }
+
+    );
+
+
+    if (
+
+        maxValue === 0
+
+    ) {
+
+        maxValue =
+        1;
+
+    }
+
+
+    const bars =
+
+    document.createElement(
+
+        "div"
+
+    );
+
+
+    bars.className =
+    "chart-bars";
+
+
+    chartDates.forEach(
+
+        function(date) {
+
+
+            const value =
+
+            Number(
+
+                dailyAnalytics[date]?.[dataKey]
+                || 0
+
+            );
+
+
+            const height =
+
+            (value / maxValue)
+            * 100;
+
+
+            const wrapper =
+
+            document.createElement(
+
+                "div"
+
+            );
+
+
+            wrapper.className =
+
+            "chart-bar-wrapper";
+
+
+            wrapper.innerHTML = `
+
+                <div class="chart-value">
+
+                    ${value}
+
+                </div>
+
+
+                <div
+                    class="chart-bar"
+                    style="
+                        height:
+                        ${Math.max(height, 2)}%
+                    "
+                    title="
+                        ${date}:
+                        ${value}
+                    "
+                >
+
+                </div>
+
+
+                <div class="chart-label">
+
+                    ${date.slice(5)}
+
+                </div>
+
+            `;
+
+
+            bars.appendChild(
+
+                wrapper
+
+            );
+
+        }
+
+    );
+
+
+    chart.appendChild(
+
+        bars
+
+    );
+
+}
+
+
+/* ========================================
+   CREATE ALL CHARTS
+======================================== */
+
+createAnalyticsChart(
+
+    "visitorsChart",
+
+    "visitors",
+
+    dates
+
+);
+
+
+createAnalyticsChart(
+
+    "viewsChart",
+
+    "views",
+
+    dates
+
+);
+
+
+createAnalyticsChart(
+
+    "downloadsChart",
+
+    "downloads",
+
+    dates
+
+);
+
+
+/* ========================================
+   DAILY HISTORY
+======================================== */
+
+const dailyHistory =
+
+document.getElementById(
+
+    "dailyHistory"
+
+);
+
+
+if (
+
+    dates.length === 0
+
+) {
+
+    dailyHistory.innerHTML =
+
+    `<div class="empty-message">
+
+        No daily analytics available yet.
+
+    </div>`;
+
+}
+
+
+dates.forEach(
+
+    function(date) {
+
+
+        const data =
+
+        dailyAnalytics[date] || {
+
+            visitors: 0,
+
+            views: 0,
+
+            downloads: 0
+
+        };
+
+
+        const row =
+
+        document.createElement(
+
+            "div"
+
+        );
+
+
+        row.className =
+
+        "daily-history-row";
+
+
+        row.innerHTML = `
+
+            <strong>
+
+                📅 ${date}
+
+            </strong>
+
+
+            <span>
+
+                👥 Visitors:
+
+                ${data.visitors || 0}
+
+            </span>
+
+
+            <span>
+
+                👁️ Views:
+
+                ${data.views || 0}
+
+            </span>
+
+
+            <span>
+
+                ⬇️ Downloads:
+
+                ${data.downloads || 0}
+
+            </span>
+
+        `;
+
+
+        dailyHistory.appendChild(
+
+            row
+
+        );
+
+    }
+
+);
+
+
+/* ========================================
+   MOVIE ANALYTICS
+======================================== */
+
+const movieAnalytics =
+
+document.getElementById(
+
+    "movieAnalytics"
+
+);
+
+
+const movieViews =
+
+JSON.parse(
+
+    localStorage.getItem(
+
+        "movieViews"
+
+    )
+
+) || {};
+
+
+const movieDownloads =
+
+JSON.parse(
+
+    localStorage.getItem(
+
+        "movieDownloads"
+
+    )
+
+) || {};
+
+
+const movieNames =
+
+new Set([
+
+    ...Object.keys(
+
+        movieViews
+
+    ),
+
+    ...Object.keys(
+
+        movieDownloads
+
+    )
+
+]);
+
+
+const movieData =
+
+Array.from(
+
+    movieNames
+
+)
+
+.map(
+
+    function(movieName) {
+
+
+        const views =
+
+        Number(
+
+            movieViews[movieName]
+            || 0
+
+        );
+
+
+        const downloads =
+
+        Number(
+
+            movieDownloads[movieName]
+            || 0
+
+        );
+
+
+        const totalActivity =
+
+        views +
+        downloads;
+
+
+        return {
+
+            name:
+            movieName,
+
+            views:
+            views,
+
+            downloads:
+            downloads,
+
+            total:
+            totalActivity
+
+        };
+
+    }
+
+);
+
+
+movieData.sort(
+
+    function(a, b) {
+
+        return b.views -
+               a.views;
+
+    }
+
+);
+
+
+/* ========================================
+   MOST VIEWED MOVIE
+======================================== */
+
+if (
+
+    movieData.length > 0
+
+) {
+
+
+    const mostViewed =
+
+    [...movieData].sort(
+
+        function(a, b) {
+
+            return b.views -
+                   a.views;
+
+        }
+
+    )[0];
+
+
+    document.getElementById(
+
+        "mostViewedMovie"
+
+    ).innerText =
+
+    mostViewed.name;
+
+
+    document.getElementById(
+
+        "mostViewedCount"
+
+    ).innerText =
+
+    mostViewed.views +
+
+    " Views";
+
+}
+
+
+/* ========================================
+   MOST DOWNLOADED MOVIE
+======================================== */
+
+if (
+
+    movieData.length > 0
+
+) {
+
+
+    const mostDownloaded =
+
+    [...movieData].sort(
+
+        function(a, b) {
+
+            return b.downloads -
+                   a.downloads;
+
+        }
+
+    )[0];
+
+
+    document.getElementById(
+
+        "mostDownloadedMovie"
+
+    ).innerText =
+
+    mostDownloaded.name;
+
+
+    document.getElementById(
+
+        "mostDownloadedCount"
+
+    ).innerText =
+
+    mostDownloaded.downloads +
+
+    " Downloads";
+
+}
+
+
+/* ========================================
+   MOVIE ANALYTICS EMPTY
+======================================== */
+
+if (
+
+    movieData.length === 0
+
+) {
+
+    movieAnalytics.innerHTML =
+
+    `<div class="empty-message">
+
+        No movie analytics available yet.
+
+    </div>`;
+
+}
+
+
+/* ========================================
+   MOVIE TABLE HEADER
+======================================== */
+
+if (
+
+    movieData.length > 0
+
+) {
+
+
+    const header =
+
+    document.createElement(
+
+        "div"
+
+    );
+
+
+    header.className =
+
+    "movie-table-header";
+
+
+    header.innerHTML = `
+
+        <span>
+
+            🎬 Movie
+
+        </span>
+
+
+        <span>
+
+            👁️ Views
+
+        </span>
+
+
+        <span>
+
+            ⬇️ Downloads
+
+        </span>
+
+
+        <span>
+
+            📊 Activity
+
+        </span>
+
+    `;
+
+
+    movieAnalytics.appendChild(
+
+        header
+
+    );
+
+}
+
+
+/* ========================================
+   SHOW MOVIE ANALYTICS
+======================================== */
+
+movieData.forEach(
+
+    function(movie, index) {
+
+
+        const row =
+
+        document.createElement(
+
+            "div"
+
+        );
+
+
+        row.className =
+
+        "movie-row";
+
+
+        row.innerHTML = `
+
+            <strong>
+
+                ${index + 1}.
+
+                🎬 ${movie.name}
+
+            </strong>
+
+
+            <span
+                class="movie-views"
+            >
+
+                👁️ ${movie.views}
+
+            </span>
+
+
+            <span
+                class="movie-downloads"
+            >
+
+                ⬇️ ${movie.downloads}
+
+            </span>
+
+
+            <span
+                class="movie-total"
+            >
+
+                📊 ${movie.total}
+
+            </span>
+
+        `;
+
+
+        movieAnalytics.appendChild(
+
+            row
+
+        );
+
+    }
+
+);
+
+
+/* ========================================
+   INITIAL LOAD
+======================================== */
+
+showPublishedMovies();
+
+/* ========================================
+   DELETE MOVIE
+======================================== */
+
+function deleteMovie(movieId) {
+
+    if (!confirm("Are you sure you want to delete this movie?")) {
+        return;
+    }
+
+    let movies = getMovies();
+
+    movies = movies.filter(function(movie) {
+
+        return String(movie.id) !== String(movieId);
+
+    });
+
+    localStorage.setItem(
+        "crazymovieMovies",
+        JSON.stringify(movies)
+    );
+
+    alert("🗑️ Movie deleted successfully!");
+
+    showPublishedMovies();
+
+}
+
+/* ========================================
+   ADMIN LOGOUT
+======================================== */
+
+function adminLogout() {
+
+
+    sessionStorage.removeItem(
+
+        "crazymovieAdminLoggedIn"
+
+    );
+
+
+    window.location.href =
+
+    "admin-login.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

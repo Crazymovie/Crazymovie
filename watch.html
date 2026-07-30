@@ -1,0 +1,2377 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Watch Movie - Crazymovie</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet"
+>
+
+<style>
+
+/* ========================================
+   WATCH MOVIE POSTER
+======================================== */
+
+.watch-movie-poster {
+
+    position: relative;
+
+    flex: 0 0 250px;
+
+    cursor: pointer;
+
+    margin: 0;
+
+    text-align: center;
+
+}
+
+
+.watch-movie-poster img {
+
+    width: 250px;
+
+    max-width: 90%;
+
+    border-radius: 12px;
+
+    box-shadow:
+    0 10px 30px
+    rgba(0,0,0,0.5);
+
+}
+
+
+.poster-play-icon {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform:
+    translate(-50%, -50%);
+
+    width: 65px;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: red;
+
+    color: white;
+
+    border-radius: 50%;
+
+    font-size: 28px;
+
+    z-index: 10;
+
+    pointer-events: none;
+
+}
+
+
+/* ========================================
+   MOVIE LAYOUT
+======================================== */
+
+.watch-movie-layout {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 40px;
+
+    margin: 30px auto;
+
+    max-width: 1000px;
+
+}
+
+
+.watch-movie-info {
+
+    flex: 1;
+
+}
+
+
+.watch-movie-info h3 {
+
+    margin-top: 25px;
+
+    margin-bottom: 10px;
+
+    font-size: 20px;
+
+}
+
+
+#watchMovieDescription {
+
+    line-height: 1.8;
+
+    font-size: 15px;
+
+    opacity: 0.9;
+
+    max-width: 800px;
+
+}
+
+
+/* ========================================
+   MOVIE DETAILS
+======================================== */
+
+.watch-movie-details {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin: 15px 0;
+
+}
+
+
+.watch-movie-details strong {
+
+    width: 100%;
+
+    font-size: 18px;
+
+}
+
+
+.watch-movie-details span {
+
+    background:
+    rgba(255,255,255,0.08);
+
+    padding: 8px 14px;
+
+    border-radius: 8px;
+
+}
+
+
+/* ========================================
+   ACTION BAR
+======================================== */
+
+.movie-action-bar {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+
+    margin: 20px auto 30px;
+
+    max-width: 1000px;
+
+}
+
+
+.movie-action-btn {
+
+    background:
+    rgba(255,255,255,0.08);
+
+    color: white;
+
+    border:
+    1px solid
+    rgba(255,255,255,0.15);
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+}
+
+
+.movie-action-btn:hover {
+
+    background: red;
+
+    border-color: red;
+
+    transform:
+    translateY(-2px);
+
+}
+
+
+.movie-action-btn.active {
+
+    background: red;
+
+    border-color: red;
+
+}
+
+
+/* ========================================
+   DOWNLOAD SECTION
+======================================== */
+
+.download-section {
+
+    text-align: center;
+
+    margin: 30px auto;
+
+    max-width: 800px;
+
+}
+
+
+.download-section a {
+
+    display: inline-block;
+
+    margin-top: 15px;
+
+    padding: 12px 25px;
+
+    background: red;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+}
+
+
+.download-section a:hover {
+
+    opacity: 0.8;
+
+}
+
+
+/* ========================================
+   NAVIGATION
+======================================== */
+
+.watch-navigation {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+
+    margin: 30px auto;
+
+}
+
+
+.watch-navigation button,
+.watch-navigation a {
+
+    padding: 10px 20px;
+
+    border:
+    1px solid white;
+
+    background: transparent;
+
+    color: white;
+
+    border-radius: 6px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    transition: 0.3s;
+
+}
+
+
+.watch-navigation button:hover,
+.watch-navigation a:hover {
+
+    background: red;
+
+    border-color: red;
+
+}
+
+
+/* ========================================
+   LOADING SCREEN
+======================================== */
+
+#movieLoader {
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background: #0f0f0f;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 99999;
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
+
+}
+
+
+#movieLoader.hide {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+}
+
+
+.loader-content {
+
+    text-align: center;
+
+}
+
+
+.loader-content h2 {
+
+    margin-top: 20px;
+
+}
+
+
+.loader-content p {
+
+    color: #888;
+
+}
+
+
+.loader-spinner {
+
+    width: 55px;
+
+    height: 55px;
+
+    border:
+    5px solid
+    rgba(255,255,255,0.15);
+
+    border-top-color: white;
+
+    border-radius: 50%;
+
+    animation:
+    spin 1s linear infinite;
+
+    margin: auto;
+
+}
+
+
+@keyframes spin {
+
+    to {
+
+        transform:
+        rotate(360deg);
+
+    }
+
+}
+
+
+/* ========================================
+   VIDEO ERROR
+======================================== */
+
+.video-error {
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+}
+
+
+.video-error a {
+
+    color: white;
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .watch-movie-layout {
+
+        flex-direction: column;
+
+        text-align: center;
+
+    }
+
+
+    .watch-movie-info {
+
+        width: 100%;
+
+    }
+
+
+    .watch-movie-details {
+
+        justify-content: center;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .movie-action-bar {
+
+        gap: 10px;
+
+        padding:
+        0 15px;
+
+    }
+
+
+    .movie-action-btn {
+
+        flex:
+        1 1 40%;
+
+        font-size: 14px;
+
+        padding:
+        10px 12px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================
+     MOVIE LOADING SCREEN
+======================================== -->
+
+<div id="movieLoader">
+
+    <div class="loader-content">
+
+        <div class="loader-spinner"></div>
+
+        <h2>🎬 Loading Movie...</h2>
+
+        <p>Please wait a moment</p>
+
+    </div>
+
+</div>
+
+
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header>
+
+    <div class="logo">
+
+        🎬 Crazymovie
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="#">
+            Movies
+        </a>
+
+        <a href="#">
+            TV Series
+        </a>
+
+        <a href="#">
+            Trending
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<section class="watch-page">
+
+
+<h1>
+    🎬 Now Playing
+</h1>
+
+
+
+<!-- ========================================
+     VIDEO PLAYER
+======================================== -->
+
+<div class="video-player">
+
+    <video
+        id="movieVideo"
+        controls
+        playsinline
+        preload="metadata"
+        width="100%"
+    >
+
+        <source
+            id="movieVideoSource"
+            src=""
+            type="video/mp4"
+        >
+
+        Your browser does not support
+        the video tag.
+
+    </video>
+
+</div>
+
+
+
+<!-- ========================================
+     ACTION BAR
+======================================== -->
+
+<div class="movie-action-bar">
+
+
+    <button
+        class="movie-action-btn"
+        id="likeButton"
+    >
+
+        👍 Like
+        <span id="likeCount">
+            0
+        </span>
+
+    </button>
+
+
+
+    <button
+        class="movie-action-btn"
+        id="shareButton"
+    >
+
+        🔗 Share
+
+    </button>
+
+
+</div>
+
+
+
+<!-- ========================================
+     MOVIE INFORMATION
+======================================== -->
+
+<div class="watch-movie-layout">
+
+
+    <div class="watch-movie-poster">
+
+        <img
+            id="watchMoviePoster"
+            src=""
+            alt="Movie Poster"
+        >
+
+        <div class="poster-play-icon">
+
+            ▶
+
+        </div>
+
+    </div>
+
+
+
+    <div class="watch-movie-info">
+
+
+        <h2 id="watchMovieTitle">
+
+            Movie Title
+
+        </h2>
+
+
+
+        <div class="watch-movie-details">
+
+
+            <strong>
+                Movie Details
+            </strong>
+
+
+            <span id="watchMovieYear">
+
+                📅 Year: -
+
+            </span>
+
+
+            <span id="watchMovieGenre">
+
+                🎭 Genre: -
+
+            </span>
+
+
+            <span id="watchMovieRating">
+
+                ⭐ Rating: -
+
+            </span>
+
+
+        </div>
+
+
+
+        <h3>
+            📝 Movie Description
+        </h3>
+
+
+        <p id="watchMovieDescription">
+
+            Movie description will appear here.
+
+        </p>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ========================================
+     DOWNLOAD SECTION
+======================================== -->
+
+<div class="download-section">
+
+
+    <h3>
+        🎬 Enjoy the Movie
+    </h3>
+
+
+    <p>
+
+        You can watch the movie online
+        or download it for later.
+
+    </p>
+
+
+    <a
+        id="downloadButton"
+        href="#"
+        download
+    >
+
+        ⬇️ Download Movie
+
+    </a>
+
+
+</div>
+
+
+
+<!-- ========================================
+     NAVIGATION
+======================================== -->
+
+<div class="watch-navigation">
+
+
+    <button
+        class="go-back-btn"
+        onclick="goBack()"
+    >
+
+        ← Go Back
+
+    </button>
+
+
+    <a
+        href="index.html"
+        class="home-btn"
+    >
+
+        🏠 Back to Home
+
+    </a>
+
+
+</div>
+
+
+
+<!-- ========================================
+     RELATED MOVIES
+======================================== -->
+
+<div class="related-movies-section">
+
+
+    <h2>
+        🎬 You May Also Like
+    </h2>
+
+
+    <div
+        id="relatedMovies"
+        class="related-movies-grid"
+    >
+
+    </div>
+
+
+</div>
+
+
+</section>
+
+
+
+<script>
+
+
+// ========================================
+// MOVIE DATABASE
+// ========================================
+
+const movieData = {
+
+
+    "Avengers": {
+
+        description:
+        "Earth's mightiest heroes come together to fight powerful enemies and protect the world.",
+
+        year:
+        "2012",
+
+        genre:
+        "Action, Adventure, Sci-Fi",
+
+        rating:
+        "8.0/10",
+
+        image:
+        "assets/images/avengers.jpg",
+
+        video:
+        "assets/videos/avengers.mp4"
+
+    },
+
+
+    "Spider-Man": {
+
+        description:
+        "A young hero discovers incredible powers and learns that great power comes with great responsibility.",
+
+        year:
+        "2021",
+
+        genre:
+        "Action, Adventure, Sci-Fi",
+
+        rating:
+        "8.2/10",
+
+        image:
+        "assets/images/spiderman.jpg",
+
+        video:
+        "assets/videos/spiderman.mp4.mp4"
+
+    },
+
+
+    "Inception": {
+
+        description:
+        "A skilled team enters the world of dreams to complete an impossible mission.",
+
+        year:
+        "2010",
+
+        genre:
+        "Action, Sci-Fi, Thriller",
+
+        rating:
+        "8.8/10",
+
+        image:
+        "assets/images/inception.jpg",
+
+        video:
+        "assets/videos/inception.mp4"
+
+    },
+
+
+    "Interstellar": {
+
+        description:
+        "A group of explorers travels through space in search of a new home for humanity.",
+
+        year:
+        "2014",
+
+        genre:
+        "Adventure, Drama, Sci-Fi",
+
+        rating:
+        "8.7/10",
+
+        image:
+        "assets/images/interstellar.jpg",
+
+        video:
+        "assets/videos/interstellar.mp4"
+
+    },
+
+
+    "The Dark Knight": {
+
+        description:
+        "Batman faces a dangerous criminal mastermind who brings chaos and fear to Gotham City.",
+
+        year:
+        "2008",
+
+        genre:
+        "Action, Crime, Drama",
+
+        rating:
+        "9.0/10",
+
+        image:
+        "assets/images/dark-knight.jpg",
+
+        video:
+        "assets/videos/dark-knight.mp4"
+
+    },
+
+
+    "Avatar": {
+
+        description:
+        "A former soldier enters the beautiful world of Pandora and becomes part of an extraordinary adventure.",
+
+        year:
+        "2009",
+
+        genre:
+        "Action, Adventure, Fantasy",
+
+        rating:
+        "7.8/10",
+
+        image:
+        "assets/images/avatar.jpg",
+
+        video:
+        "assets/videos/avatar.mp4"
+
+    },
+
+
+    "Titanic": {
+
+        description:
+        "A young couple from different backgrounds fall in love during a historic voyage across the ocean.",
+
+        year:
+        "1997",
+
+        genre:
+        "Drama, Romance",
+
+        rating:
+        "7.9/10",
+
+        image:
+        "assets/images/titanic.jpg",
+
+        video:
+        "assets/videos/titanic.mp4"
+
+    },
+
+
+    "Joker": {
+
+        description:
+        "A troubled man struggles with society and begins a dark transformation that changes Gotham forever.",
+
+        year:
+        "2019",
+
+        genre:
+        "Crime, Drama, Thriller",
+
+        rating:
+        "8.4/10",
+
+        image:
+        "assets/images/joker.jpg",
+
+        video:
+        "assets/videos/joker.mp4"
+
+    }
+
+};
+
+
+
+// ========================================
+// GET SELECTED MOVIE
+// ========================================
+
+const movieName =
+
+localStorage.getItem(
+    "selectedMovie"
+);
+
+
+// ========================================
+// GET ADMIN MOVIE
+// ========================================
+
+const adminMovies =
+JSON.parse(
+    localStorage.getItem(
+        "crazymovieMovies"
+    )
+) || [];
+
+const adminMovie =
+adminMovies.find(function(movie) {
+
+    return (
+        movie.title &&
+        movie.title.trim().toLowerCase()
+        ===
+        (movieName || "").trim().toLowerCase()
+    );
+
+});
+
+// ========================================
+// GET CURRENT MOVIE
+// ADMIN PANEL + OLD MOVIE DATABASE
+// ========================================
+
+const currentMovie =
+
+adminMovie
+
+?
+
+{
+
+    description:
+        adminMovie.description || "",
+
+    year:
+        adminMovie.year || "",
+
+    genre:
+        adminMovie.genre || "",
+
+    rating:
+        adminMovie.rating || "",
+
+    image:
+        adminMovie.poster || "",
+
+    video:
+        adminMovie.video || "",
+
+    download:
+        adminMovie.download || ""
+
+}
+
+:
+
+(
+    movieName &&
+    movieData[movieName]
+)
+
+?
+
+movieData[movieName]
+
+:
+
+null;
+
+const savedVideoPath =
+
+localStorage.getItem(
+    "selectedVideo"
+);
+
+
+// ========================================
+// SHOW MOVIE INFORMATION
+// ========================================
+
+if (
+    currentMovie
+) {
+
+
+    // ========================================
+    // POSTER
+    // ========================================
+
+    const watchMoviePoster =
+        document.getElementById(
+            "watchMoviePoster"
+        );
+
+
+    if (
+        watchMoviePoster
+    ) {
+
+        watchMoviePoster.src =
+            currentMovie.image || "";
+
+        watchMoviePoster.alt =
+            currentMovie.title || "Movie Poster";
+
+    }
+
+
+    // ========================================
+    // TITLE
+    // ========================================
+
+    document.getElementById(
+        "watchMovieTitle"
+    ).innerText =
+
+        currentMovie.title ||
+        movieName ||
+        "Movie Title";
+
+
+    // ========================================
+    // DESCRIPTION
+    // ========================================
+
+    document.getElementById(
+        "watchMovieDescription"
+    ).innerText =
+
+        currentMovie.description ||
+        "No description available.";
+
+
+    // ========================================
+    // YEAR
+    // ========================================
+
+    document.getElementById(
+        "watchMovieYear"
+    ).innerText =
+
+        "📅 Year: " +
+
+        (
+            currentMovie.year ||
+            "-"
+        );
+
+
+    // ========================================
+    // GENRE
+    // ========================================
+
+    document.getElementById(
+        "watchMovieGenre"
+    ).innerText =
+
+        "🎭 Genre: " +
+
+        (
+            currentMovie.genre ||
+            "-"
+        );
+
+
+    // ========================================
+    // RATING
+    // ========================================
+
+    document.getElementById(
+        "watchMovieRating"
+    ).innerText =
+
+        "⭐ Rating: " +
+
+        (
+            currentMovie.rating ||
+            "-"
+        );
+
+
+    // ========================================
+    // PAGE TITLE
+    // ========================================
+
+    document.querySelector(
+        ".watch-page h1"
+    ).innerText =
+
+        "🎬 Now Playing: " +
+
+        (
+            currentMovie.title ||
+            movieName
+        );
+
+}
+
+
+
+// ========================================
+// GLOBAL ELEMENTS
+// ========================================
+
+const movieVideo =
+
+document.getElementById(
+    "movieVideo"
+);
+
+
+
+const videoSource =
+
+document.getElementById(
+    "movieVideoSource"
+);
+
+
+
+const downloadButton =
+
+document.getElementById(
+    "downloadButton"
+);
+
+
+
+const movieLoader =
+
+document.getElementById(
+    "movieLoader"
+);
+
+
+
+// ========================================
+// DAILY ANALYTICS
+// ========================================
+
+function getBangladeshDate() {
+
+    const formatter =
+
+    new Intl.DateTimeFormat(
+        "en-CA",
+        {
+
+            timeZone:
+            "Asia/Dhaka",
+
+            year:
+            "numeric",
+
+            month:
+            "2-digit",
+
+            day:
+            "2-digit"
+
+        }
+    );
+
+
+    return formatter.format(
+        new Date()
+    );
+
+}
+
+
+
+// ========================================
+// GET DAILY ANALYTICS
+// ========================================
+
+let dailyAnalytics =
+
+JSON.parse(
+
+    localStorage.getItem(
+        "dailyAnalytics"
+    )
+
+) || {};
+
+
+
+const today =
+
+getBangladeshDate();
+
+
+
+if (
+    !dailyAnalytics[today]
+) {
+
+    dailyAnalytics[today] = {
+
+        visitors:
+        0,
+
+        views:
+        0,
+
+        downloads:
+        0
+
+    };
+
+}
+
+
+
+// ========================================
+// ADD VISITOR
+// ========================================
+
+dailyAnalytics[today].visitors++;
+
+
+
+localStorage.setItem(
+
+    "dailyAnalytics",
+
+    JSON.stringify(
+        dailyAnalytics
+    )
+
+);
+
+
+
+// ========================================
+// SHOW MOVIE INFORMATION
+// ========================================
+
+if (
+    currentMovie
+) {
+
+
+    document.getElementById(
+        "watchMoviePoster"
+    ).src =
+
+    currentMovie.image;
+
+
+
+    document.getElementById(
+        "watchMovieTitle"
+    ).innerText =
+
+    movieName;
+
+
+
+    document.getElementById(
+        "watchMovieDescription"
+    ).innerText =
+
+    currentMovie.description;
+
+
+
+    document.getElementById(
+        "watchMovieYear"
+    ).innerText =
+
+    "📅 Year: " +
+    currentMovie.year;
+
+
+
+    document.getElementById(
+        "watchMovieGenre"
+    ).innerText =
+
+    "🎭 Genre: " +
+    currentMovie.genre;
+
+
+
+    document.getElementById(
+        "watchMovieRating"
+    ).innerText =
+
+    "⭐ Rating: " +
+    currentMovie.rating;
+
+
+
+    document.querySelector(
+        ".watch-page h1"
+    ).innerText =
+
+    "🎬 Now Playing: " +
+    movieName;
+
+}
+
+
+
+// ========================================
+// SET VIDEO
+// ========================================
+
+// ========================================
+// SET VIDEO + DOWNLOAD
+// ========================================
+
+const finalVideoPath =
+
+savedVideoPath
+
+||
+
+(
+    currentMovie
+    ?
+    currentMovie.video
+    :
+    ""
+);
+
+
+const finalDownloadPath =
+
+currentMovie
+    ?
+    (
+        currentMovie.download ||
+        currentMovie.video ||
+        ""
+    )
+    :
+    "";
+
+
+if (
+    finalVideoPath
+) {
+
+    videoSource.src =
+        finalVideoPath;
+
+    movieVideo.load();
+
+}
+
+
+// ========================================
+// SET DOWNLOAD URL
+// ========================================
+
+if (
+    finalDownloadPath
+) {
+
+    downloadButton.href =
+        finalDownloadPath;
+
+    downloadButton.setAttribute(
+
+        "download",
+
+        (
+            movieName ||
+            "movie"
+        ) + ".mp4"
+
+    );
+
+}
+
+
+
+if (
+    finalVideoPath
+) {
+
+
+    videoSource.src =
+
+    finalVideoPath;
+
+
+
+    movieVideo.load();
+
+
+
+    downloadButton.href =
+
+    finalVideoPath;
+
+
+
+    downloadButton.setAttribute(
+
+        "download",
+
+        (
+            movieName ||
+            "movie"
+        ) +
+
+        ".mp4"
+
+    );
+
+}
+
+
+
+// ========================================
+// MOVIE VIEW COUNTER
+// ========================================
+
+if (
+    currentMovie
+) {
+
+
+    let movieViews =
+
+    JSON.parse(
+
+        localStorage.getItem(
+            "movieViews"
+        )
+
+    ) || {};
+
+
+
+    movieViews[movieName] =
+
+    Number(
+        movieViews[movieName] || 0
+    ) + 1;
+
+
+
+    localStorage.setItem(
+
+        "movieViews",
+
+        JSON.stringify(
+            movieViews
+        )
+
+    );
+
+
+
+    dailyAnalytics[today].views++;
+
+
+
+    localStorage.setItem(
+
+        "dailyAnalytics",
+
+        JSON.stringify(
+            dailyAnalytics
+        )
+
+    );
+
+}
+
+
+
+// ========================================
+// DOWNLOAD COUNTER
+// ========================================
+
+downloadButton.addEventListener(
+
+    "click",
+
+    function() {
+
+
+        if (
+            !currentMovie
+        ) {
+
+            return;
+
+        }
+
+
+
+        let movieDownloads =
+
+        JSON.parse(
+
+            localStorage.getItem(
+                "movieDownloads"
+            )
+
+        ) || {};
+
+
+
+        movieDownloads[movieName] =
+
+        Number(
+            movieDownloads[movieName] || 0
+        ) + 1;
+
+
+
+        localStorage.setItem(
+
+            "movieDownloads",
+
+            JSON.stringify(
+                movieDownloads
+            )
+
+        );
+
+
+
+        dailyAnalytics[today].downloads++;
+
+
+
+        localStorage.setItem(
+
+            "dailyAnalytics",
+
+            JSON.stringify(
+                dailyAnalytics
+            )
+
+        );
+
+
+    }
+
+);
+
+
+
+// ========================================
+// LIKE BUTTON
+// ========================================
+
+const likeButton =
+
+document.getElementById(
+    "likeButton"
+);
+
+
+
+const likeCount =
+
+document.getElementById(
+    "likeCount"
+);
+
+
+
+let isLiked = false;
+
+
+
+if (
+    likeButton &&
+    likeCount
+) {
+
+
+    likeButton.addEventListener(
+
+        "click",
+
+        function() {
+
+
+            isLiked =
+
+            !isLiked;
+
+
+
+            if (
+                isLiked
+            ) {
+
+
+                likeButton.innerHTML =
+
+                "❤️ Liked " +
+
+                "<span id='likeCount'>" +
+
+                "1" +
+
+                "</span>";
+
+
+
+                likeButton.classList.add(
+                    "active"
+                );
+
+
+            } else {
+
+
+                likeButton.innerHTML =
+
+                "👍 Like " +
+
+                "<span id='likeCount'>" +
+
+                "0" +
+
+                "</span>";
+
+
+
+                likeButton.classList.remove(
+                    "active"
+                );
+
+
+            }
+
+
+        }
+
+    );
+
+}
+
+
+
+// ========================================
+// SHARE BUTTON
+// ========================================
+
+const shareButton =
+
+document.getElementById(
+    "shareButton"
+);
+
+
+
+if (
+    shareButton
+) {
+
+
+    shareButton.addEventListener(
+
+        "click",
+
+        async function() {
+
+
+            const shareData = {
+
+                title:
+                movieName ||
+                "Crazymovie",
+
+                text:
+                "Watch this movie on Crazymovie!",
+
+                url:
+                window.location.href
+
+            };
+
+
+
+            if (
+                navigator.share
+            ) {
+
+
+                try {
+
+                    await navigator.share(
+                        shareData
+                    );
+
+                }
+
+                catch (
+                    error
+                ) {
+
+                    console.log(
+                        "Share cancelled"
+                    );
+
+                }
+
+
+            } else {
+
+
+                try {
+
+
+                    await navigator.clipboard.writeText(
+
+                        window.location.href
+
+                    );
+
+
+
+                    shareButton.innerText =
+
+                    "✅ Link Copied!";
+
+
+
+                    setTimeout(
+
+                        function() {
+
+                            shareButton.innerText =
+
+                            "🔗 Share";
+
+                        },
+
+                        2000
+
+                    );
+
+
+                }
+
+                catch (
+                    error
+                ) {
+
+
+                    alert(
+
+                        "Copy failed. Please copy the URL manually."
+
+                    );
+
+
+                }
+
+
+            }
+
+
+        }
+
+    );
+
+}
+
+
+
+// ========================================
+// VIDEO ERROR HANDLING
+// ========================================
+
+movieVideo.addEventListener(
+
+    "error",
+
+    function() {
+
+
+        const videoPlayer =
+
+        document.querySelector(
+            ".video-player"
+        );
+
+
+
+        videoPlayer.innerHTML = `
+
+            <div class="video-error">
+
+                <h3>
+                    😔 Video Not Available
+                </h3>
+
+                <p>
+                    Sorry, this movie video could not be loaded.
+                </p>
+
+                <a href="index.html">
+                    🏠 Back to Home
+                </a>
+
+            </div>
+
+        `;
+
+
+    }
+
+);
+
+
+
+// ========================================
+// RELATED MOVIES
+// ========================================
+
+function showRelatedMovies() {
+
+
+    const relatedContainer =
+
+    document.getElementById(
+        "relatedMovies"
+    );
+
+
+
+    if (
+        !currentMovie
+    ) {
+
+        return;
+
+    }
+
+
+
+    const currentGenres =
+
+    currentMovie.genre
+
+    .split(",")
+
+    .map(
+
+        genre =>
+        genre.trim()
+
+    );
+
+
+
+    const relatedMovies =
+
+    Object.keys(
+        movieData
+    )
+
+    .filter(
+
+        name =>
+        name !== movieName
+
+    )
+
+    .filter(
+
+        name => {
+
+
+            const movieGenres =
+
+            movieData[name]
+            .genre
+            .split(",")
+            .map(
+
+                genre =>
+                genre.trim()
+
+            );
+
+
+
+            return movieGenres.some(
+
+                genre =>
+
+                currentGenres.includes(
+                    genre
+                )
+
+            );
+
+
+        }
+
+    );
+
+
+
+    relatedContainer.innerHTML =
+    "";
+
+
+
+    relatedMovies.forEach(
+
+        function(name) {
+
+
+            const movie =
+
+            movieData[name];
+
+
+
+            const movieCard =
+
+            document.createElement(
+                "div"
+            );
+
+
+
+            movieCard.innerHTML = `
+
+                <div class="related-movie-image">
+
+                    <img
+                        src="${movie.image}"
+                        alt="${name}"
+                        onerror="this.src='assets/images/default.jpg'"
+                    >
+
+                    <div class="related-movie-overlay">
+                        ▶️
+                    </div>
+
+                </div>
+
+
+                <div class="related-movie-info">
+
+                    <h3>
+                        ${name}
+                    </h3>
+
+
+                    <div class="related-movie-meta">
+
+                        <span>
+                            📅 ${movie.year}
+                        </span>
+
+                        <span>
+                            ⭐ ${movie.rating}
+                        </span>
+
+                    </div>
+
+
+                    <button>
+                        ▶️ Watch Now
+                    </button>
+
+                </div>
+
+            `;
+
+
+
+            function openRelatedMovie() {
+
+
+                localStorage.setItem(
+
+                    "selectedMovie",
+
+                    name
+
+                );
+
+
+
+                localStorage.setItem(
+
+                    "selectedVideo",
+
+                    movie.video
+
+                );
+
+
+
+                window.location.href =
+
+                "watch.html";
+
+
+            }
+
+
+
+            movieCard
+
+            .querySelector("button")
+
+            .addEventListener(
+
+                "click",
+
+                function(event) {
+
+                    event.stopPropagation();
+
+                    openRelatedMovie();
+
+                }
+
+            );
+
+
+
+            movieCard
+
+            .querySelector(
+                ".related-movie-image"
+            )
+
+            .addEventListener(
+
+                "click",
+
+                function(event) {
+
+                    event.stopPropagation();
+
+                    openRelatedMovie();
+
+                }
+
+            );
+
+
+
+            movieCard.addEventListener(
+
+                "click",
+
+                function() {
+
+                    openRelatedMovie();
+
+                }
+
+            );
+
+
+
+            relatedContainer.appendChild(
+
+                movieCard
+
+            );
+
+
+        }
+
+    );
+
+}
+
+
+
+// ========================================
+// START RELATED MOVIES
+// ========================================
+
+showRelatedMovies();
+
+
+
+// ========================================
+// POSTER CLICK → PLAY VIDEO
+// ========================================
+
+const moviePoster =
+
+document.querySelector(
+    ".watch-movie-poster"
+);
+
+
+
+if (
+    moviePoster
+) {
+
+
+    moviePoster.addEventListener(
+
+        "click",
+
+        function() {
+
+
+            movieVideo.play()
+
+            .catch(
+
+                function() {
+
+                    console.log(
+                        "Browser blocked autoplay"
+                    );
+
+                }
+
+            );
+
+
+        }
+
+    );
+
+}
+
+
+
+// ========================================
+// HIDE LOADING SCREEN
+// ========================================
+
+function hideMovieLoader() {
+
+
+    if (
+        movieLoader
+    ) {
+
+
+        movieLoader.classList.add(
+            "hide"
+        );
+
+
+    }
+
+}
+
+
+
+// Hide after page is fully loaded
+
+window.addEventListener(
+
+    "load",
+
+    function() {
+
+
+        setTimeout(
+
+            hideMovieLoader,
+
+            500
+
+        );
+
+
+    }
+
+);
+
+
+
+// Safety fallback
+
+setTimeout(
+
+    hideMovieLoader,
+
+    3000
+
+);
+
+
+
+// ========================================
+// GO BACK
+// ========================================
+
+function goBack() {
+
+
+    window.history.back();
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
+```

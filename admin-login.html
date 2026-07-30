@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Crazymovie Admin Login</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet"
+>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-family: "Poppins", sans-serif;
+
+    background: #0f0f0f;
+
+    color: white;
+
+}
+
+
+.login-container {
+
+    width: 90%;
+
+    max-width: 420px;
+
+    background: #181818;
+
+    padding: 35px;
+
+    border-radius: 15px;
+
+    border:
+    1px solid
+    rgba(255,255,255,0.1);
+
+    box-shadow:
+    0 10px 40px
+    rgba(0,0,0,0.5);
+
+}
+
+
+.logo {
+
+    text-align: center;
+
+    font-size: 28px;
+
+    font-weight: 600;
+
+    margin-bottom: 5px;
+
+}
+
+
+.subtitle {
+
+    text-align: center;
+
+    color: #888;
+
+    margin-bottom: 30px;
+
+}
+
+
+.input-group {
+
+    margin-bottom: 20px;
+
+}
+
+
+.input-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #bbb;
+
+}
+
+
+.input-group input {
+
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border-radius: 8px;
+
+    border:
+    1px solid
+    rgba(255,255,255,0.15);
+
+    background: #101010;
+
+    color: white;
+
+    outline: none;
+
+    font-size: 15px;
+
+}
+
+
+.input-group input:focus {
+
+    border-color: #777;
+
+}
+
+
+.login-button {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: white;
+
+    color: black;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+.login-button:hover {
+
+    opacity: 0.8;
+
+}
+
+
+.error-message {
+
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    background: rgba(255,0,0,0.1);
+
+    color: #ff6b6b;
+
+    text-align: center;
+
+    font-size: 14px;
+
+}
+
+
+.back-home {
+
+    display: block;
+
+    margin-top: 20px;
+
+    text-align: center;
+
+    color: #888;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+}
+
+
+.back-home:hover {
+
+    color: white;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+<div class="logo">
+
+    🎬 Crazymovie
+
+</div>
+
+
+<div class="subtitle">
+
+    Admin Dashboard Login
+
+</div>
+
+
+
+<form id="loginForm">
+
+
+<div class="input-group">
+
+    <label>
+        Username
+    </label>
+
+    <input
+        type="text"
+        id="username"
+        placeholder="Enter username"
+        required
+    >
+
+</div>
+
+
+
+<div class="input-group">
+
+    <label>
+        Password
+    </label>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Enter password"
+        required
+    >
+
+</div>
+
+
+
+<button
+    type="submit"
+    class="login-button"
+>
+
+    🔐 Login
+
+</button>
+
+
+</form>
+
+
+
+<div
+    class="error-message"
+    id="errorMessage"
+>
+
+    ❌ Invalid username or password
+
+</div>
+
+
+
+<a
+    href="index.html"
+    class="back-home"
+>
+
+    ← Back to Home
+
+</a>
+
+
+</div>
+
+
+
+<script>
+
+
+// ========================================
+// ADMIN LOGIN DETAILS
+// ========================================
+
+const ADMIN_USERNAME =
+"admin";
+
+const ADMIN_PASSWORD =
+"crazymovie123";
+
+
+
+// ========================================
+// LOGIN FORM
+// ========================================
+
+const loginForm =
+
+document.getElementById(
+    "loginForm"
+);
+
+
+loginForm.addEventListener(
+
+    "submit",
+
+    function(event) {
+
+        event.preventDefault();
+
+
+        const username =
+
+        document.getElementById(
+            "username"
+        ).value.trim();
+
+
+        const password =
+
+        document.getElementById(
+            "password"
+        ).value;
+
+
+
+        // ========================================
+        // CHECK LOGIN
+        // ========================================
+
+        if (
+
+            username ===
+            ADMIN_USERNAME
+
+            &&
+
+            password ===
+            ADMIN_PASSWORD
+
+        ) {
+
+
+            // ========================================
+            // CREATE ADMIN LOGIN SESSION
+            // ========================================
+
+            sessionStorage.setItem(
+
+                "crazymovieAdminLoggedIn",
+
+                "true"
+
+            );
+
+
+            // ========================================
+            // OPEN ADMIN DASHBOARD
+            // ========================================
+
+            window.location.href =
+            "admin.html";
+
+
+        } else {
+
+
+            // ========================================
+            // SHOW ERROR
+            // ========================================
+
+            const errorMessage =
+
+            document.getElementById(
+                "errorMessage"
+            );
+
+
+            errorMessage.style.display =
+            "block";
+
+
+        }
+
+    }
+
+);
+
+</script>
+
+
+</body>
+
+</html>
