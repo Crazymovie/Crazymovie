@@ -47,9 +47,9 @@
                 ▶ Watch Now
             </button>
 
-            <button class="info-btn" onclick="openMovie('Avengers', 'assets/videos/avengers.mp4')">
-                ℹ More Info
-            </button>
+            <button class="info-btn" onclick="alert('No movie available yet. Please check back soon.')">
+    ℹ More Info
+</button>
 
         </div>
 
@@ -73,43 +73,11 @@
         <option value="sci-fi">Sci-Fi</option>
     </select>
 
+    
+
     <select id="yearFilter">
+    <option value="all">All Years</option>
 
-    <option value="all">
-        All Years
-    </option>
-
-    <option value="2021">
-        2021
-    </option>
-
-    <option value="2019">
-        2019
-    </option>
-
-    <option value="2014">
-        2014
-    </option>
-
-    <option value="2012">
-        2012
-    </option>
-
-    <option value="2010">
-        2010
-    </option>
-
-    <option value="2009">
-        2009
-    </option>
-
-    <option value="2008">
-        2008
-    </option>
-
-    <option value="1997">
-        1997
-    </option>
 
 </select>
 
@@ -122,7 +90,7 @@
         >
 
     </div>
-<div class="category-buttons">
+<div class=<select id="yearFilter">"category-buttons">
 
     <button onclick="filterMovies('All')">
         🎬 All
@@ -154,70 +122,6 @@
 <!-- ADMIN PUBLISHED MOVIES -->
 
 <div id="dynamicMovies" class="movie-grid">
-</div>
-
-<div class="movie-card"
-     data-movie="avengers"
-     data-genre="action"
-     data-year="2012"
-     onclick="openMovie('Avengers', 'assets/videos/avengers.mp4')">
-
-    <img src="assets/images/avengers.jpg" alt="Avengers">
-
-    <h3>Avengers</h3>
-
-</div>
-
-<div class="movie-card" data-movie="spiderman" data-genre="action" data-year="2021" onclick="openMovie('Spider-Man')">
-    <img src="assets/images/spiderman.jpg" alt="Spider-Man">
-    <h3>Spider-Man</h3>
-</div>
-
-<div class="movie-card" data-movie="inception" data-genre="sci-fi" data-year="2010" onclick="openMovie('Inception', 'assets/videos/inception.mp4')">
-    <img src="assets/images/inception.jpg" alt="Inception">
-    <h3>Inception</h3>
-</div>
-
-<div class="movie-card" data-movie="interstellar" data-genre="sci-fi" data-year="2014" onclick="openMovie('Interstellar', 'assets/videos/interstellar.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg">
-    <h3>Interstellar</h3>
-</div>
-
-    <h2>🎬 Popular Movies</h2>
-
-    <div class="movie-card" data-movie="dark-knight" data-genre="action" data-year="2008" onclick="openMovie('The Dark Knight', 'assets/videos/dark-knight.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg">
-    <h3>The Dark Knight</h3>
-</div>
-
-<div class="movie-card" data-movie="avatar" data-genre="sci-fi" data-year="2009" onclick="openMovie('Avatar', 'assets/videos/avatar.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg">
-    <h3>Avatar</h3>
-</div>
-
-<div class="movie-card" data-movie="titanic" data-genre="romance" data-year="1997" onclick="openMovie('Titanic', 'assets/videos/titanic.mp4')">
-    <img src="assets/images/titanic.jpg" alt="Titanic">
-    <h3>Titanic</h3>
-</div>
-
-<div class="movie-card" data-movie="joker" data-genre="drama" data-year="2019" onclick="openMovie('Joker', 'assets/videos/joker.mp4')">
-    <img src="assets/images/joker.jpg" alt="Joker">
-    <h3>Joker</h3>
-</div>
-
-<div class="movie-card"
-     data-movie="Black Panther"
-     data-genre="action"
-     data-year="2018"
-     onclick="openMovie('Black Panther', 'assets/videos/black-panther.mp4')">
-
-    <img
-        src="https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg"
-        alt="Black Panther"
-    >
-
-    <h3>Black Panther</h3>
-
 </div>
 
 </section>
