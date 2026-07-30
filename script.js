@@ -5,90 +5,7 @@ console.log("Welcome to Crazymovie");
 // MOVIE DATA
 // ================================
 
-const movieData = {
-
-    "Avengers": {
-        poster: "assets/images/avengers.jpg",
-        video: "assets/videos/avengers.mp4",
-        description: "Earth's mightiest heroes come together to fight powerful enemies and protect the world.",
-        year: "2012",
-        genre: "Action, Adventure, Sci-Fi",
-        rating: "8.0/10"
-    },
-
-    "Spider-Man": {
-        poster: "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
-        video: "assets/videos/spiderman.mp4.mp4",
-        description: "A young hero discovers incredible powers and learns that great power comes with great responsibility.",
-        year: "2021",
-        genre: "Action, Adventure, Sci-Fi",
-        rating: "8.2/10"
-    },
-
-    "Inception": {
-        poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-        video: "assets/videos/inception.mp4",
-        description: "A skilled team enters the world of dreams to complete an impossible mission.",
-        year: "2010",
-        genre: "Action, Sci-Fi, Thriller",
-        rating: "8.8/10"
-    },
-
-    "Interstellar": {
-        poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-        video: "assets/videos/interstellar.mp4",
-        description: "A group of explorers travels through space in search of a new home for humanity.",
-        year: "2014",
-        genre: "Adventure, Drama, Sci-Fi",
-        rating: "8.7/10"
-    },
-
-    "The Dark Knight": {
-        poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-        video: "assets/videos/dark-knight.mp4",
-        description: "Batman faces a dangerous criminal mastermind who brings chaos and fear to Gotham City.",
-        year: "2008",
-        genre: "Action, Crime, Drama",
-        rating: "9.0/10"
-    },
-
-    "Avatar": {
-        poster: "https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg",
-        video: "assets/videos/avatar.mp4",
-        description: "A former soldier enters the beautiful world of Pandora and becomes part of an extraordinary adventure.",
-        year: "2009",
-        genre: "Action, Adventure, Fantasy",
-        rating: "7.8/10"
-    },
-
-    "Titanic": {
-        poster: "assets/images/titanic.jpg",
-        video: "assets/videos/titanic.mp4",
-        description: "A young couple from different backgrounds fall in love during a historic voyage across the ocean.",
-        year: "1997",
-        genre: "Drama, Romance",
-        rating: "7.9/10"
-    },
-
-    "Joker": {
-        poster: "assets/images/joker.jpg",
-        video: "assets/videos/joker.mp4",
-        description: "A troubled man struggles with society and begins a dark transformation that changes Gotham forever.",
-        year: "2019",
-        genre: "Crime, Drama, Thriller",
-        rating: "8.4/10"
-    },
-
-    "Black Panther": {
-        poster: "https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg",
-        video: "assets/videos/black-panther.mp4",
-        description: "A powerful hero becomes the king of Wakanda and must protect his kingdom from a dangerous enemy.",
-        year: "2018",
-        genre: "Action, Adventure, Sci-Fi",
-        rating: "7.3/10"
-    }
-
-};
+const movieData = {};
 
 
 // ================================
@@ -97,17 +14,7 @@ const movieData = {
 
 function watchMovie() {
 
-    localStorage.setItem(
-        "selectedMovie",
-        "Avengers"
-    );
-
-    localStorage.setItem(
-        "selectedVideo",
-        "assets/videos/avengers.mp4"
-    );
-
-    window.location.href = "watch.html";
+    alert("No movie available yet. Please check back soon.");
 
 }
 
