@@ -195,11 +195,11 @@ nav a:hover {
 .movie-modal-content {
     position: relative;
     display: flex;
-    gap: 30px;
-    width: 700px;
-    max-width: 100%;
+    gap: 20px;
+    width: 550px;
+    max-width: 90%;
     background: #1a1a1a;
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
 }
 
