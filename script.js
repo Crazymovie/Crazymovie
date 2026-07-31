@@ -256,8 +256,35 @@ function openMovie(
 
 function watchNow() {
 
-    window.location.href =
-        "watch.html";
+    const selectedMovie =
+        localStorage.getItem("selectedMovie");
+
+    const selectedVideo =
+        localStorage.getItem("selectedVideo");
+
+    const selectedDownload =
+        localStorage.getItem("selectedDownload");
+
+
+    if (!selectedMovie) {
+
+        alert("Movie not selected.");
+
+        return;
+
+    }
+
+
+    console.log("🎬 Opening Watch Page");
+
+    console.log("Movie:", selectedMovie);
+
+    console.log("Video:", selectedVideo);
+
+    console.log("Download:", selectedDownload);
+
+
+    window.location.href = "watch.html";
 
 }
 
@@ -775,3 +802,29 @@ function closeMovieModal() {
     }
 
 }
+
+// ================================
+// WATCH NOW BUTTON EVENT
+// ================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const watchButton =
+            document.getElementById(
+                "watchNowButton"
+            );
+
+
+        if (watchButton) {
+
+            watchButton.addEventListener(
+                "click",
+                watchNow
+            );
+
+        }
+
+    }
+);
