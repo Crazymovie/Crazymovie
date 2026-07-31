@@ -588,26 +588,22 @@ async function loadPublishedMovies() {
                 // Open Movie Details
 
                 movieCard.addEventListener(
-                    "click",
-                    function() {
+    "click",
+    function() {
 
-                        // Save Firebase Movie Data
-                        // For openMovie function
+        openMovie(
+            movie.title,
+            movie.video || "",
+            movie.download || "",
+            movie.poster || "",
+            movie.description || "",
+            movie.year || "",
+            movie.genre || "",
+            movie.rating || ""
+        );
 
-                        localStorage.setItem(
-                            "selectedFirebaseMovie",
-                            JSON.stringify(
-                                movie
-                            )
-                        );
-
-
-                        openMovie(
-                            movie.title
-                        );
-
-                    }
-                );
+    }
+);
 
 
                 dynamicMovies.appendChild(
