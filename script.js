@@ -44,98 +44,134 @@ function watchMovie() {
 // OPEN MOVIE DETAILS
 // ================================
 
-function openMovie(movieName, videoOverride) {
+function openMovie(
+    movieName,
+    videoOverride,
+    downloadOverride,
+    posterOverride,
+    descriptionOverride,
+    yearOverride,
+    genreOverride,
+    ratingOverride
+) {
 
     const modal =
-        document.getElementById("movieModal");
+        document.getElementById(
+            "movieModal"
+        );
+
 
     const title =
-        document.getElementById("modalTitle");
+        document.getElementById(
+            "modalTitle"
+        );
+
 
     const description =
-        document.getElementById("modalDescription");
+        document.getElementById(
+            "modalDescription"
+        );
+
 
     const poster =
-        document.getElementById("modalPoster");
+        document.getElementById(
+            "modalPoster"
+        );
+
 
     const year =
-        document.getElementById("modalYear");
+        document.getElementById(
+            "modalYear"
+        );
+
 
     const genre =
-        document.getElementById("modalGenre");
+        document.getElementById(
+            "modalGenre"
+        );
+
 
     const rating =
-        document.getElementById("modalRating");
-
-
-    // Check Admin Published Movies
-
-    const publishedMovies =
-        JSON.parse(
-            localStorage.getItem(
-                "crazymovieMovies"
-            )
-        ) || [];
-
-
-    const publishedMovie =
-        publishedMovies.find(
-            function(movie) {
-
-                return movie.title === movieName;
-
-            }
+        document.getElementById(
+            "modalRating"
         );
 
 
     // ================================
-    // ADMIN MOVIE
+    // FIREBASE MOVIE
     // ================================
 
-    if (publishedMovie) {
+    if (
+        videoOverride ||
+        posterOverride ||
+        descriptionOverride ||
+        yearOverride ||
+        genreOverride ||
+        ratingOverride
+    ) {
 
         title.innerText =
-            publishedMovie.title;
+            movieName;
+
 
         description.innerText =
-            publishedMovie.description;
+            descriptionOverride || "";
+
 
         poster.src =
-            publishedMovie.poster;
+            posterOverride || "";
+
 
         year.innerText =
             "📅 Year: " +
-            publishedMovie.year;
+            (yearOverride || "");
+
 
         genre.innerText =
             "🎭 Genre: " +
-            publishedMovie.genre;
+            (genreOverride || "");
+
 
         rating.innerText =
             "⭐ Rating: " +
-            publishedMovie.rating;
+            (ratingOverride || "");
 
+
+        // Save selected movie
 
         localStorage.setItem(
             "selectedMovie",
-            publishedMovie.title
+            movieName
         );
+
+
+        // Save video URL
 
         localStorage.setItem(
             "selectedVideo",
-            publishedMovie.video
+            videoOverride || ""
         );
 
 
-        // Save Download URL
+        // Save download URL
+
         localStorage.setItem(
             "selectedDownload",
-            publishedMovie.download
+            downloadOverride || ""
         );
 
+
+        // Open modal
 
         modal.style.display =
             "flex";
+
+
+        console.log(
+            "🎬 Firebase Movie Opened:",
+            movieName
+        );
+
 
         return;
 
@@ -143,7 +179,7 @@ function openMovie(movieName, videoOverride) {
 
 
     // ================================
-    // NORMAL MOVIE
+    // OLD / NORMAL MOVIE DATA
     // ================================
 
     const movie =
@@ -165,19 +201,24 @@ function openMovie(movieName, videoOverride) {
     title.innerText =
         movieName;
 
+
     description.innerText =
         movie.description;
 
+
     poster.src =
         movie.poster;
+
 
     year.innerText =
         "📅 Year: " +
         movie.year;
 
+
     genre.innerText =
         "🎭 Genre: " +
         movie.genre;
+
 
     rating.innerText =
         "⭐ Rating: " +
@@ -189,6 +230,7 @@ function openMovie(movieName, videoOverride) {
         movieName
     );
 
+
     localStorage.setItem(
         "selectedVideo",
         videoOverride ||
@@ -196,25 +238,14 @@ function openMovie(movieName, videoOverride) {
     );
 
 
+    localStorage.setItem(
+        "selectedDownload",
+        movie.download || ""
+    );
+
+
     modal.style.display =
         "flex";
-
-}
-
-
-// ================================
-// CLOSE MOVIE POPUP
-// ================================
-
-function closeMovie() {
-
-    const modal =
-        document.getElementById(
-            "movieModal"
-        );
-
-    modal.style.display =
-        "none";
 
 }
 
