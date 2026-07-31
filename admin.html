@@ -2293,7 +2293,7 @@ function updateMovie() {
    PUBLISH NEW MOVIE
 ======================================== */
 
-function publishMovie() {
+async function publishMovie() {
 
 
     const title =
@@ -2411,6 +2411,24 @@ function publishMovie() {
         newMovie
     );
 
+try {
+
+    await addDoc(
+        collection(db, "movies"),
+        newMovie
+    );
+
+    console.log("✅ Movie saved to Firestore");
+
+} catch (error) {
+
+    console.error("❌ Firestore Error:", error);
+
+    alert("Failed to save movie to Firestore.");
+
+    return;
+
+}
 
     localStorage.setItem(
 
@@ -3469,9 +3487,98 @@ function adminLogout() {
 
 }
 
+/* ========================================
+   CLEAR MOVIE FORM
+======================================== */
+
+function clearMovieForm() {
+
+    document.getElementById("movieTitle").value = "";
+
+    document.getElementById("movieDescription").value = "";
+
+    document.getElementById("movieYear").value = "";
+
+    document.getElementById("movieGenre").value = "";
+
+    document.getElementById("movieRating").value = "";
+
+    document.getElementById("movieVideo").value = "";
+
+    document.getElementById("movieDownload").value = "";
+
+
+    selectedPosterImage = "";
+
+
+    const preview =
+        document.getElementById("posterPreview");
+
+
+    if (preview) {
+
+        preview.src = "";
+
+        preview.style.display = "none";
+
+    }
+
+
+    document.getElementById("moviePosterFile").value = "";
+
+}
 
 </script>
 
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    doc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
+
+    authDomain: "crazymovie-4a2ae.firebaseapp.com",
+
+    projectId: "crazymovie-4a2ae",
+
+    storageBucket: "crazymovie-4a2ae.firebasestorage.app",
+
+    messagingSenderId: "1025439382279",
+
+    appId: "1:1025439382279:web:2380f84d57e302bed023a2"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const db =
+    getFirestore(app);
+
+    window.db = db;
+
+window.addDoc = addDoc;
+window.collection = collection;
+
+console.log(
+    "🔥 Firebase Connected Successfully!"
+);
+
+</script>
 
 </body>
 
