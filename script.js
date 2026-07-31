@@ -446,10 +446,10 @@ function filterMovies(category) {
 
 
 // ================================
-// LOAD ADMIN PUBLISHED MOVIES
+// LOAD ADMIN PUBLISHED MOVIES FROM FIREBASE
 // ================================
 
-function loadPublishedMovies() {
+async function loadPublishedMovies() {
 
     const dynamicMovies =
         document.getElementById(
@@ -464,82 +464,154 @@ function loadPublishedMovies() {
     }
 
 
-    const publishedMovies =
-        JSON.parse(
-            localStorage.getItem(
-                "crazymovieMovies"
-            )
-        ) || [];
+    try {
+
+        // Get Movies Collection From Firebase
+
+        const moviesSnapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "movies"
+                )
+            );
 
 
-    dynamicMovies.innerHTML =
-        "";
+        // Clear Existing Movies
+
+        dynamicMovies.innerHTML =
+            "";
 
 
-    publishedMovies.forEach(
-        function(movie) {
+        // Check If No Movies
 
-            const movieCard =
-                document.createElement(
-                    "div"
+        if (moviesSnapshot.empty) {
+
+            dynamicMovies.innerHTML = `
+                <p style="
+                    color: #aaa;
+                    text-align: center;
+                    width: 100%;
+                    padding: 30px;
+                ">
+                    No movies available yet.
+                </p>
+            `;
+
+            return;
+
+        }
+
+
+        // Load Every Movie
+
+        moviesSnapshot.forEach(
+            function(doc) {
+
+                const movie =
+                    doc.data();
+
+
+                const movieCard =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                movieCard.className =
+                    "movie-card";
+
+
+                movieCard.setAttribute(
+                    "data-movie",
+                    movie.title || ""
                 );
 
 
-            movieCard.className =
-                "movie-card";
+                movieCard.setAttribute(
+                    "data-genre",
+                    movie.genre || ""
+                );
 
 
-            movieCard.setAttribute(
-                "data-movie",
-                movie.title
-            );
+                movieCard.setAttribute(
+                    "data-year",
+                    movie.year || ""
+                );
 
 
-            movieCard.setAttribute(
-                "data-genre",
-                movie.genre
-            );
+                movieCard.innerHTML = `
+
+                    <img
+                        src="${movie.poster || ""}"
+                        alt="${movie.title || "Movie"}"
+                    >
+
+                    <h3>
+                        ${movie.title || "Untitled Movie"}
+                    </h3>
+
+                `;
 
 
-            movieCard.setAttribute(
-                "data-year",
-                movie.year
-            );
+                // Open Movie Details
+
+                movieCard.addEventListener(
+                    "click",
+                    function() {
+
+                        // Save Firebase Movie Data
+                        // For openMovie function
+
+                        localStorage.setItem(
+                            "selectedFirebaseMovie",
+                            JSON.stringify(
+                                movie
+                            )
+                        );
 
 
-            movieCard.innerHTML = `
+                        openMovie(
+                            movie.title
+                        );
 
-                <img
-                    src="${movie.poster}"
-                    alt="${movie.title}"
-                >
-
-                <h3>
-                    ${movie.title}
-                </h3>
-
-            `;
+                    }
+                );
 
 
-            movieCard.addEventListener(
-                "click",
-                function() {
+                dynamicMovies.appendChild(
+                    movieCard
+                );
 
-                    openMovie(
-                        movie.title,
-                        movie.video
-                    );
-
-                }
-            );
+            }
+        );
 
 
-            dynamicMovies.appendChild(
-                movieCard
-            );
+        console.log(
+            "🔥 Firebase Movies Loaded Successfully!"
+        );
 
-        }
-    );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Error Loading Movies From Firebase:",
+            error
+        );
+
+
+        dynamicMovies.innerHTML = `
+            <p style="
+                color: #ff4d4d;
+                text-align: center;
+                width: 100%;
+                padding: 30px;
+            ">
+                Failed to load movies.
+            </p>
+        `;
+
+    }
 
 }
 
