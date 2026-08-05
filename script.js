@@ -803,28 +803,3 @@ function closeMovieModal() {
 
 }
 
-// ================================
-// WATCH NOW BUTTON EVENT
-// ================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-
-        const watchButton =
-            document.getElementById(
-                "watchNowButton"
-            );
-
-
-        if (watchButton) {
-
-            watchButton.addEventListener(
-                "click",
-                watchNow
-            );
-
-        }
-
-    }
-);

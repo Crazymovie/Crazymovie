@@ -1016,6 +1016,8 @@ if (
 <main class="admin-container">
 
 
+
+
 <!-- ========================================
      ADD / EDIT MOVIE
 ======================================== -->
@@ -1531,6 +1533,38 @@ onchange="previewPosterImage(event)"
 
 let editingMovieId = null;
 
+/* ========================================
+   CLEAR MOVIE FORM
+======================================== */
+
+function clearMovieForm() {
+
+    document.getElementById("movieTitle").value = "";
+
+    document.getElementById("moviePosterFile").value = "";
+
+    document.getElementById("movieDescription").value = "";
+
+    document.getElementById("movieYear").value = "";
+
+    document.getElementById("movieGenre").value = "";
+
+    document.getElementById("movieRating").value = "";
+
+    document.getElementById("movieVideo").value = "";
+
+    document.getElementById("movieDownload").value = "";
+
+    selectedPosterImage = "";
+
+    const preview =
+        document.getElementById("posterPreview");
+
+    preview.src = "";
+
+    preview.style.display = "none";
+
+}
 
 let selectedPosterImage = "";
 
@@ -1588,15 +1622,49 @@ function previewPosterImage(event) {
    GET MOVIES
 ======================================== */
 
-function getMovies() {
+/* ========================================
+   GET MOVIES FROM FIREBASE FIRESTORE
+======================================== */
 
-    return JSON.parse(
+async function getMovies() {
 
-        localStorage.getItem(
-            "crazymovieMovies"
-        )
+    try {
 
-    ) || [];
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "movies"
+                )
+            );
+
+        const movies = [];
+
+        snapshot.forEach(function(docSnap) {
+
+            movies.push({
+
+                id:
+                    docSnap.id,
+
+                ...docSnap.data()
+
+            });
+
+        });
+
+        return movies;
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to load movies:",
+            error
+        );
+
+        return [];
+
+    }
 
 }
 
@@ -1605,7 +1673,7 @@ function getMovies() {
    SHOW PUBLISHED MOVIES
 ======================================== */
 
-function showPublishedMovies() {
+async function showPublishedMovies() {
 
     const container =
         document.getElementById(
@@ -1613,7 +1681,7 @@ function showPublishedMovies() {
         );
 
     const movies =
-        getMovies();
+    await getMovies();
 
 
     /* ========================================
@@ -1830,8 +1898,7 @@ function showPublishedMovies() {
 
                     <button
                         class="edit-button"
-                        onclick="
-                            editMovie(${movie.id})
+                        onclick="editMovie('${movie.id}')"
                         "
                     >
 
@@ -1842,8 +1909,7 @@ function showPublishedMovies() {
 
                     <button
                         class="delete-button"
-                        onclick="
-                            deleteMovie(${movie.id})
+                        onclick="deleteMovie('${movie.id}')"
                         "
                     >
 
@@ -1871,10 +1937,9 @@ function showPublishedMovies() {
    EDIT MOVIE
 ======================================== */
 
-function editMovie(movieId) {
+async function editMovie(movieId) {
 
-    const movies =
-        getMovies();
+    const movies = await getMovies();
 
 
     const movie =
@@ -2004,7 +2069,7 @@ if (selectedPosterImage) {
    UPDATE MOVIE — DUPLICATE SAFE
 ======================================== */
 
-function updateMovie() {
+async function updateMovie() {
 
     /* ========================================
        CHECK EDIT MODE
@@ -2070,7 +2135,7 @@ function updateMovie() {
     ======================================== */
 
     let movies =
-        getMovies();
+    await getMovies();
 
 
     /* ========================================
@@ -2141,92 +2206,52 @@ function updateMovie() {
 
 
     /* ========================================
-       UPDATE EXISTING MOVIE
-       SAME ID WILL BE KEPT
-    ======================================== */
+   UPDATE FIRESTORE DOCUMENT
+======================================== */
 
-    movies[index] = {
+const updatedMovie = {
 
-        ...movies[index],
+    id: movies[index].id,
 
-        id:
-            movies[index].id,
+    title: title,
 
-        title:
-            title,
+    poster: finalPoster,
 
-        poster:
-            finalPoster,
+    description: description,
 
-        description:
-            description,
+    year: String(year),
 
-        year:
-            String(year),
+    genre: genre,
 
-        genre:
-            genre,
+    rating: rating,
 
-        rating:
-            rating,
+    video: video,
 
-        video:
-            video,
+    download: download
 
-        download:
-            download
+};
 
-    };
+await setDoc(
+
+    doc(
+
+        db,
+
+        "movies",
+
+        editingMovieId
+
+    ),
+
+    updatedMovie
+
+);
 
 
     /* ========================================
        REMOVE DUPLICATE IDs
        KEEP FIRST MOVIE ONLY
     ======================================== */
-
-    const seenIds =
-        new Set();
-
-
-    movies =
-        movies.filter(function(movie) {
-
-            const movieId =
-                String(movie.id);
-
-
-            if (
-                seenIds.has(movieId)
-            ) {
-
-                return false;
-
-            }
-
-
-            seenIds.add(
-                movieId
-            );
-
-
-            return true;
-
-        });
-
-
-    /* ========================================
-       SAVE MOVIES
-    ======================================== */
-
-    localStorage.setItem(
-
-        "crazymovieMovies",
-
-        JSON.stringify(
-            movies
-        )
-
-    );
 
 
     /* ========================================
@@ -2290,76 +2315,64 @@ function updateMovie() {
 }
 
 /* ========================================
-   PUBLISH NEW MOVIE
+   PUBLISH NEW MOVIE TO FIREBASE
+   DOCUMENT ID = MOVIE ID
 ======================================== */
 
 async function publishMovie() {
 
-
     const title =
-        document.getElementById(
-            "movieTitle"
-        ).value.trim();
-
+        document.getElementById("movieTitle")
+        .value
+        .trim();
 
     const poster =
-    selectedPosterImage;
-
+        selectedPosterImage;
 
     const description =
-        document.getElementById(
-            "movieDescription"
-        ).value.trim();
-
+        document.getElementById("movieDescription")
+        .value
+        .trim();
 
     const year =
-        document.getElementById(
-            "movieYear"
-        ).value.trim();
-
+        document.getElementById("movieYear")
+        .value
+        .trim();
 
     const genre =
-        document.getElementById(
-            "movieGenre"
-        ).value.trim();
-
+        document.getElementById("movieGenre")
+        .value
+        .trim();
 
     const rating =
-        document.getElementById(
-            "movieRating"
-        ).value.trim();
-
+        document.getElementById("movieRating")
+        .value
+        .trim();
 
     const video =
-        document.getElementById(
-            "movieVideo"
-        ).value.trim();
-
+        document.getElementById("movieVideo")
+        .value
+        .trim();
 
     const download =
-        document.getElementById(
-            "movieDownload"
-        ).value.trim();
+        document.getElementById("movieDownload")
+        .value
+        .trim();
 
+
+    /* ========================================
+       VALIDATION
+    ======================================== */
 
     if (
-
         !title ||
-
         !poster ||
-
         !description ||
-
         !year ||
-
         !genre ||
-
         !rating ||
-
         !video ||
-
         !download
-
     ) {
 
         alert(
@@ -2371,14 +2384,22 @@ async function publishMovie() {
     }
 
 
-    let movies =
-        getMovies();
+    /* ========================================
+       CREATE UNIQUE MOVIE ID
+    ======================================== */
 
+    const movieId =
+        String(Date.now());
+
+
+    /* ========================================
+       CREATE MOVIE OBJECT
+    ======================================== */
 
     const newMovie = {
 
         id:
-            Date.now(),
+            movieId,
 
         title:
             title,
@@ -2390,7 +2411,7 @@ async function publishMovie() {
             description,
 
         year:
-            year,
+            String(year),
 
         genre:
             genre,
@@ -2407,49 +2428,66 @@ async function publishMovie() {
     };
 
 
-    movies.push(
-        newMovie
-    );
+    try {
 
-try {
+        /* ========================================
+           SAVE USING MOVIE ID AS DOCUMENT ID
+        ======================================== */
 
-    await addDoc(
-        collection(db, "movies"),
-        newMovie
-    );
+        await setDoc(
 
-    console.log("✅ Movie saved to Firestore");
+            doc(
+                db,
+                "movies",
+                movieId
+            ),
 
-} catch (error) {
+            newMovie
 
-    console.error("❌ Firestore Error:", error);
-
-    alert("Failed to save movie to Firestore.");
-
-    return;
-
-}
-
-    localStorage.setItem(
-
-        "crazymovieMovies",
-
-        JSON.stringify(
-            movies
-        )
-
-    );
+        );
 
 
-    alert(
-        "🎬 Movie Published Successfully!"
-    );
+        console.log(
+            "✅ Movie saved to Firestore:",
+            movieId
+        );
 
 
-    clearMovieForm();
+        alert(
+            "🎬 Movie Published Successfully!"
+        );
 
 
-    showPublishedMovies();
+        /* ========================================
+           CLEAR FORM
+        ======================================== */
+
+        clearMovieForm();
+
+
+console.log("✅ Reloading published movies...");
+
+        /* ========================================
+           RELOAD MOVIES FROM FIREBASE
+        ======================================== */
+
+        await showPublishedMovies();
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Firestore Publish Error:",
+            error
+        );
+
+
+        alert(
+            "Failed to publish movie to Firebase: " +
+            error.message
+        );
+
+    }
 
 }
 
@@ -3442,28 +3480,73 @@ showPublishedMovies();
    DELETE MOVIE
 ======================================== */
 
-function deleteMovie(movieId) {
+/* ========================================
+   DELETE MOVIE FROM FIREBASE
+======================================== */
 
-    if (!confirm("Are you sure you want to delete this movie?")) {
+async function deleteMovie(movieId) {
+
+    console.log("🗑️ Delete requested for ID:", movieId);
+
+    if (
+        !confirm(
+            "Are you sure you want to delete this movie?"
+        )
+    ) {
         return;
     }
 
-    let movies = getMovies();
+    try {
 
-    movies = movies.filter(function(movie) {
+        console.log(
+            "🔥 Deleting Firestore document:",
+            movieId
+        );
 
-        return String(movie.id) !== String(movieId);
+        await deleteDoc(
+            doc(
+                db,
+                "movies",
+                movieId
+            )
+        );
 
-    });
+        console.log(
+            "✅ Movie deleted from Firestore!"
+        );
 
-    localStorage.setItem(
-        "crazymovieMovies",
-        JSON.stringify(movies)
-    );
+        alert(
+            "🗑️ Movie deleted successfully!"
+        );
 
-    alert("🗑️ Movie deleted successfully!");
+        await showPublishedMovies();
 
-    showPublishedMovies();
+    } catch (error) {
+
+        console.error(
+            "❌ FIREBASE DELETE ERROR"
+        );
+
+        console.error(
+            error
+        );
+
+        console.error(
+            "Error Code:",
+            error.code
+        );
+
+        console.error(
+            "Error Message:",
+            error.message
+        );
+
+        alert(
+            "Firebase Delete Error: " +
+            error.message
+        );
+
+    }
 
 }
 
@@ -3487,62 +3570,8 @@ function adminLogout() {
 
 }
 
-/* ========================================
-   CLEAR MOVIE FORM
-======================================== */
-
-function clearMovieForm() {
-
-    document.getElementById("movieTitle").value = "";
-
-    document.getElementById("movieDescription").value = "";
-
-    document.getElementById("movieYear").value = "";
-
-    document.getElementById("movieGenre").value = "";
-
-    document.getElementById("movieRating").value = "";
-
-    document.getElementById("movieVideo").value = "";
-
-    document.getElementById("movieDownload").value = "";
-
-
-    selectedPosterImage = "";
-
-
-    const preview =
-        document.getElementById("posterPreview");
-
-
-    if (preview) {
-
-        preview.src = "";
-
-        preview.style.display = "none";
-
-    }
-
-
-    document.getElementById("moviePosterFile").value = "";
-
-}
 
 </script>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    updateDoc,
-    deleteDoc,
-    doc
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 const firebaseConfig = {
@@ -3574,11 +3603,18 @@ const db =
 window.addDoc = addDoc;
 window.collection = collection;
 
+window.getDocs = getDocs;
+window.doc = doc;
+window.deleteDoc = deleteDoc;
+window.setDoc = setDoc;
+
 console.log(
     "🔥 Firebase Connected Successfully!"
 );
 
 </script>
+
+<script type="module" src="admin.js"></script>
 
 </body>
 

@@ -45,11 +45,11 @@ nav a:hover {
 
     background-image:
     linear-gradient(
-        rgba(0,0,0,0.5),
-        rgba(0,0,0,0.5)
+        rgba(0,0,0,0.55),
+        rgba(0,0,0,0.55)
     ),
-    url("./assets/images/hero.jpg");
-
+    url("./assets/images/hero.jpg?v=2")
+    
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -2277,3 +2277,20 @@ nav a:hover {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.1);
 }
+
+/* ========================================
+   DESKTOP HERO FIX
+======================================== */
+
+@media (min-width: 1024px) {
+
+    .hero {
+
+        min-height: 700px;
+
+        background-position: center center;
+
+    }
+
+}
+
