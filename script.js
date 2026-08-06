@@ -566,8 +566,10 @@ async function loadPublishedMovies() {
         moviesSnapshot.forEach(
             function(doc) {
 
-                const movie =
-                    doc.data();
+                const movie = {
+    id: doc.id,
+    ...doc.data()
+};
 
 
                 const movieCard =
@@ -614,23 +616,9 @@ async function loadPublishedMovies() {
 
                 // Open Movie Details
 
-                movieCard.addEventListener(
-    "click",
-    function() {
-
-        openMovie(
-            movie.title,
-            movie.video || "",
-            movie.download || "",
-            movie.poster || "",
-            movie.description || "",
-            movie.year || "",
-            movie.genre || "",
-            movie.rating || ""
-        );
-
-    }
-);
+                movieCard.addEventListener("click", function () {
+    window.location.href = `movie.html?id=${movie.id}`;
+});
 
 
                 dynamicMovies.appendChild(
