@@ -166,6 +166,7 @@ function openMovie(
         modal.style.display =
             "flex";
 
+window.location.href = "movie.html";
 
         console.log(
             "🎬 Firebase Movie Opened:",
