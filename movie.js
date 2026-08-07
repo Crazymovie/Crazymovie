@@ -62,13 +62,24 @@ async function loadMovie() {
             movie.description || "";
 
         document.getElementById("movieRating").innerText =
-            "⭐ IMDb : " + (movie.rating || "N/A");
+movie.rating || "N/A";
 
         document.getElementById("movieYear").innerText =
-            "📅 Year : " + (movie.year || "N/A");
+movie.year || "N/A";
 
         document.getElementById("movieGenre").innerText =
-            "🎭 Genre : " + (movie.genre || "N/A");
+movie.genre || "N/A";
+
+document.getElementById("movieLanguage").innerText =
+movie.language || "N/A";
+
+
+document.getElementById("movieQuality").innerText =
+movie.quality || "N/A";
+
+
+document.getElementById("movieDuration").innerText =
+movie.duration || "N/A";
 
 
 document

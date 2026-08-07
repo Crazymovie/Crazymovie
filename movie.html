@@ -17,6 +17,21 @@
 
 <header>
 
+<!-- ========================================
+        MOVIE HERO BANNER
+======================================== -->
+
+<section class="movie-hero">
+
+    <img
+        id="heroBanner"
+        src=""
+        alt="Movie Banner">
+
+    <div class="hero-overlay"></div>
+
+</section>
+
 <div class="logo">
 🎬 Crazymovie
 </div>
@@ -35,6 +50,16 @@
 
 <section class="movie-details">
 
+<!-- ========================================
+        TOP AD
+======================================== -->
+
+<div class="top-ad">
+
+    Top Advertisement
+
+</div>
+
 <div class="movie-container">
 
 <div class="movie-poster">
@@ -45,29 +70,162 @@
 
 <div class="movie-content">
 
-<h1 id="movieTitle">Loading...</h1>
+<h1 id="movieTitle">
 
-<p id="movieRating"></p>
+    Loading...
 
-<p id="movieYear"></p>
+</h1>
 
-<p id="movieGenre"></p>
+<div class="movie-info-row">
 
-<p id="movieDescription"></p>
+    <span>
 
-<div class="ad-box">
+        ⭐ IMDb:
+        <strong id="movieRating">0.0</strong>
 
-Advertisement
+    </span>
+
+    <span>
+
+        📅
+        <strong id="movieYear">2025</strong>
+
+    </span>
+
+    <span>
+
+        🎭
+        <strong id="movieGenre">Action</strong>
+
+    </span>
 
 </div>
 
-<button id="downloadButton">
+<div class="movie-info-row">
 
-⬇ Download Movie
+    <span>
 
-</button>
+        🌎
+        <strong id="movieLanguage">English</strong>
+
+    </span>
+
+    <span>
+
+        🎞️
+        <strong id="movieQuality">HD</strong>
+
+    </span>
+
+    <span>
+
+        ⏱️
+        <strong id="movieDuration">2h 00m</strong>
+
+    </span>
 
 </div>
+
+<p id="movieDescription">
+
+    Loading Description...
+
+</p>
+
+<div class="movie-action-buttons">
+
+<!-- ========================================
+        MIDDLE AD
+======================================== -->
+
+<div class="middle-ad">
+
+    Middle Advertisement
+
+</div>
+
+    <button id="watchButton"
+        class="watch-btn">
+
+        ▶ Watch Now
+
+    </button>
+
+    <button id="downloadButton"
+        class="download-btn">
+
+        ⬇ Download
+
+    </button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================
+        SCREENSHOT GALLERY
+======================================== -->
+
+<div class="screenshots-section">
+
+    <h2>
+
+        📸 Screenshots
+
+    </h2>
+
+    <div class="screenshots-grid">
+
+        <img id="screenshot1"
+            src=""
+            alt="Screenshot 1">
+
+        <img id="screenshot2"
+            src=""
+            alt="Screenshot 2">
+
+        <img id="screenshot3"
+            src=""
+            alt="Screenshot 3">
+
+        <img id="screenshot4"
+            src=""
+            alt="Screenshot 4">
+
+    </div>
+
+</div>
+
+<!-- ========================================
+        RELATED MOVIES
+======================================== -->
+
+<div class="related-movies-section">
+
+<!-- ========================================
+        BOTTOM AD
+======================================== -->
+
+<div class="bottom-ad">
+
+    Bottom Advertisement
+
+</div>
+
+    <h2>
+
+        🎬 Related Movies
+
+    </h2>
+
+    <div id="relatedMoviesGrid"
+        class="related-movies-grid">
+
+        <!-- movie.js automatically load -->
+
+    </div>
 
 </div>
 

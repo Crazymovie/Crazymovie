@@ -1112,6 +1112,32 @@ onchange="previewPosterImage(event)"
         placeholder="Download URL"
     >
 
+    <input
+    type="text"
+    id="movieBanner"
+    placeholder="Movie Banner URL"
+>
+
+
+<input
+    type="text"
+    id="movieLanguage"
+    placeholder="Language"
+>
+
+
+<input
+    type="text"
+    id="movieQuality"
+    placeholder="Quality (1080p / 720p)"
+>
+
+
+<input
+    type="text"
+    id="movieDuration"
+    placeholder="Duration (2h 30m)"
+>
 
     <button
         id="publishButton"
@@ -2359,6 +2385,28 @@ async function publishMovie() {
         .value
         .trim();
 
+const banner =
+    document.getElementById("movieBanner")
+    .value
+    .trim();
+
+
+const language =
+    document.getElementById("movieLanguage")
+    .value
+    .trim();
+
+
+const quality =
+    document.getElementById("movieQuality")
+    .value
+    .trim();
+
+
+const duration =
+    document.getElementById("movieDuration")
+    .value
+    .trim();
 
     /* ========================================
        VALIDATION
@@ -2423,7 +2471,19 @@ async function publishMovie() {
             video,
 
         download:
-            download
+            download,
+
+    banner:
+        banner,
+
+    language:
+        language,
+
+    quality:
+        quality,
+
+    duration:
+        duration,
 
     };
 
