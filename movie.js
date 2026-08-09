@@ -52,8 +52,17 @@ async function loadMovie() {
 
         const movie = movieSnap.data();
 
-        document.getElementById("moviePoster").src =
-            movie.poster || "";
+document.getElementById("heroBanner").src =
+    movie.banner || "";
+
+document.getElementById("moviePoster").src =
+    movie.poster || "";
+
+document.getElementById("heroBanner").src =
+    movie.banner || "";
+
+            document.getElementById("heroBanner").src =
+    movie.banner || "";
 
         document.getElementById("movieTitle").innerText =
             movie.title || "";
