@@ -69,6 +69,11 @@ console.log("🔥 Firebase Connected Successfully!");
 window.db = db;
 window.moviesRef = moviesRef;
 
+window.storage = storage;
+window.ref = ref;
+window.uploadBytes = uploadBytes;
+window.getDownloadURL = getDownloadURL;
+
 window.collection = collection;
 window.doc = doc;
 
