@@ -2332,6 +2332,22 @@ const screenshot3 =
 const screenshot4 =
     document.getElementById("movieScreenshot4").value.trim();
 
+// ========================================
+// KEEP OLD SCREENSHOT IF NEW ONE IS EMPTY
+// ========================================
+
+const finalScreenshot1 =
+    screenshot1 || oldScreenshot1;
+
+const finalScreenshot2 =
+    screenshot2 || oldScreenshot2;
+
+const finalScreenshot3 =
+    screenshot3 || oldScreenshot3;
+
+const finalScreenshot4 =
+    screenshot4 || oldScreenshot4;
+
     /* ========================================
    UPDATE FIRESTORE DOCUMENT
 ======================================== */
