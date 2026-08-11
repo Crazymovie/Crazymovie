@@ -55,6 +55,8 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+const storage = getStorage(app);
+
 // Collection
 const moviesRef = collection(db, "movies");
 
