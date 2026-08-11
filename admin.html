@@ -2424,6 +2424,46 @@ await setDoc(
    DOCUMENT ID = MOVIE ID
 ======================================== */
 
+// ========================================
+// UPLOAD MOVIE SCREENSHOT
+// ========================================
+
+async function uploadMovieScreenshot(file, movieId, number) {
+
+    if (!file) {
+        return "";
+    }
+
+    const storageRef = window.ref(
+        window.storage,
+        "movie-screenshots/" +
+        movieId +
+        "/screenshot-" +
+        number
+    );
+
+    await window.uploadBytes(
+        storageRef,
+        file
+    );
+
+    const downloadURL =
+        await window.getDownloadURL(
+            storageRef
+        );
+
+    return downloadURL;
+}
+
+
+// ========================================
+// PUBLISH MOVIE
+// ========================================
+
+async function publishMovie() {
+
+    // তোমার existing publishMovie code এখানে থাকবে
+
 async function publishMovie() {
 
     const title =
