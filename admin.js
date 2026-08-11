@@ -77,3 +77,20 @@ window.where = where;
 
 
 let selectedPosterImage = "";
+
+window.cancelEdit = function () {
+
+    editingMovieId = null;
+
+    selectedPosterImage = "";
+
+    clearMovieForm();
+
+};
+
+document.getElementById(
+    "cancelEditButton"
+).addEventListener(
+    "click",
+    window.cancelEdit
+);
