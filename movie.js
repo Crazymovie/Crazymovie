@@ -177,6 +177,31 @@ async function loadMovie() {
             movie.duration || "N/A";
 
 
+// ========================================
+// MOVIE SCREENSHOTS
+// ========================================
+
+document.getElementById(
+    "screenshot1"
+).src =
+    movie.screenshot1 || "";
+
+document.getElementById(
+    "screenshot2"
+).src =
+    movie.screenshot2 || "";
+
+document.getElementById(
+    "screenshot3"
+).src =
+    movie.screenshot3 || "";
+
+document.getElementById(
+    "screenshot4"
+).src =
+    movie.screenshot4 || "";
+
+
         // ================================
         // WATCH NOW
         // WATCH = COMING SOON
