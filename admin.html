@@ -2558,6 +2558,62 @@ const duration =
     const movieId =
         String(Date.now());
 
+// ========================================
+// GET SCREENSHOT FILES
+// ========================================
+
+const screenshot1 =
+    document.getElementById(
+        "movieScreenshot1"
+    ).files[0];
+
+const screenshot2 =
+    document.getElementById(
+        "movieScreenshot2"
+    ).files[0];
+
+const screenshot3 =
+    document.getElementById(
+        "movieScreenshot3"
+    ).files[0];
+
+const screenshot4 =
+    document.getElementById(
+        "movieScreenshot4"
+    ).files[0];
+
+
+// ========================================
+// UPLOAD SCREENSHOTS
+// ========================================
+
+const screenshot1URL =
+    await uploadMovieScreenshot(
+        screenshot1,
+        movieId,
+        1
+    );
+
+const screenshot2URL =
+    await uploadMovieScreenshot(
+        screenshot2,
+        movieId,
+        2
+    );
+
+const screenshot3URL =
+    await uploadMovieScreenshot(
+        screenshot3,
+        movieId,
+        3
+    );
+
+const screenshot4URL =
+    await uploadMovieScreenshot(
+        screenshot4,
+        movieId,
+        4
+    );
 
     /* ========================================
        CREATE MOVIE OBJECT
