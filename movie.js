@@ -6,13 +6,18 @@ import {
     getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
+// ================================
+// FIREBASE CONFIG
+// ================================
+
 const firebaseConfig = {
-  apiKey: "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
-  authDomain: "crazymovie-4a2ae.firebaseapp.com",
-  projectId: "crazymovie-4a2ae",
-  storageBucket: "crazymovie-4a2ae.firebasestorage.app",
-  messagingSenderId: "1025439382279",
-  appId: "1:1025439382279:web:2380f84d57e302bed023a2"
+    apiKey: "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
+    authDomain: "crazymovie-4a2ae.firebaseapp.com",
+    projectId: "crazymovie-4a2ae",
+    storageBucket: "crazymovie-4a2ae.firebasestorage.app",
+    messagingSenderId: "1025439382279",
+    appId: "1:1025439382279:web:2380f84d57e302bed023a2"
 };
 
 
@@ -20,9 +25,17 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-const params = new URLSearchParams(window.location.search);
+
+// ================================
+// GET MOVIE ID FROM URL
+// ================================
+
+const params = new URLSearchParams(
+    window.location.search
+);
 
 const movieId = params.get("id");
+
 
 if (!movieId) {
 
@@ -32,13 +45,25 @@ if (!movieId) {
 
 }
 
+
+// ================================
+// LOAD MOVIE
+// ================================
+
 async function loadMovie() {
 
     try {
 
-        const movieRef = doc(db, "movies", movieId);
+        const movieRef = doc(
+            db,
+            "movies",
+            movieId
+        );
 
-        const movieSnap = await getDoc(movieRef);
+        const movieSnap = await getDoc(
+            movieRef
+        );
+
 
         if (!movieSnap.exists()) {
 
@@ -50,66 +75,185 @@ async function loadMovie() {
 
         }
 
+
         const movie = movieSnap.data();
 
-document.getElementById("heroBanner").src =
-    movie.banner || "";
 
-document.getElementById("moviePoster").src =
-    movie.poster || "";
+        // ================================
+        // MOVIE HERO BANNER
+        // ================================
 
-document.getElementById("heroBanner").src =
-    movie.banner || "";
+        document.getElementById(
+            "heroBanner"
+        ).src = movie.banner || "";
 
-            document.getElementById("heroBanner").src =
-    movie.banner || "";
 
-        document.getElementById("movieTitle").innerText =
+        // ================================
+        // MOVIE POSTER
+        // ================================
+
+        document.getElementById(
+            "moviePoster"
+        ).src = movie.poster || "";
+
+
+        // ================================
+        // MOVIE TITLE
+        // ================================
+
+        document.getElementById(
+            "movieTitle"
+        ).innerText =
             movie.title || "";
 
-        document.getElementById("movieDescription").innerText =
+
+        // ================================
+        // DESCRIPTION
+        // ================================
+
+        document.getElementById(
+            "movieDescription"
+        ).innerText =
             movie.description || "";
 
-        document.getElementById("movieRating").innerText =
-movie.rating || "N/A";
 
-        document.getElementById("movieYear").innerText =
-movie.year || "N/A";
+        // ================================
+        // RATING
+        // ================================
 
-        document.getElementById("movieGenre").innerText =
-movie.genre || "N/A";
-
-document.getElementById("movieLanguage").innerText =
-movie.language || "N/A";
+        document.getElementById(
+            "movieRating"
+        ).innerText =
+            movie.rating || "N/A";
 
 
-document.getElementById("movieQuality").innerText =
-movie.quality || "N/A";
+        // ================================
+        // YEAR
+        // ================================
+
+        document.getElementById(
+            "movieYear"
+        ).innerText =
+            movie.year || "N/A";
 
 
-document.getElementById("movieDuration").innerText =
-movie.duration || "N/A";
+        // ================================
+        // GENRE
+        // ================================
+
+        document.getElementById(
+            "movieGenre"
+        ).innerText =
+            movie.genre || "N/A";
 
 
-document
-    .getElementById("downloadButton")
-    .addEventListener("click", function () {
+        // ================================
+        // LANGUAGE
+        // ================================
 
-        window.location.href =
-            "download.html?id=" + movieId;
+        document.getElementById(
+            "movieLanguage"
+        ).innerText =
+            movie.language || "N/A";
 
-    });
+
+        // ================================
+        // QUALITY
+        // ================================
+
+        document.getElementById(
+            "movieQuality"
+        ).innerText =
+            movie.quality || "N/A";
+
+
+        // ================================
+        // DURATION
+        // ================================
+
+        document.getElementById(
+            "movieDuration"
+        ).innerText =
+            movie.duration || "N/A";
+
+
+        // ================================
+        // WATCH NOW
+        // WATCH = COMING SOON
+        // ================================
+
+        const watchButton =
+            document.getElementById(
+                "watchButton"
+            );
+
+
+        if (watchButton) {
+
+            watchButton.addEventListener(
+                "click",
+                function () {
+
+                    alert(
+                        "🎬 Watch feature is Coming Soon!"
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ================================
+        // DOWNLOAD BUTTON
+        // ================================
+
+        const downloadButton =
+            document.getElementById(
+                "downloadButton"
+            );
+
+
+        if (downloadButton) {
+
+            downloadButton.addEventListener(
+                "click",
+                function () {
+
+                    window.location.href =
+                        "download.html?id=" +
+                        movieId;
+
+                }
+            );
+
+        }
+
+
+        console.log(
+            "🎬 Movie Loaded Successfully:",
+            movie.title
+        );
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "❌ Failed to load movie:",
+            error
+        );
 
-        alert("Failed to load movie.");
+        alert(
+            "Failed to load movie."
+        );
 
     }
 
 }
 
+
+// ================================
+// START
+// ================================
 
 loadMovie();
