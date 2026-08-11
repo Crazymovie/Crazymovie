@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Download Movie - Crazymovie</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header>
+
+    <div class="logo">
+        🎬 Crazymovie
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="#">
+            Movies
+        </a>
+
+        <a href="#">
+            Trending
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ========================================
+     DOWNLOAD PAGE
+======================================== -->
+
+<section class="download-page">
+
+
+    <!-- TOP AD -->
+
+    <div class="top-ad">
+
+        Top Advertisement
+
+    </div>
+
+
+
+    <!-- MOVIE DOWNLOAD CONTAINER -->
+
+    <div class="download-container">
+
+
+        <!-- MOVIE POSTER -->
+
+        <div class="download-poster">
+
+            <img
+                id="downloadPoster"
+                src=""
+                alt="Movie Poster"
+            >
+
+        </div>
+
+
+
+        <!-- MOVIE INFORMATION -->
+
+        <div class="download-content">
+
+
+            <h1 id="downloadTitle">
+                Loading...
+            </h1>
+
+
+            <div class="movie-info-row">
+
+                <span>
+
+                    ⭐ IMDb:
+                    <strong id="downloadRating">
+                        N/A
+                    </strong>
+
+                </span>
+
+
+                <span>
+
+                    📅
+                    <strong id="downloadYear">
+                        N/A
+                    </strong>
+
+                </span>
+
+
+                <span>
+
+                    🎭
+                    <strong id="downloadGenre">
+                        N/A
+                    </strong>
+
+                </span>
+
+            </div>
+
+
+
+            <p id="downloadDescription">
+
+                Loading movie information...
+
+            </p>
+
+
+
+            <!-- MIDDLE AD -->
+
+            <div class="middle-ad">
+
+                Advertisement
+
+            </div>
+
+
+
+            <!-- DOWNLOAD BUTTON -->
+
+            <button
+                id="directDownloadButton"
+                class="download-btn"
+            >
+
+                ⬇ Download Movie
+
+            </button>
+
+
+
+            <!-- WATCH COMING SOON -->
+
+            <button
+                id="comingSoonButton"
+                class="watch-btn"
+            >
+
+                ▶ Watch — Coming Soon
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- BOTTOM AD -->
+
+    <div class="bottom-ad">
+
+        Bottom Advertisement
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ========================================
+     FIREBASE SCRIPT
+======================================== -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+import {
+    getFirestore,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
+// ========================================
+// FIREBASE CONFIG
+// ========================================
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
+
+    authDomain:
+        "crazymovie-4a2ae.firebaseapp.com",
+
+    projectId:
+        "crazymovie-4a2ae",
+
+    storageBucket:
+        "crazymovie-4a2ae.firebasestorage.app",
+
+    messagingSenderId:
+        "1025439382279",
+
+    appId:
+        "1:1025439382279:web:2380f84d57e302bed023a2"
+
+};
+
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const db =
+    getFirestore(app);
+
+
+
+// ========================================
+// GET MOVIE ID
+// ========================================
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const movieId =
+    params.get("id");
+
+
+
+if (!movieId) {
+
+    alert("Movie not found.");
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+
+// ========================================
+// LOAD MOVIE
+// ========================================
+
+async function loadDownloadPage() {
+
+    try {
+
+
+        const movieRef =
+            doc(
+                db,
+                "movies",
+                movieId
+            );
+
+
+        const movieSnap =
+            await getDoc(
+                movieRef
+            );
+
+
+
+        if (!movieSnap.exists()) {
+
+            alert("Movie not found.");
+
+            window.location.href =
+                "index.html";
+
+            return;
+
+        }
+
+
+
+        const movie =
+            movieSnap.data();
+
+
+
+        // ========================================
+        // MOVIE POSTER
+        // ========================================
+
+        document.getElementById(
+            "downloadPoster"
+        ).src =
+            movie.poster || "";
+
+
+
+        // ========================================
+        // TITLE
+        // ========================================
+
+        document.getElementById(
+            "downloadTitle"
+        ).innerText =
+            movie.title || "Movie";
+
+
+
+        // ========================================
+        // RATING
+        // ========================================
+
+        document.getElementById(
+            "downloadRating"
+        ).innerText =
+            movie.rating || "N/A";
+
+
+
+        // ========================================
+        // YEAR
+        // ========================================
+
+        document.getElementById(
+            "downloadYear"
+        ).innerText =
+            movie.year || "N/A";
+
+
+
+        // ========================================
+        // GENRE
+        // ========================================
+
+        document.getElementById(
+            "downloadGenre"
+        ).innerText =
+            movie.genre || "N/A";
+
+
+
+        // ========================================
+        // DESCRIPTION
+        // ========================================
+
+        document.getElementById(
+            "downloadDescription"
+        ).innerText =
+            movie.description ||
+            "No description available.";
+
+
+
+        // ========================================
+        // DOWNLOAD BUTTON
+        // ========================================
+
+        const downloadButton =
+            document.getElementById(
+                "directDownloadButton"
+            );
+
+
+        downloadButton.addEventListener(
+            "click",
+            function () {
+
+
+                if (!movie.download) {
+
+                    alert(
+                        "Download link is not available yet."
+                    );
+
+                    return;
+
+                }
+
+
+                window.open(
+                    movie.download,
+                    "_blank"
+                );
+
+
+            }
+        );
+
+
+
+        // ========================================
+        // WATCH COMING SOON
+        // ========================================
+
+        const comingSoonButton =
+            document.getElementById(
+                "comingSoonButton"
+            );
+
+
+        comingSoonButton.addEventListener(
+            "click",
+            function () {
+
+                alert(
+                    "🎬 Watch feature is Coming Soon!"
+                );
+
+            }
+        );
+
+
+
+        console.log(
+            "🔥 Download Page Loaded:",
+            movie.title
+        );
+
+
+    } catch (error) {
+
+
+        console.error(
+            "❌ Download Page Error:",
+            error
+        );
+
+
+        alert(
+            "Failed to load movie."
+        );
+
+    }
+
+}
+
+
+
+// ========================================
+// START
+// ========================================
+
+loadDownloadPage();
+
+</script>
+
+
+</body>
+
+</html>
