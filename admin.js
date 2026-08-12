@@ -107,3 +107,5 @@ document.getElementById(
     "click",
     window.cancelEdit
 );
+
+window.showPublishedMovies = showPublishedMovies;
