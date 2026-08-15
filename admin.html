@@ -950,6 +950,28 @@ body {
 
 }
 
+.current-screenshot-preview {
+    display: none;
+    margin: 10px 0 18px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+}
+
+.current-screenshot-preview.show {
+    display: block;
+}
+
+.current-screenshot-preview img {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    max-height: 240px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
 </style>
 
 </head>
@@ -1147,28 +1169,35 @@ onchange="previewPosterImage(event)"
     type="file"
     id="movieScreenshot1"
     accept="image/*"
->
+onchange="previewNewScreenshot(event, 1)"
+    >
 
+<div id="currentScreenshot1Preview" class="current-screenshot-preview"></div>
 
 <input
     type="file"
     id="movieScreenshot2"
     accept="image/*"
->
-
+onchange="previewNewScreenshot(event, 2)"
+    >
+<div id="currentScreenshot2Preview" class="current-screenshot-preview"></div>
 
 <input
     type="file"
     id="movieScreenshot3"
     accept="image/*"
->
+onchange="previewNewScreenshot(event, 3)"
+    >
+<div id="currentScreenshot3Preview" class="current-screenshot-preview"></div>
 
 
 <input
     type="file"
     id="movieScreenshot4"
     accept="image/*"
->
+onchange="previewNewScreenshot(event, 4)"
+    >
+<div id="currentScreenshot4Preview" class="current-screenshot-preview"></div>
 
     <button
         id="publishButton"
@@ -1707,9 +1736,9 @@ async function getMovies() {
         const snapshot =
             await getDocs(
                 collection(
-                    db,
-                    "movies"
-                )
+    window.db,
+    "movies"
+)
             );
 
         const movies = [];
@@ -1973,7 +2002,7 @@ async function showPublishedMovies() {
                     <button
                         class="edit-button"
                         onclick="editMovie('${movie.id}')"
-                        "
+                    
                     >
 
                         ✏️ Edit
@@ -1984,7 +2013,7 @@ async function showPublishedMovies() {
                     <button
                         class="delete-button"
                         onclick="deleteMovie('${movie.id}')"
-                        "
+                    
                     >
 
                         🗑️ Delete
@@ -2011,6 +2040,70 @@ window.showPublishedMovies = showPublishedMovies;
 /* ========================================
    EDIT MOVIE
 ======================================== */
+
+function showCurrentScreenshotPreview(
+    previewId,
+    imageUrl
+) {
+    const preview =
+        document.getElementById(previewId);
+
+    if (!preview) {
+        return;
+    }
+
+    if (!imageUrl) {
+        preview.innerHTML = "";
+        preview.classList.remove("show");
+        return;
+    }
+
+    preview.innerHTML = `
+        <img
+            src="${imageUrl}"
+            alt="Current Screenshot"
+        >
+    `;
+
+    preview.classList.add("show");
+}
+
+function previewNewScreenshot(event, screenshotNumber) {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const preview = document.getElementById(
+        "currentScreenshot" + screenshotNumber + "Preview"
+    );
+
+    if (!preview) {
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        preview.innerHTML = `
+            <div style="color:#4ade80; font-size:13px; margin-bottom:8px;">
+                ✅ New Screenshot Selected
+            </div>
+
+            <img
+                src="${e.target.result}"
+                alt="New Screenshot"
+            >
+        `;
+
+        preview.classList.add("show");
+    };
+
+    reader.readAsDataURL(file);
+}
 
 async function editMovie(movieId) {
 
@@ -2117,6 +2210,26 @@ document.getElementById(
     "movieDuration"
 ).value =
     movie.duration || "";
+
+showCurrentScreenshotPreview(
+    "currentScreenshot1Preview",
+    movie.screenshot1 || ""
+);
+
+showCurrentScreenshotPreview(
+    "currentScreenshot2Preview",
+    movie.screenshot2 || ""
+);
+
+showCurrentScreenshotPreview(
+    "currentScreenshot3Preview",
+    movie.screenshot3 || ""
+);
+
+showCurrentScreenshotPreview(
+    "currentScreenshot4Preview",
+    movie.screenshot4 || ""
+);
 
     document.getElementById(
         "formTitle"
@@ -2330,33 +2443,75 @@ const oldScreenshot4 =
 // NEW SCREENSHOTS
 // ========================================
 
-const screenshot1 =
-    document.getElementById("movieScreenshot1").value.trim();
+const screenshot1File =
+    document.getElementById(
+        "movieScreenshot1"
+    ).files[0];
 
-const screenshot2 =
-    document.getElementById("movieScreenshot2").value.trim();
+const screenshot2File =
+    document.getElementById(
+        "movieScreenshot2"
+    ).files[0];
 
-const screenshot3 =
-    document.getElementById("movieScreenshot3").value.trim();
+const screenshot3File =
+    document.getElementById(
+        "movieScreenshot3"
+    ).files[0];
 
-const screenshot4 =
-    document.getElementById("movieScreenshot4").value.trim();
+const screenshot4File =
+    document.getElementById(
+        "movieScreenshot4"
+    ).files[0];
+
+
+// ========================================
+// UPLOAD NEW SCREENSHOTS
+// ========================================
+
+const screenshot1URL =
+    await uploadMovieScreenshot(
+        screenshot1File,
+        editingMovieId,
+        1
+    );
+
+const screenshot2URL =
+    await uploadMovieScreenshot(
+        screenshot2File,
+        editingMovieId,
+        2
+    );
+
+const screenshot3URL =
+    await uploadMovieScreenshot(
+        screenshot3File,
+        editingMovieId,
+        3
+    );
+
+const screenshot4URL =
+    await uploadMovieScreenshot(
+        screenshot4File,
+        editingMovieId,
+        4
+    );
+
 
 // ========================================
 // KEEP OLD SCREENSHOT IF NEW ONE IS EMPTY
 // ========================================
 
 const finalScreenshot1 =
-    screenshot1 || oldScreenshot1;
+    screenshot1URL || oldScreenshot1;
 
 const finalScreenshot2 =
-    screenshot2 || oldScreenshot2;
+    screenshot2URL || oldScreenshot2;
 
 const finalScreenshot3 =
-    screenshot3 || oldScreenshot3;
+    screenshot3URL || oldScreenshot3;
 
 const finalScreenshot4 =
-    screenshot4 || oldScreenshot4;
+    screenshot4URL || oldScreenshot4;
 
     /* ========================================
    UPDATE FIRESTORE DOCUMENT
@@ -2403,14 +2558,10 @@ screenshot4: finalScreenshot4,
 await setDoc(
 
     doc(
-
-        db,
-
-        "movies",
-
-        editingMovieId
-
-    ),
+    window.db,
+    "movies",
+    editingMovieId
+) ,
 
     updatedMovie
 
@@ -2480,7 +2631,7 @@ await setDoc(
        REFRESH MOVIE LIST
     ======================================== */
 
-    showPublishedMovies();
+
 
 }
 
@@ -2490,7 +2641,7 @@ await setDoc(
 ======================================== */
 
 // ========================================
-// UPLOAD MOVIE SCREENSHOT
+// UPLOAD MOVIE SCREENSHOT TO CLOUDINARY
 // ========================================
 
 async function uploadMovieScreenshot(file, movieId, number) {
@@ -2499,35 +2650,55 @@ async function uploadMovieScreenshot(file, movieId, number) {
         return "";
     }
 
-    const storageRef = window.ref(
-        window.storage,
-        "movie-screenshots/" +
-        movieId +
-        "/screenshot-" +
-        number
-    );
+    const formData =
+        new FormData();
 
-    await window.uploadBytes(
-        storageRef,
+    formData.append(
+        "file",
         file
     );
 
-    const downloadURL =
-        await window.getDownloadURL(
-            storageRef
+    formData.append(
+        "upload_preset",
+        "crazymovie_screenshots"
+    );
+
+    formData.append(
+        "folder",
+        "crazymovie/movie-screenshots/" + movieId
+    );
+
+
+    const response =
+        await fetch(
+            "https://api.cloudinary.com/v1_1/zbkv00ru/image/upload",
+            {
+                method: "POST",
+                body: formData
+            }
         );
 
-    return downloadURL;
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Cloudinary screenshot upload failed."
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    return data.secure_url;
 }
 
 
 // ========================================
 // PUBLISH MOVIE
 // ========================================
-
-async function publishMovie() {
-
-    // তোমার existing publishMovie code এখানে থাকবে
 
 async function publishMovie() {
 
@@ -2747,21 +2918,21 @@ console.log(
 
     try {
 
-        /* ========================================
-           SAVE USING MOVIE ID AS DOCUMENT ID
-        ======================================== */
+       /* ========================================
+   SAVE USING MOVIE ID AS DOCUMENT ID
+======================================== */
 
-        await setDoc(
+await setDoc(
 
-            doc(
-                db,
-                "movies",
-                movieId
-            ),
+    doc(
+        window.db,
+        "movies",
+        movieId
+    ),
 
-            newMovie
+    newMovie
 
-        );
+);
 
 
         console.log(
@@ -3821,12 +3992,12 @@ async function deleteMovie(movieId) {
         );
 
         await deleteDoc(
-            doc(
-                db,
-                "movies",
-                movieId
-            )
-        );
+    doc(
+        window.db,
+        "movies",
+        movieId
+    )
+);
 
         console.log(
             "✅ Movie deleted from Firestore!"
@@ -3890,6 +4061,7 @@ function adminLogout() {
 
 </script>
 
+<script>
 
 const firebaseConfig = {
 

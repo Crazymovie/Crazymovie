@@ -108,4 +108,3 @@ document.getElementById(
     window.cancelEdit
 );
 
-window.showPublishedMovies = showPublishedMovies;

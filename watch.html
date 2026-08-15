@@ -604,14 +604,100 @@ rel="stylesheet"
      VIDEO PLAYER
 ======================================== -->
 
-<div class="video-player">
+/* ========================================
+   COMING SOON WATCH PLAYER
+======================================== */
 
+.coming-soon-player {
+
+    min-height: 420px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #151515,
+            #0b0b0b
+        );
+
+    border-radius: 14px;
+
+    margin: 25px auto;
+
+    max-width: 1000px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 10px 35px
+        rgba(0,0,0,0.45);
+
+}
+
+
+.coming-soon-content {
+
+    padding: 40px 20px;
+
+}
+
+
+.coming-soon-icon {
+
+    font-size: 65px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.coming-soon-content h2 {
+
+    font-size: 32px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.coming-soon-content p {
+
+    font-size: 16px;
+
+    color: #ddd;
+
+    margin-bottom: 8px;
+
+}
+
+
+.coming-soon-content span {
+
+    font-size: 14px;
+
+    color: #888;
+
+}
+
+<div class="video-player coming-soon-player">
+
+    <!-- Hidden video element kept for existing JavaScript compatibility -->
     <video
         id="movieVideo"
         controls
         playsinline
         preload="metadata"
         width="100%"
+        style="display: none;"
     >
 
         <source
@@ -620,10 +706,25 @@ rel="stylesheet"
             type="video/mp4"
         >
 
-        Your browser does not support
-        the video tag.
-
     </video>
+
+    <div class="coming-soon-content">
+
+        <div class="coming-soon-icon">
+            🎬
+        </div>
+
+        <h2>Coming Soon</h2>
+
+        <p>
+            Watch feature is currently being prepared.
+        </p>
+
+        <span>
+            Please check back soon.
+        </span>
+
+    </div>
 
 </div>
 
@@ -773,14 +874,11 @@ rel="stylesheet"
 
 
     <a
-        id="downloadButton"
-        href="#"
-        download
-    >
-
-        ⬇️ Download Movie
-
-    </a>
+    id="downloadButton"
+    href="download.html"
+>
+    ⬇️ Download Movie
+</a>
 
 
 </div>
@@ -1469,70 +1567,17 @@ if (
 // ========================================
 
 // ========================================
-// SET VIDEO + DOWNLOAD
+// WATCH PAGE — COMING SOON
 // ========================================
 
-const finalVideoPath =
+// Video feature is temporarily unavailable.
+// Watch Page will show Coming Soon.
 
-savedVideoPath
-
-||
-
-(
-    currentMovie
-    ?
-    currentMovie.video
-    :
-    ""
-);
-
-
-const finalDownloadPath =
-
-currentMovie
-    ?
-    (
-        currentMovie.download ||
-        currentMovie.video ||
-        ""
-    )
-    :
-    "";
-
-
-if (
-    finalVideoPath
-) {
-
-    videoSource.src =
-        finalVideoPath;
-
-    movieVideo.load();
-
-}
-
-
-// ========================================
-// SET DOWNLOAD URL
-// ========================================
-
-if (
-    finalDownloadPath
-) {
+// Download button goes to Download Page.
+if (downloadButton) {
 
     downloadButton.href =
-        finalDownloadPath;
-
-    downloadButton.setAttribute(
-
-        "download",
-
-        (
-            movieName ||
-            "movie"
-        ) + ".mp4"
-
-    );
+        "download.html";
 
 }
 

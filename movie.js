@@ -203,30 +203,29 @@ document.getElementById(
 
 
         // ================================
-        // WATCH NOW
-        // WATCH = COMING SOON
-        // ================================
+// WATCH NOW
+// OPEN WATCH PAGE
+// ================================
 
-        const watchButton =
-            document.getElementById(
-                "watchButton"
-            );
+const watchButton =
+    document.getElementById(
+        "watchButton"
+    );
 
 
-        if (watchButton) {
+if (watchButton) {
 
-            watchButton.addEventListener(
-                "click",
-                function () {
+    watchButton.addEventListener(
+        "click",
+        function () {
 
-                    alert(
-                        "🎬 Watch feature is Coming Soon!"
-                    );
-
-                }
-            );
+            window.location.href =
+                "watch.html";
 
         }
+    );
+
+}
 
 
         // ================================
