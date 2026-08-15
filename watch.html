@@ -20,6 +20,49 @@ rel="stylesheet"
 <style>
 
 /* ========================================
+   COMING SOON WATCH PLAYER
+======================================== */
+
+.coming-soon-player {
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #151515, #0b0b0b);
+    border-radius: 14px;
+    margin: 25px auto;
+    max-width: 1000px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.45);
+}
+
+.coming-soon-content {
+    padding: 40px 20px;
+}
+
+.coming-soon-icon {
+    font-size: 65px;
+    margin-bottom: 15px;
+}
+
+.coming-soon-content h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.coming-soon-content p {
+    font-size: 16px;
+    color: #ddd;
+    margin-bottom: 8px;
+}
+
+.coming-soon-content span {
+    font-size: 14px;
+    color: #888;
+}
+
+/* ========================================
    WATCH MOVIE POSTER
 ======================================== */
 
@@ -604,89 +647,6 @@ rel="stylesheet"
      VIDEO PLAYER
 ======================================== -->
 
-/* ========================================
-   COMING SOON WATCH PLAYER
-======================================== */
-
-.coming-soon-player {
-
-    min-height: 420px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #151515,
-            #0b0b0b
-        );
-
-    border-radius: 14px;
-
-    margin: 25px auto;
-
-    max-width: 1000px;
-
-    border:
-        1px solid
-        rgba(255,255,255,0.08);
-
-    box-shadow:
-        0 10px 35px
-        rgba(0,0,0,0.45);
-
-}
-
-
-.coming-soon-content {
-
-    padding: 40px 20px;
-
-}
-
-
-.coming-soon-icon {
-
-    font-size: 65px;
-
-    margin-bottom: 15px;
-
-}
-
-
-.coming-soon-content h2 {
-
-    font-size: 32px;
-
-    margin-bottom: 12px;
-
-}
-
-
-.coming-soon-content p {
-
-    font-size: 16px;
-
-    color: #ddd;
-
-    margin-bottom: 8px;
-
-}
-
-
-.coming-soon-content span {
-
-    font-size: 14px;
-
-    color: #888;
-
-}
 
 <div class="video-player coming-soon-player">
 
@@ -1580,45 +1540,6 @@ if (downloadButton) {
         "download.html";
 
 }
-
-
-
-if (
-    finalVideoPath
-) {
-
-
-    videoSource.src =
-
-    finalVideoPath;
-
-
-
-    movieVideo.load();
-
-
-
-    downloadButton.href =
-
-    finalVideoPath;
-
-
-
-    downloadButton.setAttribute(
-
-        "download",
-
-        (
-            movieName ||
-            "movie"
-        ) +
-
-        ".mp4"
-
-    );
-
-}
-
 
 
 // ========================================
