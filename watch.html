@@ -833,7 +833,7 @@ rel="stylesheet"
     </p>
 
 
-    <a
+   <a
     id="downloadButton"
     href="download.html"
 >
@@ -1537,7 +1537,8 @@ if (
 if (downloadButton) {
 
     downloadButton.href =
-        "download.html";
+        "download.html?movie=" +
+        encodeURIComponent(movieName);
 
 }
 

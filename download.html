@@ -165,20 +165,6 @@
 
             </button>
 
-
-
-            <!-- WATCH COMING SOON -->
-
-            <button
-                id="comingSoonButton"
-                class="watch-btn"
-            >
-
-                ▶ Watch — Coming Soon
-
-            </button>
-
-
         </div>
 
     </div>
@@ -256,6 +242,7 @@ const db =
 
 // ========================================
 // GET MOVIE ID
+// SUPPORT BOTH ?id= AND ?movie=
 // ========================================
 
 const params =
@@ -264,8 +251,26 @@ const params =
     );
 
 
-const movieId =
+// First try ?id=
+let movieId =
     params.get("id");
+
+
+// If ?id= is not available,
+// try ?movie=
+if (!movieId) {
+
+    movieId =
+        params.get("movie");
+
+}
+
+
+// Debug
+console.log(
+    "🎬 Download Page Movie ID:",
+    movieId
+);
 
 
 
@@ -429,24 +434,6 @@ async function loadDownloadPage() {
         // ========================================
         // WATCH COMING SOON
         // ========================================
-
-        const comingSoonButton =
-            document.getElementById(
-                "comingSoonButton"
-            );
-
-
-        comingSoonButton.addEventListener(
-            "click",
-            function () {
-
-                alert(
-                    "🎬 Watch feature is Coming Soon!"
-                );
-
-            }
-        );
-
 
 
         console.log(

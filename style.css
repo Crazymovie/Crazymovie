@@ -506,15 +506,11 @@ nav a:hover {
     }
 
 }
-/* Featured Hero Banner */
+/* ========================================
+   FEATURED HERO BANNER
+======================================== */
 
 .hero {
-    position: relative;
-    min-height: 550px;
-    display: flex;
-    align-items: center;
-    padding: 60px 5%;
-   .hero {
     position: relative;
     min-height: 550px;
     display: flex;
@@ -2342,4 +2338,176 @@ body::before {
 
     z-index: -1;
     pointer-events: none;
+}
+
+/* ========================================
+   DOWNLOAD PAGE
+======================================== */
+
+.download-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
+
+.top-ad,
+.middle-ad,
+.bottom-ad {
+    width: 100%;
+    min-height: 90px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+
+    color: #777;
+    font-size: 14px;
+
+    margin-bottom: 30px;
+}
+
+.download-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 35px;
+
+    background: #111;
+    border-radius: 14px;
+
+    padding: 30px;
+
+    border: 1px solid #222;
+}
+
+.download-poster {
+    width: 100%;
+}
+
+.download-poster img {
+    width: 100%;
+    max-width: 260px;
+    height: 380px;
+
+    object-fit: cover;
+
+    display: block;
+
+    border-radius: 10px;
+}
+
+.download-content h1 {
+    margin: 0 0 18px;
+
+    font-size: 32px;
+    line-height: 1.2;
+}
+
+.movie-info-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.movie-info-row span {
+    background: #1b1b1b;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+}
+
+.download-content p {
+    color: #bbb;
+
+    line-height: 1.7;
+
+    margin-bottom: 25px;
+}
+
+.middle-ad {
+    margin: 25px 0;
+}
+
+.download-btn,
+.watch-btn {
+    width: 100%;
+
+    border: none;
+
+    padding: 14px 20px;
+
+    border-radius: 8px;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    margin-top: 10px;
+}
+
+.download-btn {
+    background: #e50914;
+    color: #fff;
+}
+
+.watch-btn {
+    background: #222;
+    color: #fff;
+}
+
+.bottom-ad {
+    margin-top: 30px;
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .download-page {
+        padding: 20px 15px 40px;
+    }
+
+    .download-container {
+        grid-template-columns: 1fr;
+
+        gap: 25px;
+
+        padding: 20px;
+    }
+
+    .download-poster {
+        text-align: center;
+    }
+
+    .download-poster img {
+        margin: 0 auto;
+
+        max-width: 220px;
+        height: 320px;
+    }
+
+    .download-content h1 {
+        font-size: 25px;
+    }
+
+    .movie-info-row {
+        gap: 8px;
+    }
+
 }
