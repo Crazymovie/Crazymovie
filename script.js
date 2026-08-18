@@ -137,20 +137,20 @@ function openMovie(
             (ratingOverride || "");
 
 
-        // Save selected movie
+       // Save selected movie
 
-        localStorage.setItem(
-            "selectedMovie",
-            movieName
-        );
+localStorage.setItem(
+    "selectedMovie",
+    movieName
+);
 
 
-        // Save video URL
+// Save video URL
 
-        localStorage.setItem(
-            "selectedVideo",
-            videoOverride || ""
-        );
+localStorage.setItem(
+    "selectedVideo",
+    videoOverride || ""
+);
 
 
         // Save download URL
