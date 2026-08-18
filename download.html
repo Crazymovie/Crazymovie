@@ -241,8 +241,7 @@ const db =
 
 
 // ========================================
-// GET MOVIE ID
-// SUPPORT BOTH ?id= AND ?movie=
+// GET MOVIE ID FROM URL
 // ========================================
 
 const params =
@@ -250,20 +249,8 @@ const params =
         window.location.search
     );
 
-
-// First try ?id=
-let movieId =
+const movieId =
     params.get("id");
-
-
-// If ?id= is not available,
-// try ?movie=
-if (!movieId) {
-
-    movieId =
-        params.get("movie");
-
-}
 
 
 // Debug

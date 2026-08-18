@@ -1,301 +1,56 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+import {
+    getFirestore,
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// ========================================
+// FIREBASE CONFIG
+// ========================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
-  authDomain: "crazymovie-4a2ae.firebaseapp.com",
-  projectId: "crazymovie-4a2ae",
-  storageBucket: "crazymovie-4a2ae.firebasestorage.app",
-  messagingSenderId: "1025439382279",
-  appId: "1:1025439382279:web:2380f84d57e302bed023a2"
+
+    apiKey:
+        "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
+
+    authDomain:
+        "crazymovie-4a2ae.firebaseapp.com",
+
+    projectId:
+        "crazymovie-4a2ae",
+
+    storageBucket:
+        "crazymovie-4a2ae.firebasestorage.app",
+
+    messagingSenderId:
+        "1025439382279",
+
+    appId:
+        "1:1025439382279:web:2380f84d57e302bed023a2"
+
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+    initializeApp(firebaseConfig);
 
-const db = getFirestore(app);
-
-console.log("🔥 Index Firebase Connected!");
-
-
-console.log("Welcome to Crazymovie");
+const db =
+    getFirestore(app);
 
 
-// ================================
-// MOVIE DATA
-// ================================
-
-const movieData = {};
-
-
-// ================================
-// HERO WATCH BUTTON
-// ================================
-
-function watchMovie() {
-
-    alert("No movie available yet. Please check back soon.");
-
-}
-
-
-// ================================
-// OPEN MOVIE DETAILS
-// ================================
-
-function openMovie(
-    movieName,
-    videoOverride,
-    downloadOverride,
-    posterOverride,
-    descriptionOverride,
-    yearOverride,
-    genreOverride,
-    ratingOverride
-) {
-
-    const modal =
-        document.getElementById(
-            "movieModal"
-        );
-
-
-    const title =
-        document.getElementById(
-            "modalTitle"
-        );
-
-
-    const description =
-        document.getElementById(
-            "modalDescription"
-        );
-
-
-    const poster =
-        document.getElementById(
-            "modalPoster"
-        );
-
-
-    const year =
-        document.getElementById(
-            "modalYear"
-        );
-
-
-    const genre =
-        document.getElementById(
-            "modalGenre"
-        );
-
-
-    const rating =
-        document.getElementById(
-            "modalRating"
-        );
-
-
-    // ================================
-    // FIREBASE MOVIE
-    // ================================
-
-    if (
-        videoOverride ||
-        posterOverride ||
-        descriptionOverride ||
-        yearOverride ||
-        genreOverride ||
-        ratingOverride
-    ) {
-
-        title.innerText =
-            movieName;
-
-
-        description.innerText =
-            descriptionOverride || "";
-
-
-        poster.src =
-            posterOverride || "";
-
-
-        year.innerText =
-            "📅 Year: " +
-            (yearOverride || "");
-
-
-        genre.innerText =
-            "🎭 Genre: " +
-            (genreOverride || "");
-
-
-        rating.innerText =
-            "⭐ Rating: " +
-            (ratingOverride || "");
-
-
-       // Save selected movie
-
-localStorage.setItem(
-    "selectedMovie",
-    movieName
+console.log(
+    "🔥 Index Firebase Connected!"
 );
 
 
-// Save video URL
-
-localStorage.setItem(
-    "selectedVideo",
-    videoOverride || ""
-);
-
-
-        // Save download URL
-
-        localStorage.setItem(
-            "selectedDownload",
-            downloadOverride || ""
-        );
-
-
-        // Open modal
-
-        modal.style.display =
-            "flex";
-
-window.location.href = "movie.html";
-
-        console.log(
-            "🎬 Firebase Movie Opened:",
-            movieName
-        );
-
-
-        return;
-
-    }
-
-
-    // ================================
-    // OLD / NORMAL MOVIE DATA
-    // ================================
-
-    const movie =
-        movieData[movieName];
-
-
-    if (!movie) {
-
-        console.log(
-            "Movie not found:",
-            movieName
-        );
-
-        return;
-
-    }
-
-
-    title.innerText =
-        movieName;
-
-
-    description.innerText =
-        movie.description;
-
-
-    poster.src =
-        movie.poster;
-
-
-    year.innerText =
-        "📅 Year: " +
-        movie.year;
-
-
-    genre.innerText =
-        "🎭 Genre: " +
-        movie.genre;
-
-
-    rating.innerText =
-        "⭐ Rating: " +
-        movie.rating;
-
-
-    localStorage.setItem(
-        "selectedMovie",
-        movieName
-    );
-
-
-    localStorage.setItem(
-        "selectedVideo",
-        videoOverride ||
-        movie.video
-    );
-
-
-    localStorage.setItem(
-        "selectedDownload",
-        movie.download || ""
-    );
-
-
-    modal.style.display =
-        "flex";
-
-}
-
-
-// ================================
-// WATCH NOW BUTTON
-// ================================
-
-function watchNow() {
-
-    const selectedMovie =
-        localStorage.getItem("selectedMovie");
-
-    const selectedVideo =
-        localStorage.getItem("selectedVideo");
-
-    const selectedDownload =
-        localStorage.getItem("selectedDownload");
-
-
-    if (!selectedMovie) {
-
-        alert("Movie not selected.");
-
-        return;
-
-    }
-
-
-    console.log("🎬 Opening Watch Page");
-
-    console.log("Movie:", selectedMovie);
-
-    console.log("Video:", selectedVideo);
-
-    console.log("Download:", selectedDownload);
-
-
-    window.location.href = "watch.html";
-
-}
-
-
-// ================================
+// ========================================
 // SEARCH + FILTER
-// ================================
+// ========================================
 
-let selectedCategory =
-    "All";
+let selectedCategory = "All";
 
 
 function applyAllFilters() {
@@ -352,7 +107,9 @@ function applyAllFilters() {
 
 
             if (!titleElement) {
+
                 return;
+
             }
 
 
@@ -361,60 +118,21 @@ function applyAllFilters() {
                 .trim();
 
 
-            let movie =
-                movieData[movieName];
+            const movieGenre =
+                card.getAttribute(
+                    "data-genre"
+                ) || "";
 
 
-            // Check Admin Movie
-
-            if (!movie) {
-
-                const publishedMovies =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "crazymovieMovies"
-                        )
-                    ) || [];
+            const movieYear =
+                card.getAttribute(
+                    "data-year"
+                ) || "";
 
 
-                const publishedMovie =
-                    publishedMovies.find(
-                        function(item) {
-
-                            return item.title ===
-                                movieName;
-
-                        }
-                    );
-
-
-                if (publishedMovie) {
-
-                    movie = {
-
-                        genre:
-                            publishedMovie.genre,
-
-                        year:
-                            String(
-                                publishedMovie.year
-                            )
-
-                    };
-
-                }
-
-            }
-
-
-            if (!movie) {
-
-                return;
-
-            }
-
-
-            // Search Match
+            // ================================
+            // SEARCH MATCH
+            // ================================
 
             const searchMatch =
                 movieName
@@ -424,11 +142,13 @@ function applyAllFilters() {
                 );
 
 
-            // Category Match
+            // ================================
+            // CATEGORY MATCH
+            // ================================
 
             const categoryMatch =
                 selectedCategory === "All" ||
-                movie.genre
+                movieGenre
                 .toLowerCase()
                 .includes(
                     selectedCategory
@@ -436,11 +156,13 @@ function applyAllFilters() {
                 );
 
 
-            // Genre Match
+            // ================================
+            // GENRE MATCH
+            // ================================
 
             const genreMatch =
                 selectedGenre === "all" ||
-                movie.genre
+                movieGenre
                 .toLowerCase()
                 .includes(
                     selectedGenre
@@ -448,13 +170,19 @@ function applyAllFilters() {
                 );
 
 
-            // Year Match
+            // ================================
+            // YEAR MATCH
+            // ================================
 
             const yearMatch =
                 selectedYear === "all" ||
-                String(movie.year) ===
-                    selectedYear;
+                String(movieYear) ===
+                    String(selectedYear);
 
+
+            // ================================
+            // SHOW / HIDE
+            // ================================
 
             if (
                 searchMatch &&
@@ -479,9 +207,9 @@ function applyAllFilters() {
 }
 
 
-// ================================
+// ========================================
 // SEARCH MOVIES
-// ================================
+// ========================================
 
 function searchMovies() {
 
@@ -490,9 +218,9 @@ function searchMovies() {
 }
 
 
-// ================================
+// ========================================
 // CATEGORY FILTER
-// ================================
+// ========================================
 
 function filterMovies(category) {
 
@@ -504,9 +232,9 @@ function filterMovies(category) {
 }
 
 
-// ================================
-// LOAD ADMIN PUBLISHED MOVIES FROM FIREBASE
-// ================================
+// ========================================
+// LOAD MOVIES FROM FIREBASE
+// ========================================
 
 async function loadPublishedMovies() {
 
@@ -525,7 +253,9 @@ async function loadPublishedMovies() {
 
     try {
 
-        // Get Movies Collection From Firebase
+        // ========================================
+        // GET MOVIES FROM FIRESTORE
+        // ========================================
 
         const moviesSnapshot =
             await getDocs(
@@ -536,13 +266,17 @@ async function loadPublishedMovies() {
             );
 
 
-        // Clear Existing Movies
+        // ========================================
+        // CLEAR OLD MOVIES
+        // ========================================
 
         dynamicMovies.innerHTML =
             "";
 
 
-        // Check If No Movies
+        // ========================================
+        // NO MOVIES
+        // ========================================
 
         if (moviesSnapshot.empty) {
 
@@ -562,16 +296,26 @@ async function loadPublishedMovies() {
         }
 
 
-        // Load Every Movie
+        // ========================================
+        // LOAD EACH MOVIE
+        // ========================================
 
         moviesSnapshot.forEach(
-            function(doc) {
+            function(movieDoc) {
 
                 const movie = {
-    id: doc.id,
-    ...doc.data()
-};
 
+                    id:
+                        movieDoc.id,
+
+                    ...movieDoc.data()
+
+                };
+
+
+                // ========================================
+                // MOVIE CARD
+                // ========================================
 
                 const movieCard =
                     document.createElement(
@@ -615,11 +359,22 @@ async function loadPublishedMovies() {
                 `;
 
 
-                // Open Movie Details
+                // ========================================
+                // OPEN MOVIE DETAILS
+                // ========================================
 
-                movieCard.addEventListener("click", function () {
-    window.location.href = `movie.html?id=${movie.id}`;
-});
+                movieCard.addEventListener(
+                    "click",
+                    function() {
+
+                        window.location.href =
+                            "movie.html?id=" +
+                            encodeURIComponent(
+                                movie.id
+                            );
+
+                    }
+                );
 
 
                 dynamicMovies.appendChild(
@@ -633,6 +388,20 @@ async function loadPublishedMovies() {
         console.log(
             "🔥 Firebase Movies Loaded Successfully!"
         );
+
+
+        // ========================================
+        // CREATE YEAR FILTER
+        // ========================================
+
+        populateYearFilter();
+
+
+        // ========================================
+        // APPLY INITIAL FILTERS
+        // ========================================
+
+        applyAllFilters();
 
 
     } catch (error) {
@@ -659,13 +428,113 @@ async function loadPublishedMovies() {
 }
 
 
-// ================================
-// GENRE FILTER
-// ================================
+// ========================================
+// YEAR FILTER
+// ========================================
+
+function populateYearFilter() {
+
+    const yearFilter =
+        document.getElementById(
+            "yearFilter"
+        );
+
+
+    if (!yearFilter) {
+
+        return;
+
+    }
+
+
+    const movieCards =
+        document.querySelectorAll(
+            ".movie-card"
+        );
+
+
+    const years =
+        new Set();
+
+
+    movieCards.forEach(
+        function(card) {
+
+            const year =
+                card.getAttribute(
+                    "data-year"
+                );
+
+
+            if (year) {
+
+                years.add(
+                    String(year)
+                );
+
+            }
+
+        }
+    );
+
+
+    const sortedYears =
+        Array.from(years)
+            .sort(
+                function(a, b) {
+
+                    return Number(b) -
+                        Number(a);
+
+                }
+            );
+
+
+    yearFilter.innerHTML = `
+        <option value="all">
+            All Years
+        </option>
+    `;
+
+
+    sortedYears.forEach(
+        function(year) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                year;
+
+
+            option.textContent =
+                year;
+
+
+            yearFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// PAGE READY
+// ========================================
 
 document.addEventListener(
     "DOMContentLoaded",
     function() {
+
+        // ========================================
+        // GENRE FILTER
+        // ========================================
 
         const genreFilter =
             document.getElementById(
@@ -683,6 +552,10 @@ document.addEventListener(
         }
 
 
+        // ========================================
+        // YEAR FILTER
+        // ========================================
+
         const yearFilter =
             document.getElementById(
                 "yearFilter"
@@ -699,96 +572,11 @@ document.addEventListener(
         }
 
 
-        // Load Admin Movies
+        // ========================================
+        // LOAD FIREBASE MOVIES
+        // ========================================
 
         loadPublishedMovies();
 
     }
 );
-
-
-// ================================
-// CLOSE MODAL BY CLICKING OUTSIDE
-// ================================
-
-window.addEventListener(
-    "click",
-    function(event) {
-
-        const movieModal =
-            document.getElementById(
-                "movieModal"
-            );
-
-
-        if (
-            event.target ===
-            movieModal
-        ) {
-
-            movieModal.style.display =
-                "none";
-
-        }
-
-    }
-);
-
-
-// ================================
-// CLOSE MODAL WITH ESC
-// ================================
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key ===
-            "Escape"
-        ) {
-
-            const modal =
-                document.getElementById(
-                    "movieModal"
-                );
-
-
-            if (
-                modal &&
-                modal.style.display ===
-                "flex"
-            ) {
-
-                modal.style.display =
-                    "none";
-
-            }
-
-        }
-
-    }
-);
-
-
-// ================================
-// CLOSE MOVIE MODAL
-// ================================
-
-function closeMovieModal() {
-
-    const modal =
-        document.getElementById(
-            "movieModal"
-        );
-
-
-    if (modal) {
-
-        modal.style.display =
-            "none";
-
-    }
-
-}
-

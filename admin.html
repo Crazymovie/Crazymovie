@@ -1134,13 +1134,6 @@ onchange="previewPosterImage(event)"
         placeholder="Download URL"
     >
 
-    <input
-    type="text"
-    id="movieBanner"
-    placeholder="Movie Banner URL"
->
-
-
 <input
     type="text"
     id="movieLanguage"
@@ -1818,61 +1811,80 @@ async function showPublishedMovies() {
 
 
     /* ========================================
-       CREATE YEAR OPTIONS
-    ======================================== */
+   CREATE YEAR OPTIONS
+======================================== */
 
-    if (yearFilter) {
+if (yearFilter) {
 
-        const years =
-    [...new Set(
-        movies
-            .map(function(movie) {
-                return String(movie.year || "").trim();
-            })
-            .filter(function(year) {
-                return year !== "";
-            })
-    )]
-    .sort(function(a, b) {
-        return Number(b) - Number(a);
-    });
+    const years =
+        [...new Set(
 
+            movies
+                .map(function(movie) {
 
-        yearFilter.innerHTML = `
+                    return String(
+                        movie.year ||
+                        movie.releaseYear ||
+                        movie.releaseyear ||
+                        ""
+                    ).trim();
 
-            <option value="">
-                📅 All Years
-            </option>
+                })
 
-        `;
+                .filter(function(year) {
 
+                    return year !== "";
 
-        years.forEach(function(year) {
+                })
 
-            const option =
-                document.createElement(
-                    "option"
-                );
+        )]
 
-            option.value =
-                year;
+        .sort(function(a, b) {
 
-            option.textContent =
-                "📅 " + year;
-
-            yearFilter.appendChild(
-                option
-            );
+            return Number(b) -
+                Number(a);
 
         });
 
 
-        /* Restore selected year */
+    yearFilter.innerHTML = `
 
-        yearFilter.value =
-            selectedYear;
+        <option value="">
+            📅 All Years
+        </option>
 
-    }
+    `;
+
+
+    years.forEach(function(year) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value =
+            year;
+
+
+        option.textContent =
+            "📅 " + year;
+
+
+        yearFilter.appendChild(
+            option
+        );
+
+    });
+
+
+    /* Restore selected year */
+
+    yearFilter.value =
+        selectedYear;
+
+}
 
 
     /* ========================================
@@ -4104,6 +4116,12 @@ console.log(
 </script>
 
 <script type="module" src="admin.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    showPublishedMovies();
+});
+</script>
 
 </body>
 

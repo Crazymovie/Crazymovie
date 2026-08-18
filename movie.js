@@ -12,7 +12,7 @@ import {
 // ================================
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
+    apiKey: "AIzaSyC3Xo0-GVs2ldLqUO54n7FBSdWlPPdoxsc",
     authDomain: "crazymovie-4a2ae.firebaseapp.com",
     projectId: "crazymovie-4a2ae",
     storageBucket: "crazymovie-4a2ae.firebasestorage.app",
@@ -79,13 +79,19 @@ async function loadMovie() {
         const movie = movieSnap.data();
 
 
-        // ================================
-        // MOVIE HERO BANNER
-        // ================================
+       // ================================
+// MOVIE HERO BANNER
+// ================================
 
-        document.getElementById(
-            "heroBanner"
-        ).src = movie.banner || "";
+const heroBanner =
+    document.getElementById("heroBanner");
+
+if (heroBanner) {
+
+    heroBanner.src =
+        movie.banner || "";
+
+}
 
 
         // ================================
@@ -177,7 +183,7 @@ async function loadMovie() {
             movie.duration || "N/A";
 
 
-// ========================================
+    // ========================================
 // MOVIE SCREENSHOTS
 // ========================================
 
@@ -201,33 +207,6 @@ document.getElementById(
 ).src =
     movie.screenshot4 || "";
 
-
-        // ================================
-// WATCH NOW
-// OPEN WATCH PAGE
-// ================================
-
-const watchButton =
-    document.getElementById(
-        "watchButton"
-    );
-
-
-if (watchButton) {
-
-    watchButton.addEventListener(
-        "click",
-        function () {
-
-            window.location.href =
-                "watch.html";
-
-        }
-    );
-
-}
-
-
         // ================================
         // DOWNLOAD BUTTON
         // ================================
@@ -246,7 +225,7 @@ if (watchButton) {
 
                     window.location.href =
                         "download.html?id=" +
-                        movieId;
+                        encodeURIComponent(movieId);
 
                 }
             );

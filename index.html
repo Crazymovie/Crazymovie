@@ -1,138 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Crazymovie</title>
 
 <link rel="stylesheet" href="style.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-</
-
-
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
 >
+
+</head>
+
+
 <body>
+
+
+<!-- ========================================
+     HEADER
+======================================== -->
 
 <header>
 
-<div class="logo">
-🎬 Crazymovie
-</div>
+    <div class="logo">
+        🎬 Crazymovie
+    </div>
 
-<nav>
-<a href="#">Home</a>
-<a href="#">Movies</a>
-<a href="#">TV Series</a>
-<a href="#">Trending</a>
-<a href="#">Contact</a>
-</nav>
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="#">
+            Movies
+        </a>
+
+        <a href="#">
+            TV Series
+        </a>
+
+        <a href="#">
+            Trending
+        </a>
+
+        <a href="#">
+            Contact
+        </a>
+
+    </nav>
 
 </header>
+
+
+
+<!-- ========================================
+     HERO
+======================================== -->
 
 <section class="hero">
 
     <div class="hero-content">
 
-        <span class="hero-badge">🔥 #1 Trending Movie</span>
+        <span class="hero-badge">
+            🔥 #1 Trending Movie
+        </span>
 
-        <h1>Watch Amazing Movies</h1>
+
+        <h1>
+            Download Amazing Movies
+        </h1>
+
 
         <p>
-            Enjoy your favorite movies anytime.
-            Stream high-quality movies and discover new adventures.
+            Discover your favorite movies and
+            download them in high quality.
         </p>
 
-        <div class="hero-buttons">
-
-            <button class="watch-btn" onclick="watchMovie()">
-                ▶ Watch Now
-            </button>
-
-            <button class="info-btn" onclick="alert('No movie available yet. Please check back soon.')">
-    ℹ More Info
-</button>
-
-        </div>
 
     </div>
 
 </section>
 
+
+
+<!-- ========================================
+     MOVIES
+======================================== -->
+
 <section class="movies">
 
-    <h2>🔥 Trending Movies</h2>
+
+    <h2>
+        🔥 Trending Movies
+    </h2>
+
+
+
+    <!-- SEARCH + FILTER -->
 
     <div class="search-box">
-<div class="filter-container">
-
-    <select id="genreFilter">
-        <option value="all">All Genres</option>
-        <option value="action">Action</option>
-        <option value="comedy">Comedy</option>
-        <option value="horror">Horror</option>
-        <option value="romance">Romance</option>
-        <option value="sci-fi">Sci-Fi</option>
-    </select>
-
-    
-
-    <select id="yearFilter">
-    <option value="all">All Years</option>
 
 
-</select>
+        <div class="filter-container">
 
-</div>
-        <input 
-            type="text" 
-            id="searchInput" 
+
+            <select id="genreFilter">
+
+                <option value="all">
+                    All Genres
+                </option>
+
+                <option value="action">
+                    Action
+                </option>
+
+                <option value="comedy">
+                    Comedy
+                </option>
+
+                <option value="horror">
+                    Horror
+                </option>
+
+                <option value="romance">
+                    Romance
+                </option>
+
+                <option value="sci-fi">
+                    Sci-Fi
+                </option>
+
+            </select>
+
+
+
+            <select id="yearFilter">
+
+                <option value="all">
+                    All Years
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+
+        <input
+            type="text"
+            id="searchInput"
             placeholder="🔍 Search movies..."
             onkeyup="searchMovies()"
         >
 
+
     </div>
-<div class="category-buttons">
-
-    <button onclick="filterMovies('All')">
-        🎬 All
-    </button>
-
-    <button onclick="filterMovies('Action')">
-        ⚡ Action
-    </button>
-
-    <button onclick="filterMovies('Adventure')">
-        🗺️ Adventure
-    </button>
-
-    <button onclick="filterMovies('Sci-Fi')">
-        🚀 Sci-Fi
-    </button>
-
-    <button onclick="filterMovies('Drama')">
-        🎭 Drama
-    </button>
-
-    <button onclick="filterMovies('Romance')">
-        ❤️ Romance
-    </button>
-
-</div>
 
 
-<!-- ADMIN PUBLISHED MOVIES -->
 
-<div id="dynamicMovies" class="movie-grid">
-</div>
+    <!-- ========================================
+         CATEGORY BUTTONS
+    ======================================== -->
+
+    <div class="category-buttons">
+
+
+        <button onclick="filterMovies('All')">
+            🎬 All
+        </button>
+
+
+        <button onclick="filterMovies('Action')">
+            ⚡ Action
+        </button>
+
+
+        <button onclick="filterMovies('Adventure')">
+            🗺️ Adventure
+        </button>
+
+
+        <button onclick="filterMovies('Sci-Fi')">
+            🚀 Sci-Fi
+        </button>
+
+
+        <button onclick="filterMovies('Drama')">
+            🎭 Drama
+        </button>
+
+
+        <button onclick="filterMovies('Romance')">
+            ❤️ Romance
+        </button>
+
+
+    </div>
+
+
+
+    <!-- ========================================
+         ADMIN PUBLISHED MOVIES
+    ======================================== -->
+
+    <div
+        id="dynamicMovies"
+        class="movie-grid"
+    >
+    </div>
+
 
 </section>
 
 
-<script type="module" src="script.js"></script>
+
+<!-- ========================================
+     SCRIPT
+======================================== -->
+
+<script
+    type="module"
+    src="script.js"
+></script>
 
 
 </body>
+
 </html>
-    
