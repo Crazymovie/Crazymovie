@@ -1128,10 +1128,33 @@ onchange="previewPosterImage(event)"
     >
 
 
-    <input
-        type="text"
-        id="movieDownload"
-        placeholder="Download URL"
+    <!-- ========================================
+     DOWNLOAD LINKS
+======================================== -->
+
+<input
+    type="text"
+    id="movieDownload1"
+    placeholder="Google Drive Download Link 1"
+>
+
+<input
+    type="text"
+    id="movieDownload2"
+    placeholder="Google Drive Download Link 2"
+>
+
+<input
+    type="text"
+    id="movieDownload3"
+    placeholder="Gofile Download Link 1"
+>
+
+<input
+    type="text"
+    id="movieDownload4"
+    placeholder="Gofile Download Link 2"
+>
     >
 
 <input
@@ -1632,9 +1655,13 @@ function clearMovieForm() {
 
     document.getElementById("movieVideo").value = "";
 
-    document.getElementById("movieDownload").value = "";
+document.getElementById("movieDownload1").value = "";
 
-document.getElementById("movieBanner").value = "";
+document.getElementById("movieDownload2").value = "";
+
+document.getElementById("movieDownload3").value = "";
+
+document.getElementById("movieDownload4").value = "";
 
 document.getElementById("movieLanguage").value = "";
 
@@ -2140,7 +2167,6 @@ async function editMovie(movieId) {
 
     }
 
-
     editingMovieId =
         movie.id;
 
@@ -2199,14 +2225,24 @@ if (selectedPosterImage) {
 
 
     document.getElementById(
-        "movieDownload"
-    ).value =
-        movie.download || "";
+    "movieDownload1"
+).value =
+    movie.download1 || "";
 
 document.getElementById(
-    "movieBanner"
+    "movieDownload2"
 ).value =
-    movie.banner || "";
+    movie.download2 || "";
+
+document.getElementById(
+    "movieDownload3"
+).value =
+    movie.download3 || "";
+
+document.getElementById(
+    "movieDownload4"
+).value =
+    movie.download4 || "";
 
 document.getElementById(
     "movieLanguage"
@@ -2276,6 +2312,7 @@ showCurrentScreenshotPreview(
 
 }
 
+window.editMovie = editMovie;
 
 /* ========================================
    UPDATE MOVIE — DUPLICATE SAFE
@@ -2336,14 +2373,24 @@ async function updateMovie() {
         ).value.trim();
 
 
-    const download =
-        document.getElementById(
-            "movieDownload"
-        ).value.trim();
-
-const banner =
+    const download1 =
     document.getElementById(
-        "movieBanner"
+        "movieDownload1"
+    ).value.trim();
+
+const download2 =
+    document.getElementById(
+        "movieDownload2"
+    ).value.trim();
+
+const download3 =
+    document.getElementById(
+        "movieDownload3"
+    ).value.trim();
+
+const download4 =
+    document.getElementById(
+        "movieDownload4"
     ).value.trim();
 
 const language =
@@ -2424,7 +2471,7 @@ const duration =
         !genre ||
         !rating ||
         !video ||
-        !download
+        (!download1 && !download2 && !download3 && !download4)
     ) {
 
         alert(
@@ -2537,8 +2584,6 @@ const updatedMovie = {
 
     poster: finalPoster,
 
-    banner: banner,
-
     description: description,
 
     year: String(year),
@@ -2555,7 +2600,13 @@ const updatedMovie = {
 
     video: video,
 
-    download: download,
+    download1: document.getElementById("movieDownload1").value.trim(),
+
+download2: document.getElementById("movieDownload2").value.trim(),
+
+download3: document.getElementById("movieDownload3").value.trim(),
+
+download4: document.getElementById("movieDownload4").value.trim(),
 
 screenshot1: finalScreenshot1,
 

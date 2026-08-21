@@ -154,16 +154,68 @@
 
 
 
-            <!-- DOWNLOAD BUTTON -->
+            <!-- ========================================
+     DOWNLOAD LINKS
+======================================== -->
+
+<div class="download-links">
+
+    <h2>⬇ Download Movie</h2>
+
+    <!-- GOOGLE DRIVE -->
+
+    <div class="download-server">
+
+        <h3>📁 Google Drive</h3>
+
+        <div class="download-quality-buttons">
 
             <button
-                id="directDownloadButton"
+                id="drive720Button"
                 class="download-btn"
             >
-
-                ⬇ Download Movie
-
+                ⬇ Google Drive — 720p
             </button>
+
+            <button
+                id="drive1080Button"
+                class="download-btn"
+            >
+                ⬇ Google Drive — 1080p
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- GOFILE -->
+
+    <div class="download-server">
+
+        <h3>🌐 Gofile</h3>
+
+        <div class="download-quality-buttons">
+
+            <button
+                id="gofile720Button"
+                class="download-btn"
+            >
+                ⬇ Gofile — 720p
+            </button>
+
+            <button
+                id="gofile1080Button"
+                class="download-btn"
+            >
+                ⬇ Gofile — 1080p
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
         </div>
 
@@ -390,39 +442,140 @@ async function loadDownloadPage() {
 
 
         // ========================================
-        // DOWNLOAD BUTTON
-        // ========================================
+// DOWNLOAD LINKS
+// ========================================
 
-        const downloadButton =
-            document.getElementById(
-                "directDownloadButton"
-            );
+const drive720Button =
+    document.getElementById("drive720Button");
 
+const drive1080Button =
+    document.getElementById("drive1080Button");
 
-        downloadButton.addEventListener(
-            "click",
-            function () {
+const gofile720Button =
+    document.getElementById("gofile720Button");
 
-
-                if (!movie.download) {
-
-                    alert(
-                        "Download link is not available yet."
-                    );
-
-                    return;
-
-                }
+const gofile1080Button =
+    document.getElementById("gofile1080Button");
 
 
-                window.open(
-                    movie.download,
-                    "_blank"
+// ========================================
+// GOOGLE DRIVE — 720p
+// ========================================
+
+if (drive720Button) {
+
+    drive720Button.addEventListener(
+        "click",
+        function () {
+
+            if (!movie.download1) {
+
+                alert(
+                    "Google Drive 720p link is not available yet."
                 );
 
-
+                return;
             }
-        );
+
+            window.open(
+    movie.download1,
+    "_blank"
+);
+
+        }
+    );
+
+}
+
+
+// ========================================
+// GOOGLE DRIVE — 1080p
+// ========================================
+
+if (drive1080Button) {
+
+    drive1080Button.addEventListener(
+        "click",
+        function () {
+
+            if (!movie.download2) {
+
+                alert(
+                    "Google Drive 1080p link is not available yet."
+                );
+
+                return;
+            }
+
+            window.open(
+    movie.download2,
+    "_blank"
+);
+
+        }
+    );
+
+}
+
+
+// ========================================
+// GOFILE — 720p
+// ========================================
+
+if (gofile720Button) {
+
+    gofile720Button.addEventListener(
+        "click",
+        function () {
+
+            if (!movie.download3) {
+
+                alert(
+                    "Gofile 720p link is not available yet."
+                );
+
+                return;
+            }
+
+            window.open(
+    movie.download3,
+    "_blank"
+);
+
+        }
+    );
+
+}
+
+
+// ========================================
+// GOFILE — 1080p
+// ========================================
+
+if (gofile1080Button) {
+
+    gofile1080Button.addEventListener(
+        "click",
+        function () {
+
+            if (!movie.download4) {
+
+                alert(
+                    "Gofile 1080p link is not available yet."
+                );
+
+                return;
+            }
+
+            window.open(
+    movie.download4,
+    "_blank"
+);
+
+        }
+    );
+
+}
 
 
 
