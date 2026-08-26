@@ -3,21 +3,23 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Crazymovie</title>
+    <title>Crazymovie</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
 </head>
-
 
 <body>
 
@@ -38,21 +40,23 @@
             Home
         </a>
 
-        <a href="#">
+        <a href="#movies">
             Movies
         </a>
 
-        <a href="#">
-            TV Series
-        </a>
-
-        <a href="#">
+        <a href="#trending">
             Trending
         </a>
 
-        <a href="#">
-            Contact
+        <a href="tvseries.html">
+            TV Series
         </a>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Search..."
+        >
 
     </nav>
 
@@ -61,28 +65,24 @@
 
 
 <!-- ========================================
-     HERO
+     TRENDING MOVIES
 ======================================== -->
 
-<section class="hero">
+<section
+    class="movies"
+    id="trending"
+>
 
-    <div class="hero-content">
+    <h2>
+        🔥 Trending Movies
+    </h2>
 
-        <span class="hero-badge">
-            🔥 #1 Trending Movie
-        </span>
+    <div
+        id="trendingMovies"
+        class="movie-grid"
+    >
 
-
-        <h1>
-            Download Amazing Movies
-        </h1>
-
-
-        <p>
-            Discover your favorite movies and
-            download them in high quality.
-        </p>
-
+        <!-- Firebase Trending Movies -->
 
     </div>
 
@@ -91,134 +91,42 @@
 
 
 <!-- ========================================
-     MOVIES
+     REGULAR MOVIES
 ======================================== -->
 
-<section class="movies">
-
+<section
+    class="movies"
+    id="movies"
+>
 
     <h2>
-        🔥 Trending Movies
+        🎬 Movies
     </h2>
-
-
-
-    <!-- SEARCH + FILTER -->
-
-    <div class="search-box">
-
-
-        <div class="filter-container">
-
-
-            <select id="genreFilter">
-
-                <option value="all">
-                    All Genres
-                </option>
-
-                <option value="action">
-                    Action
-                </option>
-
-                <option value="comedy">
-                    Comedy
-                </option>
-
-                <option value="horror">
-                    Horror
-                </option>
-
-                <option value="romance">
-                    Romance
-                </option>
-
-                <option value="sci-fi">
-                    Sci-Fi
-                </option>
-
-            </select>
-
-
-
-            <select id="yearFilter">
-
-                <option value="all">
-                    All Years
-                </option>
-
-            </select>
-
-
-        </div>
-
-
-
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="🔍 Search movies..."
-            onkeyup="searchMovies()"
-        >
-
-
-    </div>
-
-
-
-    <!-- ========================================
-         CATEGORY BUTTONS
-    ======================================== -->
-
-    <div class="category-buttons">
-
-
-        <button onclick="filterMovies('All')">
-            🎬 All
-        </button>
-
-
-        <button onclick="filterMovies('Action')">
-            ⚡ Action
-        </button>
-
-
-        <button onclick="filterMovies('Adventure')">
-            🗺️ Adventure
-        </button>
-
-
-        <button onclick="filterMovies('Sci-Fi')">
-            🚀 Sci-Fi
-        </button>
-
-
-        <button onclick="filterMovies('Drama')">
-            🎭 Drama
-        </button>
-
-
-        <button onclick="filterMovies('Romance')">
-            ❤️ Romance
-        </button>
-
-
-    </div>
-
-
-
-    <!-- ========================================
-         ADMIN PUBLISHED MOVIES
-    ======================================== -->
 
     <div
         id="dynamicMovies"
         class="movie-grid"
     >
+
+        <!-- Firebase Regular Movies -->
+
     </div>
 
-
 </section>
+
+
+
+<!-- ========================================
+     FOOTER
+======================================== -->
+
+<footer class="site-footer">
+
+    <p>
+        © 2026 Crazymovie. All Rights Reserved.
+    </p>
+
+</footer>
 
 
 

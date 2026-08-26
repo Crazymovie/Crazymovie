@@ -1120,13 +1120,35 @@ onchange="previewPosterImage(event)"
         placeholder="IMDb Rating"
     >
 
+    <select
+    id="movieLanguage"
+    style="
+        width:100%;
+        padding:12px;
+        margin-top:10px;
+        background:#1a1a1a;
+        color:#fff;
+        border:1px solid rgba(255,255,255,0.15);
+        border-radius:8px;
+        font-family:Poppins,sans-serif;
+    "
+>
+    <option value="">
+        Select Movie Language
+    </option>
 
-    <input
-        type="text"
-        id="movieVideo"
-        placeholder="Video URL"
-    >
+    <option value="Bangla">
+        🇧🇩 Bangla
+    </option>
 
+    <option value="Hindi">
+        🇮🇳 Hindi
+    </option>
+
+    <option value="English">
+        🇺🇸 English
+    </option>
+</select>
 
     <!-- ========================================
      DOWNLOAD LINKS
@@ -1155,7 +1177,7 @@ onchange="previewPosterImage(event)"
     id="movieDownload4"
     placeholder="Gofile Download Link 2"
 >
-    >
+
 
 <input
     type="text"
@@ -1163,6 +1185,41 @@ onchange="previewPosterImage(event)"
     placeholder="Language"
 >
 
+<select
+    id="movieType"
+    style="
+        padding:14px;
+        background:#222;
+        color:white;
+        border:1px solid rgba(255,255,255,0.15);
+        border-radius:8px;
+        outline:none;
+        font-family:'Poppins',sans-serif;
+        font-size:15px;
+        cursor:pointer;
+    "
+>
+    <option value="movie">🎬 Movie</option>
+    <option value="tv">📺 TV Series</option>
+</select>
+
+<select
+    id="movieTrending"
+    style="
+        padding:14px;
+        background:#222;
+        color:white;
+        border:1px solid rgba(255,255,255,0.15);
+        border-radius:8px;
+        outline:none;
+        font-family:'Poppins',sans-serif;
+        font-size:15px;
+        cursor:pointer;
+    "
+>
+    <option value="false">No — Normal Movie</option>
+    <option value="true">🔥 Yes — Trending</option>
+</select>
 
 <input
     type="text"
@@ -1226,13 +1283,11 @@ onchange="previewNewScreenshot(event, 4)"
 
 
     <button
-        id="cancelEditButton"
-        
-    >
-
-        ❌ Cancel Edit
-
-    </button>
+    type="button"
+    id="cancelEditButton"
+>
+    ❌ Cancel Edit
+</button>
 
 
 </div>
@@ -1652,8 +1707,6 @@ function clearMovieForm() {
     document.getElementById("movieGenre").value = "";
 
     document.getElementById("movieRating").value = "";
-
-    document.getElementById("movieVideo").value = "";
 
 document.getElementById("movieDownload1").value = "";
 
@@ -2219,12 +2272,6 @@ if (selectedPosterImage) {
 
 
     document.getElementById(
-        "movieVideo"
-    ).value =
-        movie.video || "";
-
-
-    document.getElementById(
     "movieDownload1"
 ).value =
     movie.download1 || "";
@@ -2248,6 +2295,16 @@ document.getElementById(
     "movieLanguage"
 ).value =
     movie.language || "";
+
+document.getElementById(
+    "movieType"
+).value =
+    movie.type || "movie";
+
+document.getElementById(
+    "movieTrending"
+).value =
+    movie.trending ? "true" : "false";
 
         document.getElementById(
     "movieQuality"
@@ -2315,7 +2372,7 @@ showCurrentScreenshotPreview(
 window.editMovie = editMovie;
 
 /* ========================================
-   UPDATE MOVIE — DUPLICATE SAFE
+   UPDATE MOVIE — NO VIDEO URL
 ======================================== */
 
 async function updateMovie() {
@@ -2329,7 +2386,6 @@ async function updateMovie() {
         alert("No movie selected for editing!");
 
         return;
-
     }
 
 
@@ -2338,88 +2394,98 @@ async function updateMovie() {
     ======================================== */
 
     const title =
-        document.getElementById(
-            "movieTitle"
-        ).value.trim();
+        document.getElementById("movieTitle")
+        .value
+        .trim();
 
 
     const description =
-        document.getElementById(
-            "movieDescription"
-        ).value.trim();
+        document.getElementById("movieDescription")
+        .value
+        .trim();
 
 
     const year =
-        document.getElementById(
-            "movieYear"
-        ).value.trim();
+        document.getElementById("movieYear")
+        .value
+        .trim();
 
 
     const genre =
-        document.getElementById(
-            "movieGenre"
-        ).value.trim();
+        document.getElementById("movieGenre")
+        .value
+        .trim();
 
 
     const rating =
-        document.getElementById(
-            "movieRating"
-        ).value.trim();
-
-
-    const video =
-        document.getElementById(
-            "movieVideo"
-        ).value.trim();
+        document.getElementById("movieRating")
+        .value
+        .trim();
 
 
     const download1 =
-    document.getElementById(
-        "movieDownload1"
-    ).value.trim();
+        document.getElementById("movieDownload1")
+        .value
+        .trim();
 
-const download2 =
-    document.getElementById(
-        "movieDownload2"
-    ).value.trim();
 
-const download3 =
-    document.getElementById(
-        "movieDownload3"
-    ).value.trim();
+    const download2 =
+        document.getElementById("movieDownload2")
+        .value
+        .trim();
 
-const download4 =
-    document.getElementById(
-        "movieDownload4"
-    ).value.trim();
 
-const language =
-    document.getElementById(
-        "movieLanguage"
-    ).value.trim();
+    const download3 =
+        document.getElementById("movieDownload3")
+        .value
+        .trim();
 
-const quality =
-    document.getElementById(
-        "movieQuality"
-    ).value.trim();
 
-const duration =
-    document.getElementById(
-        "movieDuration"
-    ).value.trim();
+    const download4 =
+        document.getElementById("movieDownload4")
+        .value
+        .trim();
+
+
+    const language =
+        document.getElementById("movieLanguage")
+        .value
+        .trim();
+
+
+    const type =
+        document.getElementById("movieType")
+        .value
+        .trim();
+
+
+    const trending =
+        document.getElementById("movieTrending")
+        .value === "true";
+
+
+    const quality =
+        document.getElementById("movieQuality")
+        .value
+        .trim();
+
+
+    const duration =
+        document.getElementById("movieDuration")
+        .value
+        .trim();
+
 
     /* ========================================
        GET EXISTING MOVIES
     ======================================== */
 
-    let movies =
-    await getMovies();
+    const movies =
+        await getMovies();
 
 
     /* ========================================
-       FIND ORIGINAL MOVIE BY ID
-       IMPORTANT:
-       DO NOT CREATE A NEW MOVIE
+       FIND ORIGINAL MOVIE
     ======================================== */
 
     const index =
@@ -2437,18 +2503,14 @@ const duration =
 
     if (index === -1) {
 
-        alert(
-            "Movie not found."
-        );
+        alert("Movie not found.");
 
         return;
-
     }
 
 
     /* ========================================
        KEEP OLD POSTER
-       IF NEW POSTER IS NOT SELECTED
     ======================================== */
 
     const oldPoster =
@@ -2461,6 +2523,7 @@ const duration =
 
     /* ========================================
        VALIDATION
+       VIDEO URL NOT REQUIRED
     ======================================== */
 
     if (
@@ -2469,9 +2532,7 @@ const duration =
         !description ||
         !year ||
         !genre ||
-        !rating ||
-        !video ||
-        (!download1 && !download2 && !download3 && !download4)
+        !rating
     ) {
 
         alert(
@@ -2479,162 +2540,179 @@ const duration =
         );
 
         return;
-
     }
 
-// ========================================
-// EXISTING SCREENSHOTS
-// ========================================
-
-const oldScreenshot1 =
-    movies[index].screenshot1 || "";
-
-const oldScreenshot2 =
-    movies[index].screenshot2 || "";
-
-const oldScreenshot3 =
-    movies[index].screenshot3 || "";
-
-const oldScreenshot4 =
-    movies[index].screenshot4 || "";
-    
-// ========================================
-// NEW SCREENSHOTS
-// ========================================
-
-const screenshot1File =
-    document.getElementById(
-        "movieScreenshot1"
-    ).files[0];
-
-const screenshot2File =
-    document.getElementById(
-        "movieScreenshot2"
-    ).files[0];
-
-const screenshot3File =
-    document.getElementById(
-        "movieScreenshot3"
-    ).files[0];
-
-const screenshot4File =
-    document.getElementById(
-        "movieScreenshot4"
-    ).files[0];
-
-
-// ========================================
-// UPLOAD NEW SCREENSHOTS
-// ========================================
-
-const screenshot1URL =
-    await uploadMovieScreenshot(
-        screenshot1File,
-        editingMovieId,
-        1
-    );
-
-const screenshot2URL =
-    await uploadMovieScreenshot(
-        screenshot2File,
-        editingMovieId,
-        2
-    );
-
-const screenshot3URL =
-    await uploadMovieScreenshot(
-        screenshot3File,
-        editingMovieId,
-        3
-    );
-
-const screenshot4URL =
-    await uploadMovieScreenshot(
-        screenshot4File,
-        editingMovieId,
-        4
-    );
-
-
-// ========================================
-// KEEP OLD SCREENSHOT IF NEW ONE IS EMPTY
-// ========================================
-
-const finalScreenshot1 =
-    screenshot1URL || oldScreenshot1;
-
-const finalScreenshot2 =
-    screenshot2URL || oldScreenshot2;
-
-const finalScreenshot3 =
-    screenshot3URL || oldScreenshot3;
-
-const finalScreenshot4 =
-    screenshot4URL || oldScreenshot4;
 
     /* ========================================
-   UPDATE FIRESTORE DOCUMENT
-======================================== */
-
-const updatedMovie = {
-
-    id: movies[index].id,
-
-    title: title,
-
-    poster: finalPoster,
-
-    description: description,
-
-    year: String(year),
-
-    genre: genre,
-
-    rating: rating,
-
-    language: language,
-
-    quality: quality,
-
-    duration: duration,
-
-    video: video,
-
-    download1: document.getElementById("movieDownload1").value.trim(),
-
-download2: document.getElementById("movieDownload2").value.trim(),
-
-download3: document.getElementById("movieDownload3").value.trim(),
-
-download4: document.getElementById("movieDownload4").value.trim(),
-
-screenshot1: finalScreenshot1,
-
-screenshot2: finalScreenshot2,
-
-screenshot3: finalScreenshot3,
-
-screenshot4: finalScreenshot4,
-
-};
-
-await setDoc(
-
-    doc(
-    window.db,
-    "movies",
-    editingMovieId
-) ,
-
-    updatedMovie
-
-);
-
-
-    /* ========================================
-       REMOVE DUPLICATE IDs
-       KEEP FIRST MOVIE ONLY
+       EXISTING SCREENSHOTS
     ======================================== */
+
+    const oldScreenshot1 =
+        movies[index].screenshot1 || "";
+
+
+    const oldScreenshot2 =
+        movies[index].screenshot2 || "";
+
+
+    const oldScreenshot3 =
+        movies[index].screenshot3 || "";
+
+
+    const oldScreenshot4 =
+        movies[index].screenshot4 || "";
+
+
+    /* ========================================
+       NEW SCREENSHOT FILES
+    ======================================== */
+
+    const screenshot1File =
+        document.getElementById(
+            "movieScreenshot1"
+        ).files[0];
+
+
+    const screenshot2File =
+        document.getElementById(
+            "movieScreenshot2"
+        ).files[0];
+
+
+    const screenshot3File =
+        document.getElementById(
+            "movieScreenshot3"
+        ).files[0];
+
+
+    const screenshot4File =
+        document.getElementById(
+            "movieScreenshot4"
+        ).files[0];
+
+
+    /* ========================================
+       UPLOAD NEW SCREENSHOTS
+    ======================================== */
+
+    const screenshot1URL =
+        await uploadMovieScreenshot(
+            screenshot1File,
+            editingMovieId,
+            1
+        );
+
+
+    const screenshot2URL =
+        await uploadMovieScreenshot(
+            screenshot2File,
+            editingMovieId,
+            2
+        );
+
+
+    const screenshot3URL =
+        await uploadMovieScreenshot(
+            screenshot3File,
+            editingMovieId,
+            3
+        );
+
+
+    const screenshot4URL =
+        await uploadMovieScreenshot(
+            screenshot4File,
+            editingMovieId,
+            4
+        );
+
+
+    /* ========================================
+       KEEP OLD SCREENSHOT
+    ======================================== */
+
+    const finalScreenshot1 =
+        screenshot1URL || oldScreenshot1;
+
+
+    const finalScreenshot2 =
+        screenshot2URL || oldScreenshot2;
+
+
+    const finalScreenshot3 =
+        screenshot3URL || oldScreenshot3;
+
+
+    const finalScreenshot4 =
+        screenshot4URL || oldScreenshot4;
+
+
+    /* ========================================
+       UPDATED MOVIE DATA
+       NO VIDEO FIELD
+       NO OLD DOWNLOAD FIELD
+    ======================================== */
+
+    const updatedMovie = {
+
+        id: movies[index].id,
+
+        title: title,
+
+        poster: finalPoster,
+
+        description: description,
+
+        year: String(year),
+
+        genre: genre,
+
+        rating: rating,
+
+        language: language,
+
+        type: type,
+
+        trending: trending,
+
+        quality: quality,
+
+        duration: duration,
+
+        download1: download1,
+
+        download2: download2,
+
+        download3: download3,
+
+        download4: download4,
+
+        screenshot1: finalScreenshot1,
+
+        screenshot2: finalScreenshot2,
+
+        screenshot3: finalScreenshot3,
+
+        screenshot4: finalScreenshot4
+
+    };
+
+
+    /* ========================================
+       UPDATE FIRESTORE
+    ======================================== */
+
+    await setDoc(
+
+        doc(
+            window.db,
+            "movies",
+            editingMovieId
+        ),
+
+        updatedMovie
+
+    );
 
 
     /* ========================================
@@ -2650,12 +2728,9 @@ await setDoc(
        RESET EDIT MODE
     ======================================== */
 
-    editingMovieId =
-        null;
+    editingMovieId = null;
 
-
-    selectedPosterImage =
-        "";
+    selectedPosterImage = "";
 
 
     document.getElementById(
@@ -2682,7 +2757,6 @@ await setDoc(
         "none";
 
 
-
     /* ========================================
        CLEAR FORM
     ======================================== */
@@ -2691,10 +2765,10 @@ await setDoc(
 
 
     /* ========================================
-       REFRESH MOVIE LIST
+       REFRESH PUBLISHED MOVIES
     ======================================== */
 
-
+    await showPublishedMovies();
 
 }
 
@@ -2793,38 +2867,55 @@ async function publishMovie() {
         .value
         .trim();
 
-    const video =
-        document.getElementById("movieVideo")
+    const language =
+        document.getElementById("movieLanguage")
         .value
         .trim();
 
-    const download =
-        document.getElementById("movieDownload")
+    const type =
+        document.getElementById("movieType")
         .value
         .trim();
 
-const banner =
-    document.getElementById("movieBanner")
-    .value
-    .trim();
+    const trending =
+        document.getElementById("movieTrending")
+        .value === "true";
+
+    const quality =
+        document.getElementById("movieQuality")
+        .value
+        .trim();
+
+    const duration =
+        document.getElementById("movieDuration")
+        .value
+        .trim();
 
 
-const language =
-    document.getElementById("movieLanguage")
-    .value
-    .trim();
+    // ========================================
+    // DOWNLOAD LINKS
+    // ========================================
 
+    const download1 =
+        document.getElementById("movieDownload1")
+        .value
+        .trim();
 
-const quality =
-    document.getElementById("movieQuality")
-    .value
-    .trim();
+    const download2 =
+        document.getElementById("movieDownload2")
+        .value
+        .trim();
 
+    const download3 =
+        document.getElementById("movieDownload3")
+        .value
+        .trim();
 
-const duration =
-    document.getElementById("movieDuration")
-    .value
-    .trim();
+    const download4 =
+        document.getElementById("movieDownload4")
+        .value
+        .trim();
+
 
     /* ========================================
        VALIDATION
@@ -2837,8 +2928,10 @@ const duration =
         !year ||
         !genre ||
         !rating ||
-        !video ||
-        !download
+        !download1 ||
+        !download2 ||
+        !download3 ||
+        !download4
     ) {
 
         alert(
@@ -2846,7 +2939,6 @@ const duration =
         );
 
         return;
-
     }
 
 
@@ -2857,62 +2949,64 @@ const duration =
     const movieId =
         String(Date.now());
 
-// ========================================
-// GET SCREENSHOT FILES
-// ========================================
 
-const screenshot1 =
-    document.getElementById(
-        "movieScreenshot1"
-    ).files[0];
+    // ========================================
+    // GET SCREENSHOT FILES
+    // ========================================
 
-const screenshot2 =
-    document.getElementById(
-        "movieScreenshot2"
-    ).files[0];
+    const screenshot1 =
+        document.getElementById(
+            "movieScreenshot1"
+        ).files[0];
 
-const screenshot3 =
-    document.getElementById(
-        "movieScreenshot3"
-    ).files[0];
+    const screenshot2 =
+        document.getElementById(
+            "movieScreenshot2"
+        ).files[0];
 
-const screenshot4 =
-    document.getElementById(
-        "movieScreenshot4"
-    ).files[0];
+    const screenshot3 =
+        document.getElementById(
+            "movieScreenshot3"
+        ).files[0];
+
+    const screenshot4 =
+        document.getElementById(
+            "movieScreenshot4"
+        ).files[0];
 
 
-// ========================================
-// UPLOAD SCREENSHOTS
-// ========================================
+    // ========================================
+    // UPLOAD SCREENSHOTS
+    // ========================================
 
-const screenshot1URL =
-    await uploadMovieScreenshot(
-        screenshot1,
-        movieId,
-        1
-    );
+    const screenshot1URL =
+        await uploadMovieScreenshot(
+            screenshot1,
+            movieId,
+            1
+        );
 
-const screenshot2URL =
-    await uploadMovieScreenshot(
-        screenshot2,
-        movieId,
-        2
-    );
+    const screenshot2URL =
+        await uploadMovieScreenshot(
+            screenshot2,
+            movieId,
+            2
+        );
 
-const screenshot3URL =
-    await uploadMovieScreenshot(
-        screenshot3,
-        movieId,
-        3
-    );
+    const screenshot3URL =
+        await uploadMovieScreenshot(
+            screenshot3,
+            movieId,
+            3
+        );
 
-const screenshot4URL =
-    await uploadMovieScreenshot(
-        screenshot4,
-        movieId,
-        4
-    );
+    const screenshot4URL =
+        await uploadMovieScreenshot(
+            screenshot4,
+            movieId,
+            4
+        );
+
 
     /* ========================================
        CREATE MOVIE OBJECT
@@ -2920,82 +3014,100 @@ const screenshot4URL =
 
     const newMovie = {
 
-    id:
-        movieId,
+        id:
+            movieId,
 
-    title:
-        title,
+        title:
+            title,
 
-    poster:
-        poster,
+        poster:
+            poster,
 
-    description:
-        description,
+        description:
+            description,
 
-    year:
-        String(year),
+        year:
+            String(year),
 
-    genre:
-        genre,
+        genre:
+            genre,
 
-    rating:
-        rating,
+        rating:
+            rating,
 
-    video:
-        video,
+        language:
+            language,
 
-    download:
-        download,
+        type:
+            type,
 
-    banner:
-        banner,
+        trending:
+            trending,
 
-    language:
-        language,
+        quality:
+            quality,
 
-    quality:
-        quality,
+        duration:
+            duration,
 
-    duration:
-        duration,
+        // ========================================
+        // 4 DOWNLOAD LINKS
+        // ========================================
 
-    screenshot1:
-        screenshot1URL,
+        download1:
+            download1,
 
-    screenshot2:
-        screenshot2URL,
+        download2:
+            download2,
 
-    screenshot3:
-        screenshot3URL,
+        download3:
+            download3,
 
-    screenshot4:
-        screenshot4URL
+        download4:
+            download4,
 
-};
+        // ========================================
+        // SCREENSHOTS
+        // ========================================
+
+        screenshot1:
+            screenshot1URL,
+
+        screenshot2:
+            screenshot2URL,
+
+        screenshot3:
+            screenshot3URL,
+
+        screenshot4:
+            screenshot4URL
+
+    };
 
 
-console.log(
-    "New Movie Data:",
-    newMovie
-);
+    console.log(
+        "New Movie Data:",
+        newMovie
+    );
+
 
     try {
 
-       /* ========================================
-   SAVE USING MOVIE ID AS DOCUMENT ID
-======================================== */
+        /* ========================================
+           SAVE USING MOVIE ID AS DOCUMENT ID
+        ======================================== */
 
-await setDoc(
+        await setDoc(
 
-    doc(
-        window.db,
-        "movies",
-        movieId
-    ),
+            doc(
+                window.db,
+                "movies",
+                movieId
+            ),
 
-    newMovie
+            newMovie
 
-);
+        );
 
 
         console.log(
@@ -3016,7 +3128,10 @@ await setDoc(
         clearMovieForm();
 
 
-console.log("✅ Reloading published movies...");
+        console.log(
+            "✅ Reloading published movies..."
+        );
+
 
         /* ========================================
            RELOAD MOVIES FROM FIREBASE

@@ -93,11 +93,97 @@ let selectedPosterImage = "";
 
 window.cancelEdit = function () {
 
+    /* ===============================
+       EXIT EDIT MODE
+    =============================== */
+
     editingMovieId = null;
 
     selectedPosterImage = "";
 
+
+    /* ===============================
+       RESET FORM
+    =============================== */
+
     clearMovieForm();
+
+
+    /* ===============================
+       RESET FORM TITLE
+    =============================== */
+
+    document.getElementById(
+        "formTitle"
+    ).innerText =
+        "🎬 Add New Movie";
+
+
+    /* ===============================
+       RESET PUBLISH BUTTON
+    =============================== */
+
+    const publishButton =
+        document.getElementById(
+            "publishButton"
+        );
+
+    publishButton.innerText =
+        "➕ Publish Movie";
+
+    publishButton.onclick =
+        publishMovie;
+
+
+    /* ===============================
+       HIDE CANCEL BUTTON
+    =============================== */
+
+    document.getElementById(
+        "cancelEditButton"
+    ).style.display =
+        "none";
+
+
+    /* ===============================
+       REMOVE CURRENT SCREENSHOT PREVIEWS
+    =============================== */
+
+    const preview1 =
+        document.getElementById(
+            "currentScreenshot1Preview"
+        );
+
+    const preview2 =
+        document.getElementById(
+            "currentScreenshot2Preview"
+        );
+
+    const preview3 =
+        document.getElementById(
+            "currentScreenshot3Preview"
+        );
+
+    const preview4 =
+        document.getElementById(
+            "currentScreenshot4Preview"
+        );
+
+
+    if (preview1) preview1.innerHTML = "";
+    if (preview2) preview2.innerHTML = "";
+    if (preview3) preview3.innerHTML = "";
+    if (preview4) preview4.innerHTML = "";
+
+
+    /* ===============================
+       STAY ON ADMIN PAGE
+    =============================== */
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 };
 

@@ -34,24 +34,479 @@ const firebaseConfig = {
 };
 
 
-const app =
-    initializeApp(firebaseConfig);
+// ========================================
+// INITIALIZE FIREBASE
+// ========================================
 
-const db =
-    getFirestore(app);
+const app = initializeApp(firebaseConfig);
 
+const db = getFirestore(app);
 
-console.log(
-    "🔥 Index Firebase Connected!"
-);
+console.log("🔥 Crazymovie Firebase Connected!");
 
 
 // ========================================
-// SEARCH + FILTER
+// GLOBAL DATA
 // ========================================
+
+let allMovies = [];
 
 let selectedCategory = "All";
 
+
+// ========================================
+// CREATE MOVIE CARD
+// ========================================
+
+function createMovieCard(movie, movieId) {
+
+    const title =
+        movie.title || "Untitled";
+
+    const poster =
+        movie.poster || "";
+
+    const year =
+        movie.year || "";
+
+    const genre =
+        movie.genre || "";
+
+    const rating =
+        movie.rating || "";
+
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "movie-card";
+
+
+    // ========================================
+    // FILTER DATA
+    // ========================================
+
+    card.setAttribute(
+        "data-genre",
+        genre
+    );
+
+    card.setAttribute(
+        "data-year",
+        year
+    );
+
+    card.setAttribute(
+        "data-id",
+        movieId
+    );
+
+
+    // ========================================
+    // CARD HTML
+    // ========================================
+
+    card.innerHTML = `
+
+        <img
+            src="${poster}"
+            alt="${title}"
+            class="movie-poster"
+            loading="lazy"
+        >
+
+        <div class="movie-card-content">
+
+            <h3>
+                ${title}
+            </h3>
+
+            ${
+                year
+                    ? `
+                        <p class="movie-year">
+                            ${year}
+                        </p>
+                      `
+                    : ""
+            }
+
+            ${
+                genre
+                    ? `
+                        <p class="movie-genre">
+                            ${genre}
+                        </p>
+                      `
+                    : ""
+            }
+
+            ${
+                rating
+                    ? `
+                        <p class="movie-rating">
+                            ⭐ ${rating}
+                        </p>
+                      `
+                    : ""
+            }
+
+        </div>
+
+    `;
+
+
+    // ========================================
+    // MOVIE CLICK
+    // ========================================
+
+    card.addEventListener(
+        "click",
+        function() {
+
+            window.location.href =
+                "movie.html?id=" +
+                encodeURIComponent(movieId);
+
+        }
+    );
+
+
+    return card;
+
+}
+
+
+// ========================================
+// LOAD ALL MOVIES
+// ========================================
+
+async function loadMovies() {
+
+    const trendingContainer =
+        document.getElementById(
+            "trendingMovies"
+        );
+
+
+    const moviesContainer =
+        document.getElementById(
+            "dynamicMovies"
+        );
+
+
+    if (!trendingContainer) {
+
+        console.log(
+            "⚠️ trendingMovies element not found."
+        );
+
+    }
+
+
+    if (!moviesContainer) {
+
+        console.log(
+            "⚠️ dynamicMovies element not found."
+        );
+
+    }
+
+
+    // ========================================
+    // LOADING
+    // ========================================
+
+    if (trendingContainer) {
+
+        trendingContainer.innerHTML = `
+
+            <p class="loading-message">
+                Loading...
+            </p>
+
+        `;
+
+    }
+
+
+    if (moviesContainer) {
+
+        moviesContainer.innerHTML = `
+
+            <p class="loading-message">
+                Loading...
+            </p>
+
+        `;
+
+    }
+
+
+    try {
+
+        // ========================================
+        // FIRESTORE
+        // ========================================
+
+        const moviesRef =
+            collection(
+                db,
+                "movies"
+            );
+
+
+        const snapshot =
+            await getDocs(
+                moviesRef
+            );
+
+
+        // ========================================
+        // CLEAR
+        // ========================================
+
+        if (trendingContainer) {
+
+            trendingContainer.innerHTML = "";
+
+        }
+
+
+        if (moviesContainer) {
+
+            moviesContainer.innerHTML = "";
+
+        }
+
+
+        // ========================================
+        // STORE ALL MOVIES
+        // ========================================
+
+        allMovies = [];
+
+
+        snapshot.forEach(
+            function(docSnapshot) {
+
+                const movie =
+                    docSnapshot.data();
+
+
+                const movieId =
+                    docSnapshot.id;
+
+
+                allMovies.push({
+
+                    id: movieId,
+
+                    ...movie
+
+                });
+
+            }
+        );
+
+
+        // ========================================
+        // SORT MOVIES
+        // NEWEST PUBLISHED MOVIES FIRST
+        // ========================================
+
+        allMovies.sort(
+            function(a, b) {
+
+                const timeA =
+                    a.createdAt?.seconds ||
+                    0;
+
+                const timeB =
+                    b.createdAt?.seconds ||
+                    0;
+
+
+                return timeB - timeA;
+
+            }
+        );
+
+
+        let trendingCount = 0;
+
+        let regularCount = 0;
+
+
+        // ========================================
+// SHOW TRENDING + ALL MOVIES
+// ========================================
+
+allMovies.forEach(
+    function(movie) {
+
+        const movieId =
+            movie.id;
+
+
+        // ========================================
+        // TRENDING MOVIES
+        // ========================================
+
+        if (
+            movie.trending === true
+        ) {
+
+            trendingCount++;
+
+            if (trendingContainer) {
+
+                const trendingCard =
+                    createMovieCard(
+                        movie,
+                        movieId
+                    );
+
+                trendingContainer.appendChild(
+                    trendingCard
+                );
+
+            }
+
+        }
+
+
+        // ========================================
+        // ALL MOVIES
+        // ========================================
+
+        regularCount++;
+
+        if (moviesContainer) {
+
+            const movieCard =
+                createMovieCard(
+                    movie,
+                    movieId
+                );
+
+            moviesContainer.appendChild(
+                movieCard
+            );
+
+        }
+
+    }
+);
+
+
+        // ========================================
+        // NO TRENDING
+        // ========================================
+
+        if (
+            trendingCount === 0 &&
+            trendingContainer
+        ) {
+
+            trendingContainer.innerHTML = `
+
+                <p class="no-movies-message">
+                    No trending movies available.
+                </p>
+
+            `;
+
+        }
+
+
+        // ========================================
+        // NO REGULAR MOVIES
+        // ========================================
+
+        if (
+            regularCount === 0 &&
+            moviesContainer
+        ) {
+
+            moviesContainer.innerHTML = `
+
+                <p class="no-movies-message">
+                    No movies available.
+                </p>
+
+            `;
+
+        }
+
+
+        // ========================================
+        // FILTER
+        // ========================================
+
+        populateYearFilter();
+
+        applyAllFilters();
+
+
+        console.log(
+            "🔥 Total Movies:",
+            allMovies.length
+        );
+
+        console.log(
+            "🔥 Trending Movies:",
+            trendingCount
+        );
+
+        console.log(
+            "🎬 Regular Movies:",
+            regularCount
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to load movies:",
+            error
+        );
+
+
+        if (trendingContainer) {
+
+            trendingContainer.innerHTML = `
+
+                <p class="error-message">
+                    Failed to load trending movies.
+                </p>
+
+            `;
+
+        }
+
+
+        if (moviesContainer) {
+
+            moviesContainer.innerHTML = `
+
+                <p class="error-message">
+                    Failed to load movies.
+                </p>
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+// ========================================
+// APPLY ALL FILTERS
+// ========================================
 
 function applyAllFilters() {
 
@@ -60,10 +515,12 @@ function applyAllFilters() {
             "searchInput"
         );
 
+
     const genreFilter =
         document.getElementById(
             "genreFilter"
         );
+
 
     const yearFilter =
         document.getElementById(
@@ -73,22 +530,22 @@ function applyAllFilters() {
 
     const searchText =
         searchInput
-        ? searchInput.value
-            .toLowerCase()
-            .trim()
-        : "";
+            ? searchInput.value
+                .toLowerCase()
+                .trim()
+            : "";
 
 
     const selectedGenre =
         genreFilter
-        ? genreFilter.value
-        : "all";
+            ? genreFilter.value
+            : "all";
 
 
     const selectedYear =
         yearFilter
-        ? yearFilter.value
-        : "all";
+            ? yearFilter.value
+            : "all";
 
 
     const movieCards =
@@ -101,9 +558,7 @@ function applyAllFilters() {
         function(card) {
 
             const titleElement =
-                card.querySelector(
-                    "h3"
-                );
+                card.querySelector("h3");
 
 
             if (!titleElement) {
@@ -115,7 +570,7 @@ function applyAllFilters() {
 
             const movieName =
                 titleElement.innerText
-                .trim();
+                    .trim();
 
 
             const movieGenre =
@@ -130,49 +585,49 @@ function applyAllFilters() {
                 ) || "";
 
 
-            // ================================
-            // SEARCH MATCH
-            // ================================
+            // ========================================
+            // SEARCH
+            // ========================================
 
             const searchMatch =
                 movieName
-                .toLowerCase()
-                .includes(
-                    searchText
-                );
+                    .toLowerCase()
+                    .includes(
+                        searchText
+                    );
 
 
-            // ================================
-            // CATEGORY MATCH
-            // ================================
+            // ========================================
+            // CATEGORY
+            // ========================================
 
             const categoryMatch =
                 selectedCategory === "All" ||
                 movieGenre
-                .toLowerCase()
-                .includes(
-                    selectedCategory
                     .toLowerCase()
-                );
+                    .includes(
+                        selectedCategory
+                            .toLowerCase()
+                    );
 
 
-            // ================================
-            // GENRE MATCH
-            // ================================
+            // ========================================
+            // GENRE
+            // ========================================
 
             const genreMatch =
                 selectedGenre === "all" ||
                 movieGenre
-                .toLowerCase()
-                .includes(
-                    selectedGenre
                     .toLowerCase()
-                );
+                    .includes(
+                        selectedGenre
+                            .toLowerCase()
+                    );
 
 
-            // ================================
-            // YEAR MATCH
-            // ================================
+            // ========================================
+            // YEAR
+            // ========================================
 
             const yearMatch =
                 selectedYear === "all" ||
@@ -180,9 +635,9 @@ function applyAllFilters() {
                     String(selectedYear);
 
 
-            // ================================
+            // ========================================
             // SHOW / HIDE
-            // ================================
+            // ========================================
 
             if (
                 searchMatch &&
@@ -192,7 +647,8 @@ function applyAllFilters() {
             ) {
 
                 card.style.display =
-                    "block";
+                    "";
+
 
             } else {
 
@@ -208,7 +664,7 @@ function applyAllFilters() {
 
 
 // ========================================
-// SEARCH MOVIES
+// SEARCH
 // ========================================
 
 function searchMovies() {
@@ -233,202 +689,6 @@ function filterMovies(category) {
 
 
 // ========================================
-// LOAD MOVIES FROM FIREBASE
-// ========================================
-
-async function loadPublishedMovies() {
-
-    const dynamicMovies =
-        document.getElementById(
-            "dynamicMovies"
-        );
-
-
-    if (!dynamicMovies) {
-
-        return;
-
-    }
-
-
-    try {
-
-        // ========================================
-        // GET MOVIES FROM FIRESTORE
-        // ========================================
-
-        const moviesSnapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "movies"
-                )
-            );
-
-
-        // ========================================
-        // CLEAR OLD MOVIES
-        // ========================================
-
-        dynamicMovies.innerHTML =
-            "";
-
-
-        // ========================================
-        // NO MOVIES
-        // ========================================
-
-        if (moviesSnapshot.empty) {
-
-            dynamicMovies.innerHTML = `
-                <p style="
-                    color: #aaa;
-                    text-align: center;
-                    width: 100%;
-                    padding: 30px;
-                ">
-                    No movies available yet.
-                </p>
-            `;
-
-            return;
-
-        }
-
-
-        // ========================================
-        // LOAD EACH MOVIE
-        // ========================================
-
-        moviesSnapshot.forEach(
-            function(movieDoc) {
-
-                const movie = {
-
-                    id:
-                        movieDoc.id,
-
-                    ...movieDoc.data()
-
-                };
-
-
-                // ========================================
-                // MOVIE CARD
-                // ========================================
-
-                const movieCard =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                movieCard.className =
-                    "movie-card";
-
-
-                movieCard.setAttribute(
-                    "data-movie",
-                    movie.title || ""
-                );
-
-
-                movieCard.setAttribute(
-                    "data-genre",
-                    movie.genre || ""
-                );
-
-
-                movieCard.setAttribute(
-                    "data-year",
-                    movie.year || ""
-                );
-
-
-                movieCard.innerHTML = `
-
-                    <img
-                        src="${movie.poster || ""}"
-                        alt="${movie.title || "Movie"}"
-                    >
-
-                    <h3>
-                        ${movie.title || "Untitled Movie"}
-                    </h3>
-
-                `;
-
-
-                // ========================================
-                // OPEN MOVIE DETAILS
-                // ========================================
-
-                movieCard.addEventListener(
-                    "click",
-                    function() {
-
-                        window.location.href =
-                            "movie.html?id=" +
-                            encodeURIComponent(
-                                movie.id
-                            );
-
-                    }
-                );
-
-
-                dynamicMovies.appendChild(
-                    movieCard
-                );
-
-            }
-        );
-
-
-        console.log(
-            "🔥 Firebase Movies Loaded Successfully!"
-        );
-
-
-        // ========================================
-        // CREATE YEAR FILTER
-        // ========================================
-
-        populateYearFilter();
-
-
-        // ========================================
-        // APPLY INITIAL FILTERS
-        // ========================================
-
-        applyAllFilters();
-
-
-    } catch (error) {
-
-        console.error(
-            "❌ Error Loading Movies From Firebase:",
-            error
-        );
-
-
-        dynamicMovies.innerHTML = `
-            <p style="
-                color: #ff4d4d;
-                text-align: center;
-                width: 100%;
-                padding: 30px;
-            ">
-                Failed to load movies.
-            </p>
-        `;
-
-    }
-
-}
-
-
-// ========================================
 // YEAR FILTER
 // ========================================
 
@@ -447,29 +707,17 @@ function populateYearFilter() {
     }
 
 
-    const movieCards =
-        document.querySelectorAll(
-            ".movie-card"
-        );
-
-
     const years =
         new Set();
 
 
-    movieCards.forEach(
-        function(card) {
+    allMovies.forEach(
+        function(movie) {
 
-            const year =
-                card.getAttribute(
-                    "data-year"
-                );
-
-
-            if (year) {
+            if (movie.year) {
 
                 years.add(
-                    String(year)
+                    String(movie.year)
                 );
 
             }
@@ -491,9 +739,11 @@ function populateYearFilter() {
 
 
     yearFilter.innerHTML = `
+
         <option value="all">
             All Years
         </option>
+
     `;
 
 
@@ -533,7 +783,27 @@ document.addEventListener(
     function() {
 
         // ========================================
-        // GENRE FILTER
+        // SEARCH
+        // ========================================
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                searchMovies
+            );
+
+        }
+
+
+        // ========================================
+        // GENRE
         // ========================================
 
         const genreFilter =
@@ -553,7 +823,7 @@ document.addEventListener(
 
 
         // ========================================
-        // YEAR FILTER
+        // YEAR
         // ========================================
 
         const yearFilter =
@@ -573,10 +843,26 @@ document.addEventListener(
 
 
         // ========================================
-        // LOAD FIREBASE MOVIES
+        // LOAD MOVIES
         // ========================================
 
-        loadPublishedMovies();
+        loadMovies();
 
     }
 );
+
+
+// ========================================
+// GLOBAL FUNCTIONS
+// ========================================
+
+window.searchMovies =
+    searchMovies;
+
+
+window.filterMovies =
+    filterMovies;
+
+
+window.applyAllFilters =
+    applyAllFilters;
