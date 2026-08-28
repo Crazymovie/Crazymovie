@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Trending Movies - Crazymovie</title>
+
+<link
+    rel="stylesheet"
+    href="style.css"
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+```
+
+</head>
+
+<body>
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header>
+
+```
+<div class="logo">
+    🎬 Crazymovie
+</div>
+
+<nav>
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="movies.html">
+        Movies
+    </a>
+
+    <a href="tvseries.html">
+        TV Series
+    </a>
+
+    <a href="trending.html">
+        Trending
+    </a>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search..."
+    >
+
+</nav>
+```
+
+</header>
+
+<!-- ========================================
+     TRENDING MOVIES
+======================================== -->
+
+<section class="movies">
+
+```
+<h2>
+    🔥 Trending Movies
+</h2>
+
+<div
+    id="trendingContainer"
+    class="movie-grid"
+>
+
+    <p id="loadingMessage">
+        Loading Trending Movies...
+    </p>
+
+</div>
+```
+
+</section>
+
+<!-- ========================================
+     FOOTER
+======================================== -->
+
+<footer class="site-footer">
+
+```
+<p>
+    © 2026 Crazymovie. All Rights Reserved.
+</p>
+```
+
+</footer>
+
+<!-- ========================================
+     FIREBASE + TRENDING SCRIPT
+======================================== -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+import {
+    getFirestore,
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+/* ========================================
+   FIREBASE CONFIG
+======================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
+
+    authDomain:
+        "crazymovie-4a2ae.firebaseapp.com",
+
+    projectId:
+        "crazymovie-4a2ae",
+
+    storageBucket:
+        "crazymovie-4a2ae.firebasestorage.app",
+
+    messagingSenderId:
+        "1025439382279",
+
+    appId:
+        "1:1025439382279:web:2380f84d57e302bed023a2"
+
+};
+
+
+
+/* ========================================
+   INITIALIZE FIREBASE
+======================================== */
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+
+/* ========================================
+   LOAD TRENDING MOVIES
+======================================== */
+
+async function loadTrendingMovies() {
+
+    const container =
+        document.getElementById(
+            "trendingContainer"
+        );
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "movies"
+                )
+            );
+
+
+        const trendingMovies = [];
+
+
+        snapshot.forEach(
+            function(doc) {
+
+                const movie =
+                    doc.data();
+
+
+                /*
+                 * Only Trending Movies
+                 */
+
+                if (
+                    movie.trending === true &&
+                    String(movie.type || "")
+                        .trim()
+                        .toLowerCase()
+                    !==
+                    "tv"
+                ) {
+
+                    trendingMovies.push({
+
+                        id: doc.id,
+
+                        ...movie
+
+                    });
+
+                }
+
+            }
+        );
+
+
+
+        /* ========================================
+           NO TRENDING MOVIES
+        ======================================== */
+
+        if (
+            trendingMovies.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <p>
+                    No Trending Movies available.
+                </p>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        /* ========================================
+           SORT BY YEAR
+        ======================================== */
+
+        trendingMovies.sort(
+            function(a, b) {
+
+                return (
+                    Number(b.year || 0)
+                    -
+                    Number(a.year || 0)
+                );
+
+            }
+        );
+
+
+
+        /* ========================================
+           DISPLAY TRENDING MOVIES
+        ======================================== */
+
+        container.innerHTML = "";
+
+
+        trendingMovies.forEach(
+            function(movie) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "movie-card";
+
+
+                card.innerHTML = `
+
+                    <img
+                        src="${movie.poster || ""}"
+                        alt="${movie.title || "Trending Movie"}"
+                    >
+
+                    <div class="movie-info">
+
+                        <h3>
+                            ${movie.title || "Untitled"}
+                        </h3>
+
+                        <p>
+                            📅 ${movie.year || "-"}
+                        </p>
+
+                        <p>
+                            ⭐ ${movie.rating || "-"}
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                /* ========================================
+                   OPEN MOVIE DETAILS
+                ======================================== */
+
+                card.addEventListener(
+                    "click",
+                    function() {
+
+                        window.location.href =
+                            "movie.html?id=" +
+                            encodeURIComponent(
+                                movie.id
+                            );
+
+                    }
+                );
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+
+        /* ========================================
+           SEARCH
+        ======================================== */
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                function() {
+
+                    const searchText =
+                        searchInput.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    const cards =
+                        container.querySelectorAll(
+                            ".movie-card"
+                        );
+
+
+                    cards.forEach(
+                        function(card) {
+
+                            const title =
+                                card.querySelector(
+                                    "h3"
+                                );
+
+
+                            if (!title) {
+                                return;
+                            }
+
+
+                            const movieName =
+                                title.innerText
+                                    .toLowerCase();
+
+
+                            if (
+                                movieName.includes(
+                                    searchText
+                                )
+                            ) {
+
+                                card.style.display =
+                                    "";
+
+                            } else {
+
+                                card.style.display =
+                                    "none";
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Trending Movies Loading Error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <p>
+                Failed to load Trending Movies.
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+
+/* ========================================
+   START
+======================================== */
+
+loadTrendingMovies();
+
+</script>
+
+</body>
+
+</html>

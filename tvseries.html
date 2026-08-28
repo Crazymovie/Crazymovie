@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TV Series - Crazymovie</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body>
+
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header>
+
+    <div class="logo">
+        🎬 Crazymovie
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="index.html#movies">
+            Movies
+        </a>
+
+        <a href="tvseries.html">
+            TV Series
+        </a>
+
+        <a href="index.html#trending">
+            Trending
+        </a>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Search..."
+        >
+
+    </nav>
+
+</header>
+
+
+
+<!-- ========================================
+     TV SERIES
+======================================== -->
+
+<section class="movies">
+
+    <h2>
+        📺 TV Series
+    </h2>
+
+    <div
+        id="tvSeriesContainer"
+        class="movie-grid"
+    >
+
+        <p id="loadingMessage">
+            Loading TV Series...
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================================
+     FOOTER
+======================================== -->
+
+<footer class="site-footer">
+
+    <p>
+        © 2026 Crazymovie. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+
+<!-- ========================================
+     FIREBASE + TV SERIES SCRIPT
+======================================== -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+import {
+    getFirestore,
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+/* ========================================
+   FIREBASE CONFIG
+======================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
+
+    authDomain:
+        "crazymovie-4a2ae.firebaseapp.com",
+
+    projectId:
+        "crazymovie-4a2ae",
+
+    storageBucket:
+        "crazymovie-4a2ae.firebasestorage.app",
+
+    messagingSenderId:
+        "1025439382279",
+
+    appId:
+        "1:1025439382279:web:2380f84d57e302bed023a2"
+
+};
+
+
+
+/* ========================================
+   INITIALIZE FIREBASE
+======================================== */
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+
+/* ========================================
+   LOAD TV SERIES
+======================================== */
+
+async function loadTVSeries() {
+
+    const container =
+        document.getElementById(
+            "tvSeriesContainer"
+        );
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "movies"
+                )
+            );
+
+
+        const tvSeries = [];
+
+
+        snapshot.forEach(
+            function(doc) {
+
+                const movie =
+                    doc.data();
+
+
+                /*
+                 * Only TV Series
+                 */
+
+                if (
+    String(movie.type || "")
+        .trim()
+        .toLowerCase()
+    ===
+    "tv"
+) {
+
+                    tvSeries.push({
+
+                        id: doc.id,
+
+                        ...movie
+
+                    });
+
+                }
+
+            }
+        );
+
+
+        /* ========================================
+           NO TV SERIES
+        ======================================== */
+
+        if (
+            tvSeries.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <p>
+                    No TV Series available.
+                </p>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        /* ========================================
+           SORT BY YEAR
+        ======================================== */
+
+        tvSeries.sort(
+            function(a, b) {
+
+                return (
+                    Number(b.year || 0)
+                    -
+                    Number(a.year || 0)
+                );
+
+            }
+        );
+
+
+
+        /* ========================================
+           DISPLAY TV SERIES
+        ======================================== */
+
+        container.innerHTML = "";
+
+
+        tvSeries.forEach(
+            function(series) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "movie-card";
+
+
+                card.innerHTML = `
+
+                    <img
+                        src="${series.poster || ""}"
+                        alt="${series.title || "TV Series"}"
+                    >
+
+                    <div class="movie-info">
+
+                        <h3>
+                            ${series.title || "Untitled"}
+                        </h3>
+
+                        <p>
+                            📅 ${series.year || "-"}
+                        </p>
+
+                        <p>
+                            ⭐ ${series.rating || "-"}
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                /* ========================================
+                   OPEN DETAILS PAGE
+                ======================================== */
+
+                card.addEventListener(
+                    "click",
+                    function() {
+
+                        window.location.href =
+                            "movie.html?id=" +
+                            encodeURIComponent(
+                                series.id
+                            );
+
+                    }
+                );
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+        /* ========================================
+           SEARCH
+        ======================================== */
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                function() {
+
+                    const searchText =
+                        searchInput.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    const cards =
+                        container.querySelectorAll(
+                            ".movie-card"
+                        );
+
+
+                    cards.forEach(
+                        function(card) {
+
+                            const title =
+                                card.querySelector(
+                                    "h3"
+                                );
+
+
+                            if (!title) {
+                                return;
+                            }
+
+
+                            const movieName =
+                                title.innerText
+                                    .toLowerCase();
+
+
+                            if (
+                                movieName.includes(
+                                    searchText
+                                )
+                            ) {
+
+                                card.style.display =
+                                    "";
+
+                            } else {
+
+                                card.style.display =
+                                    "none";
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ TV Series Loading Error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <p>
+                Failed to load TV Series.
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+
+/* ========================================
+   START
+======================================== */
+
+loadTVSeries();
+
+</script>
+
+
+</body>
+
+</html>
