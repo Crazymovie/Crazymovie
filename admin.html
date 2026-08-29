@@ -984,18 +984,99 @@ body {
      ADMIN LOGIN PROTECTION
 ======================================== -->
 
-<script>
+<script type="module">
 
-if (
-    sessionStorage.getItem(
-        "crazymovieAdminLoggedIn"
-    ) !== "true"
-) {
+import {
+    initializeApp,
+    getApps,
+    getApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-    window.location.href =
-    "admin-login.html";
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-}
+
+// ========================================
+// FIREBASE CONFIG
+// ========================================
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyC3Xo0G-Vs2ldLqUO54n7FBSdWlPPdoxsc",
+
+    authDomain:
+    "crazymovie-4a2ae.firebaseapp.com",
+
+    projectId:
+    "crazymovie-4a2ae",
+
+    storageBucket:
+    "crazymovie-4a2ae.firebasestorage.app",
+
+    messagingSenderId:
+    "1025439382279",
+
+    appId:
+    "1:1025439382279:web:2380f84d57e302bed023a2"
+
+};
+
+
+// ========================================
+// USE EXISTING FIREBASE APP
+// ========================================
+
+const app =
+    getApps().length
+        ? getApp()
+        : initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+// ========================================
+// CHECK FIREBASE LOGIN
+// ========================================
+
+onAuthStateChanged(
+    auth,
+    function(user) {
+
+        if (!user) {
+
+            sessionStorage.removeItem(
+                "crazymovieAdminLoggedIn"
+            );
+
+            window.location.href =
+                "admin-login.html";
+
+            return;
+
+        }
+
+
+        // ========================================
+        // ADMIN IS AUTHENTICATED
+        // ========================================
+
+        sessionStorage.setItem(
+            "crazymovieAdminLoggedIn",
+            "true"
+        );
+
+        console.log(
+            "🔐 Firebase Admin Authentication Verified:",
+            user.email
+        );
+
+    }
+);
 
 </script>
 
