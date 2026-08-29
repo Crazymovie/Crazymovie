@@ -515,6 +515,47 @@ function applyAllFilters() {
             "searchInput"
         );
 
+    // ========================================
+    // SEARCH MODE
+    // ========================================
+
+    const searchText =
+        searchInput
+            ? searchInput.value
+                .toLowerCase()
+                .trim()
+            : "";
+
+    const trendingContainer =
+        document.getElementById(
+            "trendingMovies"
+        );
+
+    // Search করলে Trending hide হবে
+    if (trendingContainer) {
+
+        const trendingSection =
+            trendingContainer.closest("section");
+
+        if (searchText !== "") {
+
+            if (trendingSection) {
+                trendingSection.style.display = "none";
+            } else {
+                trendingContainer.style.display = "none";
+            }
+
+        } else {
+
+            if (trendingSection) {
+                trendingSection.style.display = "";
+            } else {
+                trendingContainer.style.display = "";
+            }
+
+        }
+
+    }
 
     const genreFilter =
         document.getElementById(
@@ -528,12 +569,7 @@ function applyAllFilters() {
         );
 
 
-    const searchText =
-        searchInput
-            ? searchInput.value
-                .toLowerCase()
-                .trim()
-            : "";
+    
 
 
     const selectedGenre =
