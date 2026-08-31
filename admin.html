@@ -992,10 +992,14 @@ import {
     getApp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
+```js
 import {
     getAuth,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+```
+
 
 
 // ========================================
@@ -4291,25 +4295,36 @@ async function deleteMovie(movieId) {
 
 }
 
+```js
 /* ========================================
    ADMIN LOGOUT
 ======================================== */
 
-function adminLogout() {
+async function adminLogout() {
 
+    try {
+
+        await signOut(auth);
+
+    } catch (error) {
+
+        console.error(
+            "Firebase logout error:",
+            error
+        );
+
+    }
 
     sessionStorage.removeItem(
-
         "crazymovieAdminLoggedIn"
-
     );
 
-
     window.location.href =
-
-    "admin-login.html";
+        "admin-login.html";
 
 }
+```
+
 
 </script>
 
