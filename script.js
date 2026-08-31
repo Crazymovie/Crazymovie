@@ -557,6 +557,51 @@ function applyAllFilters() {
 
     }
 
+
+        // ========================================
+    // NATIVE BANNER POSITION
+    // ========================================
+
+    const nativeBanner =
+        document.getElementById("nativeBanner");
+
+    const moviesSection =
+        document.getElementById("movies");
+
+    if (
+        nativeBanner &&
+        moviesSection &&
+        trendingContainer
+    ) {
+
+        const trendingSection =
+            trendingContainer.closest("section");
+
+        if (searchText !== "") {
+
+            // Search করলে Banner Movies section-এর নিচে যাবে
+            moviesSection.insertAdjacentElement(
+                "afterend",
+                nativeBanner
+            );
+
+        } else {
+
+            // Search clear করলে Banner আগের জায়গায় ফিরে আসবে
+            if (trendingSection) {
+
+                trendingSection.insertAdjacentElement(
+                    "afterend",
+                    nativeBanner
+                );
+
+            }
+
+        }
+
+    }
+
+
     const genreFilter =
         document.getElementById(
             "genreFilter"
