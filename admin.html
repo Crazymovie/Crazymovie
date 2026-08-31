@@ -980,6 +980,7 @@ body {
 <body>
 
 
+```html
 <!-- ========================================
      ADMIN LOGIN PROTECTION
 ======================================== -->
@@ -992,14 +993,11 @@ import {
     getApp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-```js
 import {
     getAuth,
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-```
-
 
 
 // ========================================
@@ -1038,7 +1036,6 @@ const app =
         ? getApp()
         : initializeApp(firebaseConfig);
 
-
 const auth =
     getAuth(app);
 
@@ -1064,11 +1061,6 @@ onAuthStateChanged(
 
         }
 
-
-        // ========================================
-        // ADMIN IS AUTHENTICATED
-        // ========================================
-
         sessionStorage.setItem(
             "crazymovieAdminLoggedIn",
             "true"
@@ -1081,6 +1073,35 @@ onAuthStateChanged(
 
     }
 );
+
+
+// ========================================
+// ADMIN LOGOUT
+// ========================================
+
+window.adminLogout = async function() {
+
+    try {
+
+        await signOut(auth);
+
+    } catch (error) {
+
+        console.error(
+            "Firebase logout error:",
+            error
+        );
+
+    }
+
+    sessionStorage.removeItem(
+        "crazymovieAdminLoggedIn"
+    );
+
+    window.location.href =
+        "admin-login.html";
+
+};
 
 </script>
 
