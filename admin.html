@@ -992,12 +992,13 @@ import {
     getApp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-
+```js
 import {
     getAuth,
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+```
 
 
 
@@ -1099,7 +1100,7 @@ onAuthStateChanged(
     </p>
 
     <button
-        onclick="window.adminLogout()"
+        onclick="adminLogout()"
         style="
             margin-top:15px;
             padding:10px 20px;
@@ -4295,12 +4296,11 @@ async function deleteMovie(movieId) {
 }
 
 ```js
-
 /* ========================================
    ADMIN LOGOUT
 ======================================== */
 
-window.adminLogout = async function () {
+async function adminLogout() {
 
     try {
 
@@ -4322,7 +4322,8 @@ window.adminLogout = async function () {
     window.location.href =
         "admin-login.html";
 
-};
+}
+```
 
 
 </script>
