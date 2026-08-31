@@ -4296,11 +4296,12 @@ async function deleteMovie(movieId) {
 }
 
 ```js
+
 /* ========================================
    ADMIN LOGOUT
 ======================================== */
 
-async function adminLogout() {
+window.adminLogout = async function () {
 
     try {
 
@@ -4322,10 +4323,9 @@ async function adminLogout() {
     window.location.href =
         "admin-login.html";
 
-}
+};
 ```
 
-window.adminLogout = adminLogout;
 
 
 </script>
