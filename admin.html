@@ -1207,10 +1207,10 @@ onchange="previewPosterImage(event)"
 
 
     <input
-        type="number"
-        id="movieYear"
-        placeholder="Release Year"
-    >
+    type="text"
+    id="movieReleaseDate"
+    placeholder="September 6, 2026"
+>
 
 
     <input
@@ -1802,7 +1802,7 @@ function clearMovieForm() {
 
     document.getElementById("movieDescription").value = "";
 
-    document.getElementById("movieYear").value = "";
+    document.getElementById("movieReleaseDate").value = "";
 
     document.getElementById("movieGenre").value = "";
 
@@ -2170,9 +2170,9 @@ if (yearFilter) {
 
 
                 <p>
-                    📅 Year:
-                    ${movie.year}
-                </p>
+    📅 Release Date:
+    ${movie.releaseDate || movie.year}
+</p>
 
 
                 <p>
@@ -2354,9 +2354,9 @@ if (selectedPosterImage) {
 
 
     document.getElementById(
-        "movieYear"
-    ).value =
-        movie.year || "";
+    "movieReleaseDate"
+).value =
+    movie.releaseDate || "";
 
 
     document.getElementById(
@@ -2505,10 +2505,15 @@ async function updateMovie() {
         .trim();
 
 
-    const year =
-        document.getElementById("movieYear")
-        .value
-        .trim();
+    const releaseDate =
+    document.getElementById("movieReleaseDate")
+    .value
+    .trim();
+
+const year =
+    releaseDate.match(/\b\d{4}\b/)
+    ? releaseDate.match(/\b\d{4}\b/)[0]
+    : "";
 
 
     const genre =
@@ -2765,6 +2770,8 @@ async function updateMovie() {
 
         year: String(year),
 
+        releaseDate: releaseDate,
+
         genre: genre,
 
         rating: rating,
@@ -2952,10 +2959,15 @@ async function publishMovie() {
         .value
         .trim();
 
-    const year =
-        document.getElementById("movieYear")
-        .value
-        .trim();
+    const releaseDate =
+    document.getElementById("movieReleaseDate")
+    .value
+    .trim();
+
+const year =
+    releaseDate.match(/\b\d{4}\b/)
+    ? releaseDate.match(/\b\d{4}\b/)[0]
+    : "";
 
     const genre =
         document.getElementById("movieGenre")
@@ -3128,6 +3140,9 @@ async function publishMovie() {
 
         year:
             String(year),
+
+releaseDate:
+    releaseDate,
 
         genre:
             genre,

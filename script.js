@@ -69,6 +69,9 @@ function createMovieCard(movie, movieId) {
     const year =
         movie.year || "";
 
+const releaseDate =
+    movie.releaseDate || movie.year || "";
+
     const genre =
         movie.genre || "";
 
@@ -123,14 +126,14 @@ function createMovieCard(movie, movieId) {
             </h3>
 
             ${
-                year
-                    ? `
-                        <p class="movie-year">
-                            ${year}
-                        </p>
-                      `
-                    : ""
-            }
+    releaseDate
+        ? `
+            <p class="movie-year">
+                ${releaseDate}
+            </p>
+          `
+        : ""
+}
 
             ${
                 genre
@@ -316,22 +319,23 @@ async function loadMovies() {
         // NEWEST PUBLISHED MOVIES FIRST
         // ========================================
 
-        allMovies.sort(
-            function(a, b) {
+        allMovies.sort(function(a, b) {
 
-                const timeA =
-                    a.createdAt?.seconds ||
-                    0;
+    const timeA =
+        a.createdAt?.seconds ||
+        a.createdAt ||
+        Number(a.id) ||
+        0;
 
-                const timeB =
-                    b.createdAt?.seconds ||
-                    0;
+    const timeB =
+        b.createdAt?.seconds ||
+        b.createdAt ||
+        Number(b.id) ||
+        0;
 
+    return timeB - timeA;
 
-                return timeB - timeA;
-
-            }
-        );
+});
 
 
         let trendingCount = 0;

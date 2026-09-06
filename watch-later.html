@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Watch Later - Crazymovie</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+
+/* ========================================
+   STEP 25 PART 6
+   WATCH LATER PAGE
+======================================== */
+
+.watch-later-page {
+
+    max-width: 1200px;
+
+    margin: 50px auto;
+
+    padding: 0 20px;
+
+}
+
+.watch-later-page h1 {
+
+    text-align: center;
+
+    margin-bottom: 40px;
+
+}
+
+
+/* ========================================
+   SAVED MOVIES GRID
+======================================== */
+
+.saved-movies-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(220px, 1fr));
+
+    gap: 25px;
+
+}
+
+
+/* ========================================
+   SAVED MOVIE CARD
+======================================== */
+
+.saved-movie-card {
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    transition: 0.3s ease;
+
+}
+
+.saved-movie-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.4);
+
+}
+
+
+/* ========================================
+   MOVIE IMAGE
+======================================== */
+
+.saved-movie-image {
+
+    position: relative;
+
+    cursor: pointer;
+
+}
+
+.saved-movie-image img {
+
+    width: 100%;
+
+    height: 320px;
+
+    object-fit: cover;
+
+    display: block;
+
+}
+
+
+/* ========================================
+   MOVIE INFO
+======================================== */
+
+.saved-movie-info {
+
+    padding: 15px;
+
+}
+
+.saved-movie-info h3 {
+
+    margin:
+        0 0 10px;
+
+    font-size: 18px;
+
+}
+
+.saved-movie-meta {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    font-size: 13px;
+
+    opacity: 0.8;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* ========================================
+   BUTTONS
+======================================== */
+
+.saved-movie-actions {
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+.saved-movie-actions button {
+
+    flex: 1;
+
+    padding: 9px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    color: white;
+
+    background: red;
+
+    transition: 0.3s;
+
+}
+
+.saved-movie-actions button:hover {
+
+    opacity: 0.8;
+
+}
+
+.saved-movie-actions
+.remove-saved-btn {
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+}
+
+
+/* ========================================
+   EMPTY MESSAGE
+======================================== */
+
+.empty-watch-later {
+
+    text-align: center;
+
+    padding: 60px 20px;
+
+    display: none;
+
+}
+
+.empty-watch-later h2 {
+
+    margin-bottom: 15px;
+
+}
+
+.empty-watch-later p {
+
+    opacity: 0.8;
+
+}
+
+
+/* ========================================
+   MOBILE RESPONSIVE
+======================================== */
+
+@media (max-width: 600px) {
+
+    .saved-movies-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 15px;
+
+    }
+
+    .saved-movie-image img {
+
+        height: 240px;
+
+    }
+
+    .saved-movie-info h3 {
+
+        font-size: 15px;
+
+    }
+
+    .saved-movie-meta {
+
+        flex-direction: column;
+
+        gap: 5px;
+
+    }
+
+    .saved-movie-actions {
+
+        flex-direction: column;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header>
+
+    <div class="logo">
+        🎬 Crazymovie
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="#">
+            Movies
+        </a>
+
+        <a href="#">
+            TV Series
+        </a>
+
+        <a href="#">
+            Trending
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ========================================
+     WATCH LATER PAGE
+======================================== -->
+
+<section class="watch-later-page">
+
+    <h1>
+        🔖 My Watch Later
+    </h1>
+
+
+    <!-- SAVED MOVIES -->
+
+    <div
+        id="savedMoviesGrid"
+        class="saved-movies-grid"
+    >
+
+    </div>
+
+
+    <!-- EMPTY MESSAGE -->
+
+    <div
+        id="emptyWatchLater"
+        class="empty-watch-later"
+    >
+
+        <h2>
+            🔖 No Saved Movies
+        </h2>
+
+        <p>
+            Movies you save for later
+            will appear here.
+        </p>
+
+    </div>
+
+</section>
+
+
+<script>
+
+// ========================================
+// STEP 25 PART 6
+// WATCH LATER MOVIES
+// ========================================
+
+
+// MOVIE DATABASE
+
+const movieData = {
+
+    "Avengers": {
+
+        year: "2012",
+
+        genre:
+            "Action, Adventure, Sci-Fi",
+
+        rating:
+            "8.0/10",
+
+        image:
+            "assets/images/avengers.jpg",
+
+        video:
+            "assets/videos/avengers.mp4"
+
+    },
+
+
+    "Spider-Man": {
+
+        year: "2021",
+
+        genre:
+            "Action, Adventure, Sci-Fi",
+
+        rating:
+            "8.2/10",
+
+        image:
+            "assets/images/spiderman.jpg",
+
+        video:
+            "assets/videos/spiderman.mp4.mp4"
+
+    },
+
+
+    "Inception": {
+
+        year: "2010",
+
+        genre:
+            "Action, Sci-Fi, Thriller",
+
+        rating:
+            "8.8/10",
+
+        image:
+            "assets/images/inception.jpg",
+
+        video:
+            "assets/videos/inception.mp4"
+
+    },
+
+
+    "Interstellar": {
+
+        year: "2014",
+
+        genre:
+            "Adventure, Drama, Sci-Fi",
+
+        rating:
+            "8.7/10",
+
+        image:
+            "assets/images/interstellar.jpg",
+
+        video:
+            "assets/videos/interstellar.mp4"
+
+    },
+
+
+    "The Dark Knight": {
+
+        year: "2008",
+
+        genre:
+            "Action, Crime, Drama",
+
+        rating:
+            "9.0/10",
+
+        image:
+            "assets/images/dark-knight.jpg",
+
+        video:
+            "assets/videos/dark-knight.mp4"
+
+    },
+
+
+    "Avatar": {
+
+        year: "2009",
+
+        genre:
+            "Action, Adventure, Fantasy",
+
+        rating:
+            "7.8/10",
+
+        image:
+            "assets/images/avatar.jpg",
+
+        video:
+            "assets/videos/avatar.mp4"
+
+    },
+
+
+    "Titanic": {
+
+        year: "1997",
+
+        genre:
+            "Drama, Romance",
+
+        rating:
+            "7.9/10",
+
+        image:
+            "assets/images/titanic.jpg",
+
+        video:
+            "assets/videos/titanic.mp4"
+
+    },
+
+
+    "Joker": {
+
+        year: "2019",
+
+        genre:
+            "Crime, Drama, Thriller",
+
+        rating:
+            "8.4/10",
+
+        image:
+            "assets/images/joker.jpg",
+
+        video:
+            "assets/videos/joker.mp4"
+
+    }
+
+};
+
+
+// ========================================
+// GET SAVED MOVIES
+// ========================================
+
+const savedMovies =
+    JSON.parse(
+        localStorage.getItem(
+            "watchLaterMovies"
+        )
+    ) || [];
+
+
+const savedMoviesGrid =
+    document.getElementById(
+        "savedMoviesGrid"
+    );
+
+
+const emptyWatchLater =
+    document.getElementById(
+        "emptyWatchLater"
+    );
+
+
+// ========================================
+// CHECK EMPTY
+// ========================================
+
+if (
+    savedMovies.length === 0
+) {
+
+    emptyWatchLater.style.display =
+        "block";
+
+}
+
+
+// ========================================
+// SHOW SAVED MOVIES
+// ========================================
+
+savedMovies.forEach(
+    function(movieName) {
+
+
+        const movie =
+            movieData[movieName];
+
+
+        if (!movie) {
+
+            return;
+
+        }
+
+
+        const movieCard =
+            document.createElement(
+                "div"
+            );
+
+
+        movieCard.className =
+            "saved-movie-card";
+
+
+        movieCard.innerHTML = `
+
+            <div
+                class="saved-movie-image"
+            >
+
+                <img
+                    src="${movie.image}"
+                    alt="${movieName}"
+                    onerror="
+                    this.src='assets/images/default.jpg'
+                    "
+                >
+
+            </div>
+
+
+            <div
+                class="saved-movie-info"
+            >
+
+                <h3>
+                    ${movieName}
+                </h3>
+
+
+                <div
+                    class="saved-movie-meta"
+                >
+
+                    <span>
+                        📅 ${movie.year}
+                    </span>
+
+                    <span>
+                        ⭐ ${movie.rating}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="saved-movie-actions"
+                >
+
+                    <button
+                        class="watch-saved-btn"
+                    >
+                        ▶️ Watch Now
+                    </button>
+
+
+                    <button
+                        class="remove-saved-btn"
+                    >
+                        🗑️ Remove
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        // ========================================
+        // WATCH NOW
+        // ========================================
+
+        movieCard
+            .querySelector(
+                ".watch-saved-btn"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    localStorage.setItem(
+                        "selectedMovie",
+                        movieName
+                    );
+
+
+                    localStorage.setItem(
+                        "selectedVideo",
+                        movie.video
+                    );
+
+
+                    window.location.href =
+                        "watch.html";
+
+                }
+            );
+
+
+        // ========================================
+        // POSTER CLICK
+        // ========================================
+
+        movieCard
+            .querySelector(
+                ".saved-movie-image"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    localStorage.setItem(
+                        "selectedMovie",
+                        movieName
+                    );
+
+
+                    localStorage.setItem(
+                        "selectedVideo",
+                        movie.video
+                    );
+
+
+                    window.location.href =
+                        "watch.html";
+
+                }
+            );
+
+
+        // ========================================
+        // REMOVE MOVIE
+        // ========================================
+
+        movieCard
+            .querySelector(
+                ".remove-saved-btn"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+
+                    const updatedMovies =
+                        savedMovies.filter(
+                            function(name) {
+
+                                return name !==
+                                    movieName;
+
+                            }
+                        );
+
+
+                    localStorage.setItem(
+                        "watchLaterMovies",
+                        JSON.stringify(
+                            updatedMovies
+                        )
+                    );
+
+
+                    movieCard.remove();
+
+
+                    if (
+                        updatedMovies.length === 0
+                    ) {
+
+                        emptyWatchLater.style.display =
+                            "block";
+
+                    }
+
+                }
+            );
+
+
+        savedMoviesGrid.appendChild(
+            movieCard
+        );
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

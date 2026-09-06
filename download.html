@@ -268,6 +268,21 @@
     </div>
 
 
+<!-- ========================================
+     RELATED MOVIES
+======================================== -->
+
+<section class="related-movies-section">
+
+    <h2>🎬 Related Movies</h2>
+
+    <div
+        id="relatedMovies"
+        class="movie-grid"
+    ></div>
+
+</section>
+
 
     <!-- BOTTOM AD -->
 
@@ -306,7 +321,9 @@ import {
 import {
     getFirestore,
     doc,
-    getDoc
+    getDoc,
+    collection,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -468,9 +485,9 @@ async function loadDownloadPage() {
         // ========================================
 
         document.getElementById(
-            "downloadYear"
-        ).innerText =
-            movie.year || "N/A";
+    "downloadYear"
+).innerText =
+    movie.releaseDate || movie.year || "N/A";
 
 
 
@@ -496,7 +513,157 @@ async function loadDownloadPage() {
             "No description available.";
 
 
+// ========================================
+// RELATED MOVIES
+// ========================================
 
+const relatedMoviesContainer =
+    document.getElementById("relatedMovies");
+
+if (relatedMoviesContainer) {
+
+    try {
+
+        const moviesSnapshot =
+            await getDocs(
+                collection(db, "movies")
+            );
+
+        const relatedMovies = [];
+
+        moviesSnapshot.forEach((docSnap) => {
+
+            // Current movie বাদ
+            if (docSnap.id === movieId) {
+                return;
+            }
+
+            const relatedMovie =
+                docSnap.data();
+
+            // Same language হলে priority
+            if (
+                relatedMovie.language &&
+                movie.language &&
+                relatedMovie.language === movie.language
+            ) {
+
+                relatedMovies.push({
+                    id: docSnap.id,
+                    ...relatedMovie
+                });
+
+            }
+
+        });
+
+
+        // যদি same language-এর movie কম থাকে,
+        // তাহলে অন্য movie দিয়েও fill করবে
+
+        if (relatedMovies.length < 6) {
+
+            moviesSnapshot.forEach((docSnap) => {
+
+                if (docSnap.id === movieId) {
+                    return;
+                }
+
+                if (
+                    relatedMovies.some(
+                        item => item.id === docSnap.id
+                    )
+                ) {
+                    return;
+                }
+
+                relatedMovies.push({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                });
+
+            });
+
+        }
+
+relatedMovies.reverse();
+
+        // সর্বোচ্চ 6টি movie
+        relatedMovies
+            .slice(0, 6)
+            .forEach((relatedMovie) => {
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "movie-card";
+
+                card.innerHTML = `
+
+                    <img
+                        src="${relatedMovie.poster || ""}"
+                        alt="${relatedMovie.title || "Movie"}"
+                    >
+
+                    <div class="movie-card-content">
+
+                        <h3>
+                            ${relatedMovie.title || "Movie"}
+                        </h3>
+
+                        <p class="movie-year">
+                            ${
+                                relatedMovie.releaseDate ||
+                                relatedMovie.year ||
+                                ""
+                            }
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                card.addEventListener(
+                    "click",
+                    function () {
+
+                        window.location.href =
+                            "movie.html?id=" +
+                            relatedMovie.id;
+
+                    }
+                );
+
+
+                relatedMoviesContainer.appendChild(
+                    card
+                );
+
+            });
+
+
+        if (
+            relatedMoviesContainer.children.length === 0
+        ) {
+
+            relatedMoviesContainer.innerHTML =
+                "<p>No related movies available.</p>";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Related Movies Error:",
+            error
+        );
+
+    }
+
+}
             
 
         // ========================================

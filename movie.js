@@ -166,7 +166,7 @@ async function loadMovie() {
         if (movieYear) {
 
             movieYear.innerText =
-                movie.year || "N/A";
+    movie.releaseDate || movie.year || "N/A";
 
         }
 

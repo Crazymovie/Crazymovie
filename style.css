@@ -3810,3 +3810,167 @@ nav a:hover {
     }
 }
 
+/* ========================================
+   RELATED MOVIES - FINAL 5 COLUMN FIX
+   ======================================== */
+
+.related-movies-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 25px !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.related-movie-card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Poster */
+.related-movie-image {
+    width: 100%;
+    overflow: hidden;
+}
+
+.related-movie-image img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+/* ========================================
+   TABLET
+   ======================================== */
+
+@media (max-width: 1024px) {
+
+    .related-movies-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+    }
+
+    .related-movie-image img {
+        height: 260px;
+    }
+}
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 768px) {
+
+    .related-movies-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 15px !important;
+    }
+
+    .related-movie-image img {
+        height: 230px;
+    }
+
+    .related-movie-info {
+        padding: 10px;
+    }
+
+    .related-movie-info h3 {
+        font-size: 15px;
+    }
+}
+
+/* ========================================
+   SMALL MOBILE
+   ======================================== */
+
+@media (max-width: 480px) {
+
+    .related-movies-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+    }
+
+    .related-movie-image img {
+        height: 190px;
+    }
+
+    .related-movie-info h3 {
+        font-size: 13px;
+    }
+
+    .related-movie-info button {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+/* =========================================
+   DOWNLOAD PAGE - RELATED MOVIES FINAL FIX
+   ========================================= */
+
+.related-movies-section .movie-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 25px !important;
+    width: 100% !important;
+    overflow: visible !important;
+    padding: 5px 0 20px !important;
+    box-sizing: border-box !important;
+}
+
+.related-movies-section .movie-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+    box-sizing: border-box !important;
+}
+
+.related-movies-section .movie-card img {
+    width: 100% !important;
+    height: 280px !important;
+    object-fit: cover !important;
+    display: block;
+}
+
+
+/* TABLET */
+@media (max-width: 1024px) {
+
+    .related-movies-section .movie-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+
+}
+
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .related-movies-section .movie-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 15px !important;
+        overflow: visible !important;
+    }
+
+    .related-movies-section .movie-card img {
+        height: 230px !important;
+    }
+
+}
+
+
+/* SMALL MOBILE */
+@media (max-width: 480px) {
+
+    .related-movies-section .movie-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+    }
+
+    .related-movies-section .movie-card img {
+        height: 200px !important;
+    }
+
+}
