@@ -259,17 +259,22 @@ async function loadMovies() {
            SORT BY YEAR
         ======================================== */
 
-        movies.sort(
-            function(a, b) {
+        /* ========================================
+   SORT BY PUBLISH ORDER
+   NEWEST MOVIES FIRST
+======================================== */
 
-                return (
-                    Number(b.year || 0)
-                    -
-                    Number(a.year || 0)
-                );
+movies.sort(
+    function(a, b) {
 
-            }
+        return (
+            Number(b.id || 0)
+            -
+            Number(a.id || 0)
         );
+
+    }
+);
 
 
 

@@ -253,17 +253,22 @@ async function loadTVSeries() {
            SORT BY YEAR
         ======================================== */
 
-        tvSeries.sort(
-            function(a, b) {
+        /* ========================================
+   SORT BY PUBLISH ORDER
+   NEWEST TV SERIES FIRST
+======================================== */
 
-                return (
-                    Number(b.year || 0)
-                    -
-                    Number(a.year || 0)
-                );
+tvSeries.sort(
+    function(a, b) {
 
-            }
+        return (
+            Number(b.id || 0)
+            -
+            Number(a.id || 0)
         );
+
+    }
+);
 
 
 
