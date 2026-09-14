@@ -3277,48 +3277,67 @@ releaseDate:
    ANALYTICS DATA
 ======================================== */
 
-const analytics =
+// ========================================
+// LOAD TOTAL MOVIE ANALYTICS FROM FIREBASE
+// ========================================
 
-JSON.parse(
+async function loadFirebaseMovieAnalytics() {
 
-    localStorage.getItem(
-        "analytics"
-    )
+    try {
 
-) || {
+        const analyticsRef =
+            window.collection(
+                window.db,
+                "movieAnalytics"
+            );
 
-    visitors: 0,
+        const snapshot =
+            await window.getDocs(
+                analyticsRef
+            );
 
-    views: 0,
+        let totalViews = 0;
+        let totalDownloads = 0;
 
-    downloads: 0
+        snapshot.forEach(function(docSnapshot) {
 
-};
+            const data =
+                docSnapshot.data();
 
+            totalViews +=
+                Number(data.views || 0);
 
-/* ========================================
-   SHOW TOTAL ANALYTICS
-======================================== */
+            totalDownloads +=
+                Number(data.downloads || 0);
 
-document.getElementById(
-    "totalVisitors"
-).innerText =
+        });
 
-analytics.visitors || 0;
+        document.getElementById(
+            "totalViews"
+        ).innerText = totalViews;
 
+        document.getElementById(
+            "totalDownloads"
+        ).innerText = totalDownloads;
 
-document.getElementById(
-    "totalViews"
-).innerText =
+        console.log(
+            "📊 Firebase Movie Analytics Loaded:",
+            {
+                totalViews: totalViews,
+                totalDownloads: totalDownloads
+            }
+        );
 
-analytics.views || 0;
+    } catch (error) {
 
+        console.error(
+            "❌ Failed to load Firebase movie analytics:",
+            error
+        );
 
-document.getElementById(
-    "totalDownloads"
-).innerText =
+    }
 
-analytics.downloads || 0;
+}
 
 
 /* ========================================
@@ -3499,6 +3518,117 @@ document.getElementById(
 
 yesterdayData.downloads || 0;
 
+/* ========================================
+   FIREBASE VISITOR ANALYTICS
+======================================== */
+
+async function loadFirebaseVisitorAnalytics() {
+
+    try {
+
+        const totalRef = window.doc(
+            window.db,
+            "siteAnalytics",
+            "totals"
+        );
+
+        const totalSnap =
+            await window.getDoc(totalRef);
+
+        const totalData =
+            totalSnap.exists()
+                ? totalSnap.data()
+                : {};
+
+
+        document.getElementById(
+            "totalVisitors"
+        ).innerText =
+            totalData.visitors || 0;
+
+
+        const todayRef = window.doc(
+            window.db,
+            "siteAnalyticsDaily",
+            today
+        );
+
+        const todaySnap =
+            await window.getDoc(todayRef);
+
+        const todayFirebaseData =
+            todaySnap.exists()
+                ? todaySnap.data()
+                : {};
+
+
+        document.getElementById(
+            "todayVisitors"
+        ).innerText =
+            todayFirebaseData.visitors || 0;
+
+
+        const yesterdayRef = window.doc(
+            window.db,
+            "siteAnalyticsDaily",
+            yesterday
+        );
+
+        const yesterdaySnap =
+            await window.getDoc(yesterdayRef);
+
+        const yesterdayFirebaseData =
+            yesterdaySnap.exists()
+                ? yesterdaySnap.data()
+                : {};
+
+
+        document.getElementById(
+            "yesterdayVisitors"
+        ).innerText =
+            yesterdayFirebaseData.visitors || 0;
+
+
+        console.log(
+            "📊 Firebase Visitor Analytics Loaded:",
+            {
+                total:
+                    totalData.visitors || 0,
+
+                today:
+                    todayFirebaseData.visitors || 0,
+
+                yesterday:
+                    yesterdayFirebaseData.visitors || 0
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to load Firebase visitor analytics:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ========================================
+   LOAD FIREBASE VISITOR DATA
+======================================== */
+
+setTimeout(() => {
+
+    loadFirebaseVisitorAnalytics();
+
+}, 1000);
+
+setTimeout(() => {
+    loadFirebaseMovieAnalytics();
+}, 1000);
 
 /* ========================================
    GET SORTED DAILY DATES
