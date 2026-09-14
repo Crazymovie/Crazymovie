@@ -5,7 +5,9 @@ import {
     doc,
     getDoc,
     collection,
-    getDocs
+    getDocs,
+    setDoc,
+    increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -49,6 +51,65 @@ if (!movieId) {
 
 
 // ================================
+// TRACK MOVIE VIEW
+// ================================
+
+async function trackMovieView() {
+
+    if (!movieId) {
+        return;
+    }
+
+    const viewKey =
+        "movieViewed_" + movieId;
+
+    // Same browser session-এ refresh হলে আবার count হবে না
+    if (sessionStorage.getItem(viewKey)) {
+        return;
+    }
+
+    try {
+
+        const analyticsRef =
+            doc(
+                db,
+                "movieAnalytics",
+                movieId
+            );
+
+        await setDoc(
+            analyticsRef,
+            {
+                views: increment(1)
+            },
+            {
+                merge: true
+            }
+        );
+
+        sessionStorage.setItem(
+            viewKey,
+            "true"
+        );
+
+        console.log(
+            "👁️ Movie view tracked:",
+            movieId
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to track movie view:",
+            error
+        );
+
+    }
+
+}
+
+
+// ================================
 // LOAD MOVIE
 // ================================
 
@@ -80,6 +141,11 @@ async function loadMovie() {
 
         const movie = movieSnap.data();
 
+// ================================
+// TRACK MOVIE VIEW
+// ================================
+
+await trackMovieView();
 
         // ================================
         // MOVIE HERO BANNER
