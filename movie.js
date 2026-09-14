@@ -70,6 +70,10 @@ async function trackMovieView() {
 
     try {
 
+        /* ========================================
+           TOTAL MOVIE VIEW
+        ======================================== */
+
         const analyticsRef =
             doc(
                 db,
@@ -87,15 +91,78 @@ async function trackMovieView() {
             }
         );
 
+
+        /* ========================================
+           DAILY VIEW
+           Background-এ চলবে, movie page block করবে না
+        ======================================== */
+
+        const now =
+            new Date();
+
+        const formatter =
+            new Intl.DateTimeFormat(
+                "en-CA",
+                {
+                    timeZone: "Asia/Dhaka",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit"
+                }
+            );
+
+        const today =
+            formatter.format(now);
+
+
+        const dailyRef =
+            doc(
+                db,
+                "siteAnalyticsDaily",
+                today
+            );
+
+
+        setDoc(
+            dailyRef,
+            {
+                views: increment(1)
+            },
+            {
+                merge: true
+            }
+        ).then(() => {
+
+            console.log(
+                "📅 Daily movie view tracked:",
+                today
+            );
+
+        }).catch((error) => {
+
+            console.error(
+                "❌ Failed to track daily movie view:",
+                error
+            );
+
+        });
+
+
+        /* ========================================
+           SESSION LOCK
+        ======================================== */
+
         sessionStorage.setItem(
             viewKey,
             "true"
         );
 
+
         console.log(
             "👁️ Movie view tracked:",
             movieId
         );
+
 
     } catch (error) {
 
@@ -146,6 +213,68 @@ async function loadMovie() {
 // ================================
 
 await trackMovieView();
+
+// ========================================
+// DAILY MOVIE VIEW
+// ========================================
+
+try {
+
+    const now = new Date();
+
+    const formatter =
+        new Intl.DateTimeFormat(
+            "en-CA",
+            {
+                timeZone: "Asia/Dhaka",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+            }
+        );
+
+    const today =
+        formatter.format(now);
+
+    const dailyRef =
+        doc(
+            db,
+            "siteAnalyticsDaily",
+            today
+        );
+
+    setDoc(
+        dailyRef,
+        {
+            views: increment(1)
+        },
+        {
+            merge: true
+        }
+    ).then(() => {
+
+        console.log(
+            "📅 Daily movie view tracked:",
+            today
+        );
+
+    }).catch((error) => {
+
+        console.error(
+            "❌ Daily movie view failed:",
+            error
+        );
+
+    });
+
+} catch (error) {
+
+    console.error(
+        "❌ Daily view setup failed:",
+        error
+    );
+
+}
 
         // ================================
         // MOVIE HERO BANNER

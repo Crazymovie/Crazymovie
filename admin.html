@@ -3443,31 +3443,150 @@ new Intl.DateTimeFormat(
 );
 
 
-const todayData =
+const todayData = {
 
-dailyAnalytics[today] || {
+    visitors:
+        dailyAnalytics[today]?.visitors || 0,
 
-    visitors: 0,
+    views:
+        dailyAnalytics[today]?.views || 0,
 
-    views: 0,
-
-    downloads: 0
-
-};
-
-
-const yesterdayData =
-
-dailyAnalytics[yesterday] || {
-
-    visitors: 0,
-
-    views: 0,
-
-    downloads: 0
+    downloads:
+        dailyAnalytics[today]?.downloads || 0
 
 };
 
+
+const yesterdayData = {
+
+    visitors:
+        dailyAnalytics[yesterday]?.visitors || 0,
+
+    views:
+        dailyAnalytics[yesterday]?.views || 0,
+
+    downloads:
+        dailyAnalytics[yesterday]?.downloads || 0
+
+};
+
+// ========================================
+// UPDATE DAILY MOVIE ANALYTICS FROM FIREBASE
+// ========================================
+
+async function updateDailyMovieAnalytics() {
+
+    try {
+
+        const todayRef =
+            window.doc(
+                window.db,
+                "siteAnalyticsDaily",
+                today
+            );
+
+        const todaySnap =
+            await window.getDoc(
+                todayRef
+            );
+
+        const firebaseToday =
+            todaySnap.exists()
+                ? todaySnap.data()
+                : {};
+
+
+        const yesterdayRef =
+            window.doc(
+                window.db,
+                "siteAnalyticsDaily",
+                yesterday
+            );
+
+        const yesterdaySnap =
+            await window.getDoc(
+                yesterdayRef
+            );
+
+        const firebaseYesterday =
+            yesterdaySnap.exists()
+                ? yesterdaySnap.data()
+                : {};
+
+
+        todayData.views =
+            firebaseToday.views || 0;
+
+        todayData.downloads =
+            firebaseToday.downloads || 0;
+
+
+        yesterdayData.views =
+            firebaseYesterday.views || 0;
+
+        yesterdayData.downloads =
+            firebaseYesterday.downloads || 0;
+
+
+        document.getElementById(
+            "todayViews"
+        ).innerText =
+            todayData.views;
+
+
+        document.getElementById(
+            "todayDownloads"
+        ).innerText =
+            todayData.downloads;
+
+
+        document.getElementById(
+            "yesterdayViews"
+        ).innerText =
+            yesterdayData.views;
+
+
+        document.getElementById(
+            "yesterdayDownloads"
+        ).innerText =
+            yesterdayData.downloads;
+
+
+        console.log(
+            "📊 Firebase Daily Movie Analytics Updated:",
+            {
+                todayViews:
+                    todayData.views,
+
+                todayDownloads:
+                    todayData.downloads,
+
+                yesterdayViews:
+                    yesterdayData.views,
+
+                yesterdayDownloads:
+                    yesterdayData.downloads
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to update Firebase daily movie analytics:",
+            error
+        );
+
+    }
+
+}
+
+
+setTimeout(() => {
+
+    updateDailyMovieAnalytics();
+
+}, 1500);
 
 /* ========================================
    SHOW TODAY

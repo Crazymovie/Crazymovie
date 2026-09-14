@@ -323,7 +323,9 @@ import {
     doc,
     getDoc,
     collection,
-    getDocs
+    getDocs,
+    setDoc,
+    increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -377,6 +379,118 @@ const params =
 const movieId =
     params.get("id");
 
+// ========================================
+// TRACK DOWNLOAD
+// ========================================
+
+async function trackDownload(server) {
+
+    if (!movieId) {
+        return;
+    }
+
+    try {
+
+        /* ========================================
+           TOTAL MOVIE DOWNLOAD
+        ======================================== */
+
+        const analyticsRef =
+            doc(
+                db,
+                "movieAnalytics",
+                movieId
+            );
+
+        await setDoc(
+            analyticsRef,
+            {
+                downloads: increment(1)
+            },
+            {
+                merge: true
+            }
+        );
+
+
+        /* ========================================
+           BANGLADESH DATE
+        ======================================== */
+
+        const now =
+            new Date();
+
+        const formatter =
+            new Intl.DateTimeFormat(
+                "en-CA",
+                {
+                    timeZone: "Asia/Dhaka",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit"
+                }
+            );
+
+        const today =
+            formatter.format(now);
+
+
+        /* ========================================
+           DAILY DOWNLOAD
+        ======================================== */
+
+        const dailyRef =
+            doc(
+                db,
+                "siteAnalyticsDaily",
+                today
+            );
+
+        setDoc(
+            dailyRef,
+            {
+                downloads: increment(1)
+            },
+            {
+                merge: true
+            }
+        ).then(() => {
+
+            console.log(
+                "📅 Daily download tracked:",
+                today
+            );
+
+        }).catch((error) => {
+
+            console.error(
+                "❌ Failed to track daily download:",
+                error
+            );
+
+        });
+
+
+        /* ========================================
+           DOWNLOAD LOG
+        ======================================== */
+
+        console.log(
+            "⬇️ Download tracked:",
+            movieId,
+            server
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to track download:",
+            error
+        );
+
+    }
+
+}
 
 // Debug
 console.log(
@@ -702,6 +816,8 @@ if (drive720Button) {
                 return;
             }
 
+trackDownload("Google Drive 720p");
+
             window.open(
     movie.download1,
     "_blank"
@@ -731,6 +847,8 @@ if (drive1080Button) {
 
                 return;
             }
+
+trackDownload("Google Drive 1080p");
 
             window.open(
     movie.download2,
@@ -762,6 +880,8 @@ if (gofile720Button) {
                 return;
             }
 
+trackDownload("Gofile 720p");
+
             window.open(
     movie.download3,
     "_blank"
@@ -791,6 +911,8 @@ if (gofile1080Button) {
 
                 return;
             }
+
+trackDownload("Gofile 1080p");
 
             window.open(
     movie.download4,
