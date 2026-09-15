@@ -137,6 +137,123 @@
 
 <footer class="site-footer">
 
+<!-- ========================================
+     MOVIE REQUEST / DOWNLOAD PROBLEM
+======================================== -->
+
+<section class="help-section">
+
+    <div class="help-box">
+
+        <h3>🎬 Movie Request</h3>
+
+        <p>
+            Can't find the movie you're looking for?
+            Send us a request and we'll try to add it.
+        </p>
+
+        <button
+    type="button"
+    class="help-btn"
+    onclick="openRequestForm()"
+>
+    Request a Movie
+</button>
+
+    </div>
+
+
+    <div class="help-box">
+
+        <h3>⚠️ Download Problem?</h3>
+
+        <p>
+            Having trouble downloading a movie?
+            Let us know and we'll check the problem.
+        </p>
+
+        <button
+    type="button"
+    class="help-btn"
+    onclick="openProblemForm()"
+>
+    Report Problem
+</button>
+
+    </div>
+
+</section>
+
+<!-- ========================================
+     REQUEST / PROBLEM FORM
+======================================== -->
+
+<div id="requestFormBox" class="request-form-box">
+
+    <div class="request-form-content">
+
+        <button
+            type="button"
+            class="close-request-form"
+            onclick="closeRequestForm()"
+        >
+            ×
+        </button>
+
+        <h3 id="requestFormTitle">
+            🎬 Movie Request
+        </h3>
+
+        <form id="siteRequestForm">
+
+            <input
+                type="text"
+                id="requestMovieTitle"
+                placeholder="Movie name"
+                required
+            >
+
+            <textarea
+                id="requestMessage"
+                placeholder="Write your request..."
+                rows="4"
+                required
+            ></textarea>
+
+            <button
+                type="submit"
+                class="help-btn"
+            >
+                Submit Request
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ========================================
+     RECENT REQUESTS / PROBLEMS
+======================================== -->
+
+<div class="site-activity">
+
+    <h3>📢 Recent Requests &amp; Problems</h3>
+
+    <p class="activity-info">
+        Recent movie requests and download problems
+        from our visitors.
+    </p>
+
+    <div id="siteActivityList">
+        <p class="activity-loading">
+            Loading...
+        </p>
+    </div>
+
+</div>
+
     <p>
         © 2026 Crazymovie. All Rights Reserved.
     </p>
@@ -148,6 +265,11 @@
 <!-- ========================================
      SCRIPT
 ======================================== -->
+
+<script
+    type="module"
+    src="analytics.js"
+></script>
 
 <script
     type="module"

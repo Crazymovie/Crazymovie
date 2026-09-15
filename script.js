@@ -3,7 +3,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
     getFirestore,
     collection,
-    getDocs
+    getDocs,
+    addDoc,
+    serverTimestamp,
+    Timestamp,
+    query,
+    orderBy,
+    limit
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -951,3 +957,363 @@ window.filterMovies =
 
 window.applyAllFilters =
     applyAllFilters;
+
+    // ========================================
+// MOVIE REQUEST / DOWNLOAD PROBLEM
+// ========================================
+
+async function submitSiteRequest(type, movieTitle, message) {
+
+    try {
+
+        movieTitle = movieTitle.trim();
+        message = message.trim();
+
+        if (!movieTitle || !message) {
+            alert("Please enter the movie name and your message.");
+            return false;
+        }
+
+        // Automatically expire after 7 days
+        const expiresAt = new Date(
+            Date.now() + (7 * 24 * 60 * 60 * 1000)
+        );
+
+        await addDoc(collection(db, "siteRequests"), {
+
+            type: type,
+
+            movieTitle: movieTitle,
+
+            message: message,
+
+            createdAt: serverTimestamp(),
+
+            expiresAt: Timestamp.fromDate(expiresAt)
+
+        });
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to submit request:",
+            error
+        );
+
+        alert(
+            "Something went wrong. Please try again."
+        );
+
+        return false;
+    }
+}
+
+
+// ========================================
+// LOAD REQUESTS / PROBLEMS
+// ========================================
+
+async function loadSiteRequests() {
+
+    try {
+
+        const requestsQuery = query(
+            collection(db, "siteRequests"),
+            orderBy("createdAt", "desc"),
+            limit(30)
+        );
+
+        const snapshot =
+            await getDocs(requestsQuery);
+
+        const requests = [];
+
+        const now = Date.now();
+
+        snapshot.forEach((docSnapshot) => {
+
+            const data =
+                docSnapshot.data();
+
+            // Hide expired entries
+            if (data.expiresAt) {
+
+    const expiresTime =
+        data.expiresAt.toMillis
+            ? data.expiresAt.toMillis()
+            : new Date(data.expiresAt).getTime();
+
+    if (expiresTime <= now) {
+        return;
+    }
+}
+
+            requests.push({
+                id: docSnapshot.id,
+                ...data
+            });
+
+        });
+
+        return requests;
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to load site requests:",
+            error
+        );
+
+        return [];
+    }
+}
+
+
+// ========================================
+// GLOBAL REQUEST FUNCTIONS
+// ========================================
+
+window.submitSiteRequest =
+    submitSiteRequest;
+
+window.loadSiteRequests =
+    loadSiteRequests;
+
+    // ========================================
+// REQUEST / PROBLEM FORM CONTROL
+// ========================================
+
+let currentRequestType = "movie";
+
+
+function openRequestForm() {
+
+    currentRequestType = "movie";
+
+    const formBox =
+        document.getElementById("requestFormBox");
+
+    const title =
+        document.getElementById("requestFormTitle");
+
+    const message =
+        document.getElementById("requestMessage");
+
+    if (!formBox) return;
+
+    title.textContent = "🎬 Movie Request";
+
+    message.placeholder =
+        "Write the movie you want us to add...";
+
+    formBox.style.display = "flex";
+}
+
+
+function openProblemForm() {
+
+    currentRequestType = "problem";
+
+    const formBox =
+        document.getElementById("requestFormBox");
+
+    const title =
+        document.getElementById("requestFormTitle");
+
+    const message =
+        document.getElementById("requestMessage");
+
+    if (!formBox) return;
+
+    title.textContent = "⚠️ Download Problem";
+
+    message.placeholder =
+        "Tell us what problem you are having...";
+
+    formBox.style.display = "flex";
+}
+
+
+function closeRequestForm() {
+
+    const formBox =
+        document.getElementById("requestFormBox");
+
+    if (formBox) {
+        formBox.style.display = "none";
+    }
+}
+
+
+// ========================================
+// FORM SUBMIT
+// ========================================
+
+const siteRequestForm =
+    document.getElementById("siteRequestForm");
+
+if (siteRequestForm) {
+
+    siteRequestForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+            const movieTitle =
+                document
+                    .getElementById("requestMovieTitle")
+                    .value;
+
+            const message =
+                document
+                    .getElementById("requestMessage")
+                    .value;
+
+            const submitted =
+                await submitSiteRequest(
+                    currentRequestType,
+                    movieTitle,
+                    message
+                );
+
+            if (submitted) {
+
+                alert(
+                    currentRequestType === "movie"
+                        ? "Movie request submitted successfully!"
+                        : "Problem reported successfully!"
+                );
+
+                siteRequestForm.reset();
+
+                closeRequestForm();
+
+                await displaySiteRequests();
+            }
+
+        }
+    );
+}
+
+
+// ========================================
+// GLOBAL FORM FUNCTIONS
+// ========================================
+
+window.openRequestForm =
+    openRequestForm;
+
+window.openProblemForm =
+    openProblemForm;
+
+window.closeRequestForm =
+    closeRequestForm;
+
+    // ========================================
+// DISPLAY REQUESTS / PROBLEMS
+// ========================================
+
+async function displaySiteRequests() {
+
+    const activityList =
+        document.getElementById("siteActivityList");
+
+    if (!activityList) return;
+
+    const requests =
+        await loadSiteRequests();
+
+    if (!requests.length) {
+
+        activityList.innerHTML = `
+            <p class="activity-empty">
+                No recent requests or problems.
+            </p>
+        `;
+
+        return;
+    }
+
+    activityList.innerHTML = "";
+
+    requests.forEach((request) => {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "activity-item";
+
+        const typeLabel =
+            request.type === "movie"
+                ? "🎬 Movie Request"
+                : "⚠️ Download Problem";
+
+        let createdText = "Recently";
+
+        if (request.createdAt) {
+
+    const createdDate =
+        request.createdAt.toDate
+            ? request.createdAt.toDate()
+            : new Date(request.createdAt);
+
+    createdText =
+        createdDate.toLocaleDateString(
+            "en-US",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            }
+        );
+}
+
+        item.innerHTML = `
+            <div class="activity-type">
+                ${typeLabel}
+            </div>
+
+            <div class="activity-movie">
+                ${escapeHtml(request.movieTitle)}
+            </div>
+
+            <div class="activity-message">
+                ${escapeHtml(request.message)}
+            </div>
+
+            <div class="activity-date">
+                ${createdText}
+            </div>
+        `;
+
+        activityList.appendChild(item);
+
+    });
+}
+
+
+// ========================================
+// SAFE TEXT
+// ========================================
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text || "";
+
+    return div.innerHTML;
+}
+
+
+// Load activity after page loads
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+        displaySiteRequests();
+    }
+);

@@ -15,7 +15,8 @@ import {
     setDoc,
     getDoc,
     query,
-    where
+    where,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
@@ -194,3 +195,202 @@ document.getElementById(
     window.cancelEdit
 );
 
+// ========================================
+// ADMIN - SITE REQUESTS / PROBLEMS
+// ========================================
+
+async function loadAdminSiteRequests() {
+
+    const container =
+        document.getElementById("adminSiteRequests");
+
+    if (!container) return;
+
+    container.innerHTML = `
+        <p class="admin-requests-loading">
+            Loading requests...
+        </p>
+    `;
+
+    try {
+
+        const requestsQuery = query(
+            collection(db, "siteRequests"),
+            orderBy("createdAt", "desc")
+        );
+
+        const snapshot =
+            await getDocs(requestsQuery);
+
+        if (snapshot.empty) {
+
+            container.innerHTML = `
+                <p class="admin-requests-empty">
+                    No requests or problems found.
+                </p>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = "";
+
+        snapshot.forEach((docSnapshot) => {
+
+            const data =
+                docSnapshot.data();
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "admin-request-card";
+
+            const typeLabel =
+                data.type === "movie"
+                    ? "🎬 Movie Request"
+                    : "⚠️ Download Problem";
+
+            let createdText = "Recently";
+
+            if (data.createdAt) {
+
+                const createdDate =
+                    data.createdAt.toDate
+                        ? data.createdAt.toDate()
+                        : new Date(data.createdAt);
+
+                createdText =
+                    createdDate.toLocaleDateString(
+                        "en-US",
+                        {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    );
+            }
+
+            item.innerHTML = `
+
+                <div class="admin-request-type">
+                    ${typeLabel}
+                </div>
+
+                <h3>
+                    ${escapeAdminHtml(data.movieTitle)}
+                </h3>
+
+                <p>
+                    ${escapeAdminHtml(data.message)}
+                </p>
+
+                <small>
+                    ${createdText}
+                </small>
+
+                <div class="admin-request-actions">
+
+                    <button
+                        type="button"
+                        class="admin-delete-request"
+                        onclick="deleteAdminSiteRequest('${docSnapshot.id}')"
+                    >
+                        🗑️ Delete
+                    </button>
+
+                </div>
+
+            `;
+
+            container.appendChild(item);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to load admin site requests:",
+            error
+        );
+
+        container.innerHTML = `
+            <p class="admin-requests-error">
+                Failed to load requests.
+            </p>
+        `;
+    }
+}
+
+
+// ========================================
+// DELETE REQUEST / PROBLEM
+// ========================================
+
+async function deleteAdminSiteRequest(requestId) {
+
+    if (!confirm(
+        "Are you sure you want to delete this request?"
+    )) {
+        return;
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(db, "siteRequests", requestId)
+        );
+
+        await loadAdminSiteRequests();
+
+        alert(
+            "Request deleted successfully!"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to delete request:",
+            error
+        );
+
+        alert(
+            "Failed to delete request."
+        );
+    }
+}
+
+
+// ========================================
+// SAFE HTML
+// ========================================
+
+function escapeAdminHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text || "";
+
+    return div.innerHTML;
+}
+
+
+// ========================================
+// GLOBAL ADMIN FUNCTIONS
+// ========================================
+
+window.loadAdminSiteRequests =
+    loadAdminSiteRequests;
+
+window.deleteAdminSiteRequest =
+    deleteAdminSiteRequest;
+
+
+// Load when page is ready
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+        loadAdminSiteRequests();
+    }
+);

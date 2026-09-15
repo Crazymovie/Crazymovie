@@ -1409,6 +1409,36 @@ onchange="previewNewScreenshot(event, 4)"
     id="publishedMovies"
 ></div>
 
+<!-- ========================================
+     MOVIE REQUESTS / DOWNLOAD PROBLEMS
+======================================== -->
+
+<section class="admin-requests-section">
+
+    <div class="admin-section-title">
+
+        <h2>🎬 Movie Requests &amp; Download Problems</h2>
+
+        <button
+            type="button"
+            class="refresh-requests-button"
+            onclick="loadAdminSiteRequests()"
+        >
+            🔄 Refresh
+        </button>
+
+    </div>
+
+    <div id="adminSiteRequests">
+
+        <p class="admin-requests-loading">
+            Loading requests...
+        </p>
+
+    </div>
+
+</section>
+
 <div style="
     display:flex;
     gap:12px;

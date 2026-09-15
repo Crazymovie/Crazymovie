@@ -3974,3 +3974,232 @@ nav a:hover {
     }
 
 }
+
+/* ========================================
+   MOVIE REQUEST / DOWNLOAD PROBLEM
+======================================== */
+
+.help-section {
+    width: 90%;
+    max-width: 1100px;
+    margin: 50px auto 35px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.help-box {
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+}
+
+.help-box h3 {
+    color: #fff;
+    margin: 0 0 10px;
+}
+
+.help-box p {
+    color: #aaa;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.help-btn {
+    display: inline-block;
+    background: #E50914;
+    color: #fff;
+    padding: 9px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.help-btn:hover {
+    background: #b20710;
+}
+
+@media (max-width: 700px) {
+
+    .help-section {
+        grid-template-columns: 1fr;
+        width: 88%;
+    }
+
+}
+
+/* ========================================
+   REQUEST / PROBLEM FORM
+======================================== */
+
+.request-form-box {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.request-form-content {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    padding: 28px;
+    border-radius: 14px;
+    background: #151515;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.request-form-content h3 {
+    margin: 0 0 20px;
+    font-size: 22px;
+    color: #fff;
+}
+
+.request-form-content input,
+.request-form-content textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    padding: 13px 14px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    outline: none;
+    background: #222;
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.request-form-content input:focus,
+.request-form-content textarea:focus {
+    border-color: #E50914;
+}
+
+.request-form-content textarea {
+    resize: vertical;
+}
+
+.close-request-form {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.close-request-form:hover {
+    color: #E50914;
+}
+
+.request-form-content .help-btn {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+/* ========================================
+   RECENT REQUESTS / PROBLEMS
+======================================== */
+
+.site-activity {
+    width: 100%;
+    max-width: 1000px;
+    margin: 35px auto 30px;
+    padding: 25px;
+    box-sizing: border-box;
+    border-radius: 14px;
+    background: #151515;
+    border: 1px solid #292929;
+}
+
+.site-activity h3 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-size: 22px;
+}
+
+.activity-info {
+    margin: 0 0 20px;
+    color: #999;
+    font-size: 14px;
+}
+
+#siteActivityList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.activity-item {
+    padding: 16px;
+    border-radius: 10px;
+    background: #202020;
+    border-left: 3px solid #E50914;
+}
+
+.activity-type {
+    margin-bottom: 7px;
+    color: #E50914;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.activity-movie {
+    margin-bottom: 6px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.activity-message {
+    color: #ccc;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.activity-date {
+    margin-top: 9px;
+    color: #777;
+    font-size: 12px;
+}
+
+.activity-loading,
+.activity-empty {
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .site-activity {
+        margin: 25px 12px;
+        padding: 18px;
+        width: calc(100% - 24px);
+    }
+
+    .site-activity h3 {
+        font-size: 19px;
+    }
+
+    .activity-item {
+        padding: 13px;
+    }
+
+}
