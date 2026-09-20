@@ -177,15 +177,61 @@ body {
 
 .published-movies {
 
-    display: grid;
+    display: flex;
 
-    grid-template-columns:
-    repeat(2, 1fr);
+    flex-direction: row;
 
     gap: 20px;
+
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+    padding: 5px 5px 20px;
+
+    scroll-behavior: smooth;
+
+    scrollbar-width: thin;
+
+    scrollbar-color: #555 #181818;
+}
+
+.published-movies::-webkit-scrollbar {
+
+    height: 8px;
+}
+
+.published-movies::-webkit-scrollbar-track {
+
+    background: #181818;
+
+    border-radius: 10px;
+}
+
+.published-movies::-webkit-scrollbar-thumb {
+
+    background: #555;
+
+    border-radius: 10px;
+}
+
+.published-movies::-webkit-scrollbar-thumb:hover {
+
+    background: #777;
 }
 
 .published-movie-card {
+
+    flex: 0 0 420px;
+
+    min-width: 420px;
+}
+
+.published-movie-card {
+
+    flex: 0 0 420px;
+
+    min-width: 420px;
 
     background: #181818;
 
@@ -925,15 +971,15 @@ body {
     }
 
     .published-movies {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
 
-        grid-template-columns:
-        1fr;
-    }
-
-    .published-movie-card {
-
-        flex-direction:
-        column;
+.published-movie-card {
+    flex: 0 0 320px;
+    min-width: 320px;
+    flex-direction: column;
+    align-items: flex-start;
 
         align-items:
         flex-start;
@@ -2132,6 +2178,16 @@ if (yearFilter) {
             );
 
         });
+
+/* ========================================
+   NEWEST MOVIE FIRST
+======================================== */
+
+filteredMovies.sort(function(a, b) {
+
+    return Number(b.id) - Number(a.id);
+
+});
 
 
     /* ========================================
