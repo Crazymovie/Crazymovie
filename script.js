@@ -1261,33 +1261,80 @@ async function displaySiteRequests() {
             : new Date(request.createdAt);
 
     createdText =
-        createdDate.toLocaleDateString(
-            "en-US",
-            {
-                day: "numeric",
-                month: "short",
-                year: "numeric"
-            }
-        );
+    createdDate.toLocaleString(
+        "en-US",
+        {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        }
+    ).replace(",", " •");
 }
 
         item.innerHTML = `
-            <div class="activity-type">
-                ${typeLabel}
-            </div>
+    <div class="activity-type">
+        ${typeLabel}
+    </div>
 
-            <div class="activity-movie">
-                ${escapeHtml(request.movieTitle)}
-            </div>
+    <div class="activity-movie">
+        ${escapeHtml(request.movieTitle)}
+    </div>
 
-            <div class="activity-message">
-                ${escapeHtml(request.message)}
-            </div>
+    <div class="activity-message">
+        ${escapeHtml(request.message)}
+    </div>
 
-            <div class="activity-date">
-                ${createdText}
-            </div>
-        `;
+    <div class="activity-date">
+        ${createdText}
+    </div>
+
+    ${
+        request.adminReply
+            ? `
+                <div class="activity-admin-reply">
+                    <div class="activity-admin-reply-title">
+                        🛠️ Crazymovie Admin
+                    </div>
+
+                    <div class="activity-admin-reply-message">
+                        ${escapeHtml(request.adminReply)}
+                    </div>
+
+                    ${
+                        request.adminReplyAt
+                            ? `
+                                <div class="activity-admin-reply-date">
+                                    ${
+                                        (
+                                            request.adminReplyAt.toDate
+                                                ? request.adminReplyAt.toDate()
+                                                : new Date(request.adminReplyAt)
+                                        )
+                                            .toLocaleString(
+                                                "en-US",
+                                                {
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    year: "numeric",
+                                                    hour: "numeric",
+                                                    minute: "2-digit",
+                                                    hour12: true
+                                                }
+                                            )
+                                            .replace(",", " •")
+                                    }
+                                </div>
+                            `
+                            : ""
+                    }
+                </div>
+            `
+            : ""
+    }
+`;
 
         activityList.appendChild(item);
 

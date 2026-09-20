@@ -261,14 +261,17 @@ async function loadAdminSiteRequests() {
                         : new Date(data.createdAt);
 
                 createdText =
-                    createdDate.toLocaleDateString(
+                    createdDate.toLocaleString(
                         "en-US",
                         {
-                            day: "numeric",
                             month: "short",
-                            year: "numeric"
+                            day: "numeric",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true
                         }
-                    );
+                    ).replace(",", " •");
             }
 
             item.innerHTML = `
@@ -288,6 +291,67 @@ async function loadAdminSiteRequests() {
                 <small>
                     ${createdText}
                 </small>
+
+                <div class="admin-reply-box">
+
+                    <textarea
+                        id="adminReply-${docSnapshot.id}"
+                        class="admin-reply-input"
+                        placeholder="Write a reply to this visitor..."
+                        rows="3"
+                    >${escapeAdminHtml(data.adminReply || "")}</textarea>
+
+                    <button
+                        type="button"
+                        class="admin-reply-button"
+                        onclick="replyToSiteRequest('${docSnapshot.id}')"
+                    >
+                        🛠️ ${data.adminReply ? "Update Reply" : "Reply"}
+                    </button>
+
+                </div>
+
+                ${
+                    data.adminReply
+                        ? `
+                            <div class="admin-existing-reply">
+                                <strong>🛠️ Crazymovie Admin</strong>
+
+                                <p>
+                                    ${escapeAdminHtml(data.adminReply)}
+                                </p>
+
+                                ${
+                                    data.adminReplyAt
+                                        ? `
+                                            <small>
+                                                ${
+                                                    (
+                                                        data.adminReplyAt.toDate
+                                                            ? data.adminReplyAt.toDate()
+                                                            : new Date(data.adminReplyAt)
+                                                    )
+                                                        .toLocaleString(
+                                                            "en-US",
+                                                            {
+                                                                month: "short",
+                                                                day: "numeric",
+                                                                year: "numeric",
+                                                                hour: "numeric",
+                                                                minute: "2-digit",
+                                                                hour12: true
+                                                            }
+                                                        )
+                                                        .replace(",", " •")
+                                                }
+                                            </small>
+                                        `
+                                        : ""
+                                }
+                            </div>
+                        `
+                        : ""
+                }
 
                 <div class="admin-request-actions">
 
@@ -319,8 +383,57 @@ async function loadAdminSiteRequests() {
                 Failed to load requests.
             </p>
         `;
+    
     }
 }
+
+// ========================================
+// ADMIN - REPLY TO SITE REQUEST
+// ========================================
+
+window.replyToSiteRequest = async function (requestId) {
+
+    const replyInput =
+        document.getElementById(`adminReply-${requestId}`);
+
+    if (!replyInput) return;
+
+    const reply =
+        replyInput.value.trim();
+
+    if (!reply) {
+
+        alert("Please write a reply first.");
+
+        return;
+    }
+
+    try {
+
+        await updateDoc(
+            doc(db, "siteRequests", requestId),
+            {
+                adminReply: reply,
+                adminReplyAt: new Date()
+            }
+        );
+
+        alert("✅ Reply saved successfully!");
+
+        await loadAdminSiteRequests();
+
+    } catch (error) {
+
+        console.error(
+            "❌ Failed to save admin reply:",
+            error
+        );
+
+        alert(
+            "❌ Failed to save reply. Please try again."
+        );
+    }
+};
 
 
 // ========================================
