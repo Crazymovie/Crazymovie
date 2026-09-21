@@ -198,6 +198,10 @@ async function loadMovies() {
             "trendingMovies"
         );
 
+const comingSoonContainer =
+    document.getElementById(
+        "comingSoonMovies"
+    );
 
     const moviesContainer =
         document.getElementById(
@@ -213,6 +217,13 @@ async function loadMovies() {
 
     }
 
+if (!comingSoonContainer) {
+
+    console.log(
+        "⚠️ comingSoonMovies element not found."
+    );
+
+}
 
     if (!moviesContainer) {
 
@@ -239,6 +250,17 @@ async function loadMovies() {
 
     }
 
+if (comingSoonContainer) {
+
+    comingSoonContainer.innerHTML = `
+
+        <p class="loading-message">
+            Loading...
+        </p>
+
+    `;
+
+}
 
     if (moviesContainer) {
 
@@ -282,6 +304,11 @@ async function loadMovies() {
 
         }
 
+        if (comingSoonContainer) {
+
+    comingSoonContainer.innerHTML = "";
+
+}
 
         if (moviesContainer) {
 
@@ -346,7 +373,9 @@ async function loadMovies() {
 
         let trendingCount = 0;
 
-        let regularCount = 0;
+let comingSoonCount = 0;
+
+let regularCount = 0;
 
 
         // ========================================
@@ -359,6 +388,31 @@ allMovies.forEach(
         const movieId =
             movie.id;
 
+        // ========================================
+        // COMING SOON MOVIES
+        // ========================================
+
+        if (movie.comingSoon === true) {
+
+            comingSoonCount++;
+
+            if (comingSoonContainer) {
+
+                const comingSoonCard =
+                    createMovieCard(
+                        movie,
+                        movieId
+                    );
+
+                comingSoonContainer.appendChild(
+                    comingSoonCard
+                );
+
+            }
+
+            return;
+
+        }
 
         // ========================================
         // TRENDING MOVIES
@@ -410,6 +464,24 @@ allMovies.forEach(
     }
 );
 
+        // ========================================
+        // NO COMING SOON
+        // ========================================
+
+        if (
+            comingSoonCount === 0 &&
+            comingSoonContainer
+        ) {
+
+            comingSoonContainer.innerHTML = `
+
+                <p class="no-movies-message">
+                    No upcoming movies available.
+                </p>
+
+            `;
+
+        }
 
         // ========================================
         // NO TRENDING

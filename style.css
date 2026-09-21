@@ -4233,3 +4233,21 @@ nav a:hover {
     }
 
 }
+
+/* ========================================
+   COMING SOON HORIZONTAL SCROLL
+======================================== */
+
+.coming-soon-grid {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+}
+
+.coming-soon-grid .movie-card {
+    flex: 0 0 auto;
+}

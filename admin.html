@@ -1347,7 +1347,23 @@ onchange="previewPosterImage(event)"
     <option value="movie">🎬 Movie</option>
     <option value="tv">📺 TV Series</option>
 </select>
-
+<select
+    id="movieComingSoon"
+    style="
+        padding:14px;
+        background:#222;
+        color:white;
+        border:1px solid rgba(255,255,255,0.15);
+        border-radius:8px;
+        outline:none;
+        font-family:'Poppins',sans-serif;
+        font-size:15px;
+        cursor:pointer;
+    "
+>
+    <option value="false">No — Released Movie</option>
+    <option value="true">🚀 Yes — Coming Soon</option>
+</select>
 <select
     id="movieTrending"
     style="
@@ -1902,6 +1918,8 @@ document.getElementById("movieLanguage").value = "";
 document.getElementById("movieQuality").value = "";
 
 document.getElementById("movieDuration").value = "";
+
+document.getElementById("movieComingSoon").value = "false";
 
 document.getElementById("movieScreenshot1").value = "";
 
@@ -2497,6 +2515,11 @@ document.getElementById(
 ).value =
     movie.trending ? "true" : "false";
 
+document.getElementById(
+    "movieComingSoon"
+).value =
+    movie.comingSoon ? "true" : "false";
+
         document.getElementById(
     "movieQuality"
 ).value =
@@ -2659,6 +2682,10 @@ const year =
         document.getElementById("movieTrending")
         .value === "true";
 
+const comingSoon =
+    document.getElementById(
+        "movieComingSoon"
+    ).value === "true";
 
     const quality =
         document.getElementById("movieQuality")
@@ -2873,6 +2900,9 @@ const year =
 
         trending: trending,
 
+        comingSoon:
+    comingSoon,
+
         quality: quality,
 
         duration: duration,
@@ -3086,6 +3116,11 @@ const year =
         document.getElementById("movieTrending")
         .value === "true";
 
+const comingSoon =
+    document.getElementById(
+        "movieComingSoon"
+    ).value === "true";
+
     const quality =
         document.getElementById("movieQuality")
         .value
@@ -3127,24 +3162,25 @@ const year =
     ======================================== */
 
     if (
-        !title ||
-        !poster ||
-        !description ||
-        !year ||
-        !genre ||
-        !rating ||
-        !download1 ||
-        !download2 ||
-        !download3 ||
-        !download4
-    ) {
-
-        alert(
-            "Please fill in all movie details."
-        );
-
-        return;
-    }
+    !title ||
+    !poster ||
+    !description ||
+    !year ||
+    !genre ||
+    !rating ||
+    (
+        !comingSoon &&
+        (
+            !download1 ||
+            !download2 ||
+            !download3 ||
+            !download4
+        )
+    )
+) {
+    alert("Please fill in all movie details.");
+    return;
+}
 
 
     /* ========================================
