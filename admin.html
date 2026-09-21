@@ -1379,6 +1379,12 @@ onchange="previewPosterImage(event)"
     placeholder="Duration (2h 30m)"
 >
 
+<input
+    type="text"
+    id="movieTrailer"
+    placeholder="YouTube Trailer URL (Optional)"
+>
+
 <!-- ========================================
      MOVIE SCREENSHOTS
 ======================================== -->
@@ -2871,6 +2877,8 @@ const year =
 
         duration: duration,
 
+movieTrailer: document.getElementById("movieTrailer").value.trim(),
+
         download1: download1,
 
         download2: download2,
@@ -3249,6 +3257,9 @@ releaseDate:
 
         duration:
             duration,
+
+movieTrailer:
+    document.getElementById("movieTrailer").value.trim(),
 
         // ========================================
         // 4 DOWNLOAD LINKS

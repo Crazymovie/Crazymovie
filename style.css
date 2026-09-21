@@ -2630,6 +2630,36 @@ body::before {
 
 }
 
+/* ========================================
+   MOVIE TRAILER
+======================================== */
+
+.movie-trailer-section {
+    width: 100%;
+    margin-top: 40px;
+}
+
+.movie-trailer-section h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: #ffffff;
+}
+
+.movie-trailer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #000000;
+}
+
+.movie-trailer iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+}
 
 /* ========================================
    SCREENSHOTS

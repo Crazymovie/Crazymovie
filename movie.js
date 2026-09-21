@@ -335,6 +335,74 @@ try {
 
         }
 
+// ================================
+// MOVIE TRAILER
+// ================================
+
+const movieTrailerSection =
+    document.getElementById("movieTrailerSection");
+
+const movieTrailer =
+    document.getElementById("movieTrailer");
+
+if (
+    movieTrailerSection &&
+    movieTrailer &&
+    movie.movieTrailer
+) {
+
+    let trailerUrl =
+        movie.movieTrailer.trim();
+
+    try {
+
+        const url =
+            new URL(trailerUrl);
+
+        let videoId = "";
+
+        // youtube.com/watch?v=VIDEO_ID
+        if (
+            url.hostname === "www.youtube.com" ||
+            url.hostname === "youtube.com"
+        ) {
+
+            videoId =
+                url.searchParams.get("v") || "";
+
+        }
+
+        // youtu.be/VIDEO_ID
+        else if (
+            url.hostname === "youtu.be"
+        ) {
+
+            videoId =
+                url.pathname.substring(1);
+
+        }
+
+        if (videoId) {
+
+            movieTrailer.src =
+                "https://www.youtube.com/embed/" +
+                encodeURIComponent(videoId);
+
+            movieTrailerSection.style.display =
+                "block";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "❌ Invalid YouTube trailer URL:",
+            error
+        );
+
+    }
+
+}
 
         // ================================
         // RATING
